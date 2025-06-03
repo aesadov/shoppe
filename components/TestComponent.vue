@@ -28,90 +28,59 @@
     // })
 
 
-  // export default {
-  // setup() {
-  //   onMounted(async () => {
-      // const newProduct = {
-      //   title: "pixel 8a",
-      //   price: 29000,
-      //   description: "pixel-phone",
-      //   category: "smartphones",
-      //   image: 'image of product',
-      // }
-  //     const product = await useAddNewPropduct(newProduct);
-  //     console.log(product);
-  //   });
-
-  //   return {};
-  //   }
-  // }
-
-  // export default {
-  // setup() {
-  //   onMounted(async () => {
-  //     const product = await useGetASingleProduct(9);
-  //     console.log(product);
-  //   });
-
-  //   return {};
-  //   }
-  // }
   
-  // export default {
-  // setup() {
-  //   onMounted(async () => {
-  //     const product = {
-  //       id: 19,
-  //       title: "shulz krabi",
-  //       price: 29000,
-  //       description: "good bike",
-  //       category: "bikes",
-  //       image: 'image of bike',
-  //     }
-  //     const updatedProduct = await useUpdateAPropduct(product);
-  //     console.log(updatedProduct);
-  //   });
+    // onMounted(async () => {
+    //   const newProduct = {
+    //     title: "pixel 8a",
+    //     price: 29000,
+    //     description: "pixel-phone",
+    //     category: "smartphones",
+    //     image: 'image of product',
+    //   }
+    //   const product = await useAddNewPropduct(newProduct);
+    //   console.log(product);
+    // })
 
-  //   return {};
-  //   }
-  // }
 
-  // export default {
-  // setup() {
-  //   onMounted(async () => {
-  //     const product = await useGetASingleProduct(9);
-  //     console.log(product);
-  //   });
+    // onMounted(async () => {
+    //   const product = await useGetASingleProduct(9);
+    //   console.log(product);
+    // })
+  
 
-  //   return {};
-  //   }
-  // }
+    // onMounted(async () => {
+    //   const product = {
+    //     id: 19,
+    //     title: "shulz krabi",
+    //     price: 29000,
+    //     description: "good bike",
+    //     category: "bikes",
+    //     image: 'image of bike',
+    //   }
+    //   const updatedProduct = await useUpdateAPropduct(product);
+    //   console.log(updatedProduct);
+    // })
 
-  // export default {
-  // setup() {
-  //   onMounted(async () => {
-  //     const deletedProduct = await useDeleteAProduct(9);
-  //     console.log(deletedProduct);
-  //   });
 
-  //   return {};
-  //   }
-  // }
+    // onMounted(async () => {
+    //   const product = await useGetASingleProduct(9);
+    //   console.log(product);
+    // })
 
-  // export default {
-  // setup() {
-  //     onMounted(async () => {
-  //       const allCarts = await useGetAllCarts();
-  //       console.log(allCarts);
-  //     })
 
-  //     return {};
-  //   }
-  // }
+    // onMounted(async () => {
+    //   const deletedProduct = await useDeleteAProduct(7);
+    //   console.log(deletedProduct);
+    // })
 
-  // export default {
-  // setup() {
-  //     onMounted(async () => {
+
+      // onMounted(async () => {
+      //   const allCarts = await useGetAllCarts();
+      //   console.log(allCarts);
+      // })
+
+
+      // onMounted(async () => {
       //   const newCart = await useAddNewCart(123, [{id: 123}, {
       //   id: 19,
       //   title: "shulz krabi",
@@ -120,132 +89,83 @@
       //   category: "bikes",
       //   image: 'image of bike',
       // }])
-  //       console.log(newCart);
-  //     })
+      //   console.log(newCart);
+      // })
 
-  //     return {};
-  //   }
-  // }
 
-  // export default {
-  // setup() {
-  //     onMounted(async () => {
-  //       const singleCart = await useGetASingleCart(3);
-  //       console.log(singleCart);
-  //     })
+      // onMounted(async () => {
+      //   const singleCart = await useGetASingleCart(3);
+      //   console.log(singleCart);
+      // })
 
-  //     return {};
-  //   }
-  // }
 
-  // export default {
-  // setup() {
-  //     onMounted(async () => {
-  //       const cart = {
-  //         id: 5,
-  //         userId: 3,
-  //         products: [
-  //           {
-  //             id: 19,
-  //             title: "shulz krabi",
-  //             price: 29000,
-  //             description: "good bike",
-  //             category: "bikes",
-  //             image: 'image of bike',
-  //           },
-  //           {
-  //             title: "pixel 8a",
-  //             price: 29000,
-  //             description: "pixel-phone",
-  //             category: "smartphones",
-  //             image: 'image of product',
-  //           }
-  //         ]
-  //       }
-  //       const updatedCart = await useUpdateACart(cart);
-  //       console.log(updatedCart);
-  //     })
+      // onMounted(async () => {
+      //   const cart = {
+      //     id: 5,
+      //     userId: 3,
+      //     products: [
+      //       {
+      //         id: 19,
+      //         title: "shulz krabi",
+      //         price: 29000,
+      //         description: "good bike",
+      //         category: "bikes",
+      //         image: 'image of bike',
+      //       },
+      //       {
+      //         title: "pixel 8a",
+      //         price: 29000,
+      //         description: "pixel-phone",
+      //         category: "smartphones",
+      //         image: 'image of product',
+      //       }
+      //     ]
+      //   }
+      //   const updatedCart = await useUpdateACart(cart);
+      //   console.log(updatedCart);
+      // })
 
-  //     return {};
-  //   }
-  // }
 
-  // export default {
-  // setup() {
-  //     onMounted(async () => {
-  //       const deletedCart = await useDeleteACart(7);
-  //       console.log(deletedCart);
-  //     })
+      // onMounted(async () => {
+      //   const deletedCart = await useDeleteACart(7);
+      //   console.log(deletedCart);
+      // })
 
-  //     return {};
-  //   }
-  // }
 
-  // export default {
-  // setup() {
-  //   onMounted(async () => {
-  //     const users = await useGetAllUsers();
-  //     console.log(users);
-  //   });
+    // onMounted(async () => {
+    //   const users = await useGetAllUsers();
+    //   console.log(users);
+    // })
 
-  //   return {};
-  //   }
-  // }
 
-  // export default {
-  // setup() {
-  //   onMounted(async () => {
-  //     const newUser = await useAddNewUser('simpson', 'simpson@mail.com', 'pass')
-  //     console.log(newUser)
-  //   })
+    // onMounted(async () => {
+    //   const newUser = await useAddNewUser('simpson', 'simpson@mail.com', 'pass')
+    //   console.log(newUser)
+    // })
 
-  //   return {}
-  //   }
-  // }
 
-  // export default {
-  // setup() {
-  //     onMounted(async () => {
-  //       const singleUser = await useGetASingleUser(3);
-  //       console.log(singleUser);
-  //     })
+      // onMounted(async () => {
+      //   const singleUser = await useGetASingleUser(3);
+      //   console.log(singleUser);
+      // })
 
-  //     return {};
-  //   }
-  // }
 
-  // export default {
-  // setup() {
-  //     onMounted(async () => {
-  //       const updatedUser = await useUpdateUser({id: 3, username: 'simpson'});
-  //       console.log(updatedUser);
-  //     })
+      // onMounted(async () => {
+      //   const updatedUser = await useUpdateUser({id: 3, username: 'simpson'});
+      //   console.log(updatedUser);
+      // })
 
-  //     return {};
-  //   }
-  // }
 
-  // export default {
-  // setup() {
-  //   onMounted(async () => {
-  //     const deletedUser = await useDeleteAUser(10);
-  //     console.log(deletedUser);
-  //   });
+    // onMounted(async () => {
+    //   const deletedUser = await useDeleteAUser(10);
+    //   console.log(deletedUser);
+    // })
 
-  //   return {};
-  //   }
-  // }
 
-  // export default {
-  // setup() {
-  //   onMounted(async () => {
-  //     const authToken = await useLogin('johnd', 'm38rmF$');
-  //     console.log(authToken);
-  //   });
-
-  //   return {};
-  //   }
-  // }
+    // onMounted(async () => {
+    //   const authToken = await useLogin('johnd', 'm38rmF$');
+    //   console.log(authToken);
+    // })
 
 
 
