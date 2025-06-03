@@ -1,4 +1,8 @@
-<script>
+<script setup>
+  import IconTwitter from '~/assets/icons/Icon-twitter.svg'
+  import IconInstagram from '~/assets/icons/Icon-Instagram.svg'
+  import IconFaceBook from '~/assets/icons/Icon-FB.svg'
+
   import { onMounted } from 'vue';
   import {useGetAllProducts} from '@/composables/api/products/getAllProducts'
   import {useAddNewPropduct} from '@/composables/api/products/addNewProduct'
@@ -17,16 +21,12 @@
   import {useDeleteAUser} from '@/composables/api/users/deleteUser'
   import {useLogin} from '@/composables/api/auth/login'
 
-  // export default {
-  // setup() {
-  //   onMounted(async () => {
-  //     const products = await useGetAllProducts();
-  //     console.log(products);
-  //   });
 
-  //   return {};
-  //   }
-  // }
+    // onMounted(async () => {
+    //   const products = await useGetAllProducts();
+    //   console.log(products);
+    // })
+
 
   // export default {
   // setup() {
@@ -255,6 +255,9 @@
     <div class="test-container">
       <div class="test-logo">LOGO</div>
       <div class="test-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Porro quis, dignissimos culpa incidunt ipsam nihil natus esse sed perferendis! Delectus magni facere totam obcaecati ratione est eligendi, voluptatibus, natus temporibus aliquam veniam, error incidunt eum? Eveniet veniam quod, dolores quisquam accusantium itaque saepe? Non, impedit exercitationem quaerat similique dolores quisquam amet earum ad, culpa quo odio sint minima soluta fugit id necessitatibus dolorem voluptates accusamus perferendis commodi illo excepturi eligendi ratione inventore? Ullam nihil veniam adipisci deserunt qui natus debitis quasi? Voluptatibus magnam sunt ipsum ut, provident optio corrupti aperiam sapiente nobis accusamus necessitatibus natus eaque tempore perferendis, ratione illo?</div>
+      <IconTwitter class="icon"/>
+      <IconInstagram class="icon"/>
+      <IconFaceBook class="icon"/>
     </div>
 </template>
 
@@ -272,5 +275,13 @@
     font-family: $textFontFamily;
     font-weight: 400;
     color: $primary-color;
+  }
+
+  .icon {
+    color: $main-text-color;
+    margin-right: 10px;
+    &:hover {
+      color: #fff;
+    }
   }
 </style>

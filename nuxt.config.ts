@@ -1,3 +1,5 @@
+import svgLoader from 'vite-svg-loader'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-23',
   vite: {
@@ -10,7 +12,12 @@ export default defineNuxtConfig({
           `,
         }
       }
-    }
+    },
+    plugins: [
+      svgLoader({
+        defaultImport: 'component' // Это ключевая настройка!
+      }),
+    ]
   },
   css: ['~/assets/scss/main.scss'],
   runtimeConfig: {
