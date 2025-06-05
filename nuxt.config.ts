@@ -8,14 +8,13 @@ export default defineNuxtConfig({
         scss: {
           additionalData: `
             @use "~/assets/scss/variables" as *;
-            @use "~/assets/scss/mixins/container" as *;
           `,
         }
       }
     },
     plugins: [
       svgLoader({
-        defaultImport: 'component' // Это ключевая настройка!
+        defaultImport: 'component'
       }),
     ]
   },
