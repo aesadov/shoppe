@@ -1,11 +1,10 @@
 import {useAxios} from '@/composables/api/axios'
-import type { AxiosInstance } from 'axios';
 
-export const useGetAllUsers = async (): Promise<User[]> => {
-  const axiosInstance: AxiosInstance = useAxios();
+export const useGetAllUsers = async () => {
+  const axiosInstance = useAxios();
   
   try {
-    const response = await axiosInstance.get('/users');
+    const response = await axiosInstance.get<User[]>('/users');
     return response.data;
   } catch (error) {
     console.error('Error fetching users:', error);

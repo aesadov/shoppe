@@ -1,11 +1,10 @@
 import {useAxios} from '@/composables/api/axios'
-import type { AxiosInstance } from 'axios'
 
-export const useUpdateACart = async (cart: Cart): Promise<Cart> => {
-  const axiosInstance: AxiosInstance = useAxios();
+export const useUpdateACart = async (cart: Cart) => {
+  const axiosInstance = useAxios();
   
   try {
-    const response = await axiosInstance.put(`/carts/${cart.id}`, cart);
+    const response = await axiosInstance.put<Cart>(`/carts/${cart.id}`, cart);
     return response.data;
   } catch (error) {
     console.error('Error updating a cart:', error);

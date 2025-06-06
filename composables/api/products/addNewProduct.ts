@@ -1,8 +1,7 @@
 import {useAxios} from '@/composables/api/axios'
-import type { AxiosInstance } from 'axios'
 
-export const useAddNewPropduct = async (product: Product): Promise<Product> => {
-  const axiosInstance: AxiosInstance = useAxios();
+export const useAddNewPropduct = async (product: Product) => {
+  const axiosInstance = useAxios();
   
   try {
     const response = await axiosInstance.post<Product>('/products', product);

@@ -1,11 +1,10 @@
 import {useAxios} from '@/composables/api/axios'
-import type { AxiosInstance } from 'axios'
 
-export const useGetASingleUser = async (id: number): Promise<User> => {
-  const axiosInstance: AxiosInstance = useAxios();
+export const useGetASingleUser = async (id: number) => {
+  const axiosInstance = useAxios();
   
   try {
-    const response = await axiosInstance.get(`/users/${id}`);
+    const response = await axiosInstance.get<User>(`/users/${id}`);
     return response.data;
   } catch (error) {
     console.error('Error getting a single user:', error);

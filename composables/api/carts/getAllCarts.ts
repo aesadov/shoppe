@@ -1,12 +1,11 @@
 import {useAxios} from '@/composables/api/axios'
-import type { AxiosInstance } from 'axios';
 
 
-export const useGetAllCarts = async (): Promise<Cart[]> => {
-  const axiosInstance: AxiosInstance = useAxios();
+export const useGetAllCarts = async () => {
+  const axiosInstance = useAxios();
   
   try {
-    const response = await axiosInstance.get('/carts');
+    const response = await axiosInstance.get<Cart[]>('/carts');
     return response.data;
   } catch (error) {
     console.error('Error fetching carts:', error);

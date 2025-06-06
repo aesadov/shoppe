@@ -1,11 +1,10 @@
 import {useAxios} from '@/composables/api/axios'
-import type { AxiosInstance } from 'axios'
 
-export const useDeleteAUser = async (id: number): Promise<User> => {
-  const axiosInstance: AxiosInstance = useAxios();
+export const useDeleteAUser = async (id: number) => {
+  const axiosInstance = useAxios();
   
   try {
-    const response = await axiosInstance.delete(`/users/${id}`);
+    const response = await axiosInstance.delete<User>(`/users/${id}`);
     return response.data;
   } catch (error) {
     console.error('Error deleting a user:', error);
