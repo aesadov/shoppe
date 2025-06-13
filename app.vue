@@ -2,6 +2,7 @@
   <div class="app-container">
     <!-- <NuxtRouteAnnouncer />
     <NuxtWelcome /> -->
+    <Navigation/>
     <TestComponent/>
   </div>
 </template>
