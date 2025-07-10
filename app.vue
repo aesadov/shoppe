@@ -2,9 +2,7 @@
   <div class="app-container">
     <!-- <NuxtRouteAnnouncer />
     <NuxtWelcome /> -->
-    <TestComponent/>
+    <HomeSlider />
+    <TestComponent />
   </div>
 </template>
-
-<style lang="scss">
-</style>
