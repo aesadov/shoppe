@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
   import { Swiper, SwiperSlide } from 'swiper/vue'
   import 'swiper/css'
   import 'swiper/css/pagination'
@@ -18,7 +18,7 @@
 <template>
   <Swiper
     :loop="true"
-    :autoplay="{ delay: 50000 }"
+    :autoplay="{ delay: 10000 }"
     :pagination="true"
     :modules="modules"
     class="my-swiper"
