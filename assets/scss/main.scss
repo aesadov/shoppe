@@ -1,4 +1,4 @@
-@use '~/assets/scss/fonts' as *;
+@use "~/assets/scss/fonts" as *;
 @use "~/assets/scss/variables" as *;
 
 .app-container {
@@ -7,9 +7,9 @@
   padding: 15px 16px 26px;
   margin: 0 auto;
   box-sizing: border-box;
-  
+
   /* Десктопная версия */
-  @media (min-width: $breakpoints-xxl) {
+  @media (min-width: $breakpoints-mobile) {
     max-width: 1440px;
     padding: 64px 96px 121px;
   }
@@ -20,5 +20,5 @@ a {
 }
 
 body {
-  font-family: $textFontFamily
+  font-family: $textFontFamily;
 }
