@@ -1,7 +1,8 @@
-import svgLoader from 'vite-svg-loader'
+import svgLoader from "vite-svg-loader";
 
 export default defineNuxtConfig({
-  compatibilityDate: '2025-05-23',
+  compatibilityDate: "2025-05-23",
+  modules: ["@vueuse/nuxt"],
   vite: {
     css: {
       preprocessorOptions: {
@@ -9,19 +10,19 @@ export default defineNuxtConfig({
           additionalData: `
             @use "~/assets/scss/variables" as *;
           `,
-        }
-      }
+        },
+      },
     },
     plugins: [
       svgLoader({
-        defaultImport: 'component'
+        defaultImport: "component",
       }),
-    ]
+    ],
   },
-  css: ['~/assets/scss/main.scss'],
+  css: ["~/assets/scss/main.scss"],
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.API_BASE_URL,
     },
   },
-})
+});
