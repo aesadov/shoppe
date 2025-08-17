@@ -28,13 +28,13 @@ const toggleMenu = () => {
     <nav v-if="!isMobile" class="header__nav">
       <ul class="header__menu">
         <li class="header__menu-item">
-          <a class="header__menu-link">Shop</a>
+          <nuxt-link to="" class="header__menu-link">Shop</nuxt-link>
         </li>
         <li class="header__menu-item">
-          <a class="header__menu-link">Blog</a>
+          <nuxt-link to="" class="header__menu-link">Blog</nuxt-link>
         </li>
         <li class="header__menu-item">
-          <a class="header__menu-link">Our Story</a>
+          <nuxt-link to="" class="header__menu-link">Our Story</nuxt-link>
         </li>
       </ul>
       <div class="header__icons">

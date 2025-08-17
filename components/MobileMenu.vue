@@ -1,25 +1,25 @@
 <script setup lang="ts">
 import IconPerson from "~/assets/icons/Icon-person.svg";
-import IconExit from "~/assets/icons/Icon-exit.svg"
+import IconExit from "~/assets/icons/Icon-exit.svg";
 </script>
 
 <template>
   <nav class="menu">
-    <a>Shop</a>
-    <a>Blog</a>
-    <a>Our Story</a>
-    <a>Contact</a>
-    <a>Terms Of Services</a>
-    <a>Shipping And Returns</a>
-    <hr></hr>
-    <a>
-      <IconPerson class="menu__icon"/>
+    <nuxt-link to="" class="menu__link">Shop</nuxt-link>
+    <nuxt-link to="" class="menu__link">Blog</nuxt-link>
+    <nuxt-link to="" class="menu__link">Our Story</nuxt-link>
+    <nuxt-link to="" class="menu__link">Contact</nuxt-link>
+    <nuxt-link to="" class="menu__link">Terms Of Services</nuxt-link>
+    <nuxt-link to="" class="menu__link">Shipping And Returns</nuxt-link>
+    <hr class="menu__hr" />
+    <nuxt-link to="" class="menu__link">
+      <IconPerson class="menu__icon" />
       <div>My account</div>
-    </a>
-    <a>
-      <IconExit class="menu__icon"/>
+    </nuxt-link>
+    <nuxt-link to="" class="menu__link">
+      <IconExit class="menu__icon" />
       <div>Logout</div>
-    </a>
+    </nuxt-link>
   </nav>
 </template>
 
@@ -40,7 +40,7 @@ import IconExit from "~/assets/icons/Icon-exit.svg"
   margin: 39px 0 0 0;
   gap: 24px;
 
-  a {
+  &__link {
     display: flex;
     align-items: center;
     padding: 0;
@@ -48,19 +48,19 @@ import IconExit from "~/assets/icons/Icon-exit.svg"
     text-decoration: none;
     color: inherit;
   }
-  
-  hr {
+
+  &__hr {
     margin: 0;
     border: none;
-    border-top: 1px solid #D8D8D8;
+    border-top: 1px solid #d8d8d8;
     width: 100%;
   }
-}
 
-.menu__icon {
-  margin-right: 12px;
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
+  &__icon {
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
 }
 </style>
