@@ -2,24 +2,61 @@
   "name": "nuxt-app",
   "private": true,
   "type": "module",
+  "main": "index.js",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:styles": "stylelint \"**/*.{vue,scss}\"",
+    "format": "prettier --write .",
+    "lint:fix": "npm run format && npm run lint:styles -- --fix && npm run lint -- --fix",
+    "create-hook": "husky add .husky/pre-commit \"npm test\""
   },
   "dependencies": {
     "@vueuse/core": "^13.3.0",
     "@vueuse/nuxt": "^13.5.0",
     "axios": "^1.9.0",
     "nuxt": "^3.17.3",
+    "swiper": "^11.2.8",
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.1"
+    "vue-carousel": "^0.18.0",
+    "vue-router": "^4.5.1",
+    "vue3-carousel": "^0.16.0"
   },
   "devDependencies": {
     "@nuxtjs/style-resources": "^1.2.2",
-    "sass": "^1.89.0"
+    "@typescript-eslint/eslint-plugin": "^8.34.1",
+    "@typescript-eslint/parser": "^8.34.1",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-vue": "^10.2.0",
+    "globals": "^16.2.0",
+    "lint-staged": "^16.1.2",
+    "postcss-html": "^1.8.0",
+    "postcss-import": "^16.1.0",
+    "prettier": "^3.5.3",
+    "sass": "^1.89.0",
+    "stylelint": "^16.21.0",
+    "stylelint-config-recess-order": "^7.1.0",
+    "stylelint-config-standard-scss": "^15.0.1",
+    "stylelint-config-standard-vue": "^1.0.0",
+    "stylelint-order": "^7.0.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,scss}": [
+      "stylelint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   }
 }

@@ -15,9 +15,13 @@ export default defineNuxtConfig({
     },
     plugins: [
       svgLoader({
-        defaultImport: "component",
+        defaultImport: 'component',
       }),
     ],
+    define: {
+      'window.FormData': 'FormData',
+      'self.FormData': 'FormData',
+    },
   },
   css: ["~/assets/scss/main.scss"],
   runtimeConfig: {
