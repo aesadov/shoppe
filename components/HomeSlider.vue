@@ -47,10 +47,12 @@
 
     width: 100%;
     height: 100%;
+    margin-bottom: 64px;
     border-radius: 16px;
 
-    @media (max-width: $breakpoints-xxl) {
+    @media (max-width: $breakpoints-mobile) {
       height: 354px;
+      margin-bottom: 21px;
       border-radius: 8px;
 
       --swiper-pagination-bullet-size: 4px;
@@ -68,7 +70,7 @@
     height: 100%;
     padding: 20px;
 
-    @media (max-width: $breakpoints-xxl) {
+    @media (max-width: $breakpoints-mobile) {
       padding: 0;
     }
   }
@@ -78,7 +80,7 @@
     max-height: 100%;
     object-fit: contain;
 
-    @media (max-width: $breakpoints-xxl) {
+    @media (max-width: $breakpoints-mobile) {
       max-width: 100%;
       max-height: 100%;
     }
@@ -90,7 +92,7 @@
     border: 2px solid #fff;
     transform: translateY(4px);
 
-    @media (max-width: $breakpoints-xxl) {
+    @media (max-width: $breakpoints-mobile) {
       width: 7px;
       height: 7px;
       transform: translateY(3px);
@@ -112,7 +114,7 @@
     color: white;
     transform: translateY(-50%);
 
-    @media (max-width: $breakpoints-xxl) {
+    @media (max-width: $breakpoints-mobile) {
       top: auto;
       bottom: 26px;
       left: 8px;
@@ -123,7 +125,7 @@
       font-size: 33px;
       font-weight: 500;
 
-      @media (max-width: $breakpoints-xxl) {
+      @media (max-width: $breakpoints-mobile) {
         font-size: 20px;
       }
     }
@@ -133,7 +135,7 @@
       font-size: 26px;
       font-weight: 400;
 
-      @media (max-width: $breakpoints-xxl) {
+      @media (max-width: $breakpoints-mobile) {
         margin: 3px 0 10px;
         font-size: 14px;
       }
@@ -152,7 +154,7 @@
       border: 2px solid white;
       border-radius: 6px;
 
-      @media (max-width: $breakpoints-xxl) {
+      @media (max-width: $breakpoints-mobile) {
         width: 92px;
         height: 32px;
         font-size: 12px;

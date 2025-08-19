@@ -1,5 +1,5 @@
-@use "~/assets/scss/fonts" as *;
-@use "~/assets/scss/variables" as *;
+@use '~/assets/scss/fonts' as *;
+@use '~/assets/scss/variables' as *;
 
 :root {
   --vc-clr-primary: #707070 !important;
@@ -13,7 +13,12 @@
   margin: 0 auto;
   box-sizing: border-box;
   font-family: $textFontFamily;
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     margin: 0;
   }
   /* Десктопная версия */

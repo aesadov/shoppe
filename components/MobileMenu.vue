@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import IconPerson from "~/assets/icons/Icon-person.svg";
-import IconExit from "~/assets/icons/Icon-exit.svg";
+  import IconPerson from '~/assets/icons/Icon-person.svg'
+  import IconExit from '~/assets/icons/Icon-exit.svg'
 </script>
 
 <template>
@@ -24,43 +24,39 @@ import IconExit from "~/assets/icons/Icon-exit.svg";
 </template>
 
 <style lang="scss" scoped>
-.menu {
-  position: fixed;
-  top: 66px;
-  left: 6px;
-  right: 0;
-  bottom: 0;
-  background: white;
-  z-index: 1000;
-  padding: 39px 20px;
-
-  display: flex;
-  flex-direction: column;
-  font-size: 20px;
-  margin: 39px 0 0 0;
-  gap: 24px;
-
-  &__link {
+  .menu {
+    position: fixed;
+    inset: 66px 0 0 6px;
+    z-index: 1000;
     display: flex;
-    align-items: center;
-    padding: 0;
-    position: relative;
-    text-decoration: none;
-    color: inherit;
-  }
+    flex-direction: column;
+    gap: 24px;
+    padding: 39px 20px;
+    margin: 39px 0 0;
+    font-size: 20px;
+    background: white;
 
-  &__hr {
-    margin: 0;
-    border: none;
-    border-top: 1px solid #d8d8d8;
-    width: 100%;
-  }
+    &__link {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 0;
+      color: inherit;
+      text-decoration: none;
+    }
 
-  &__icon {
-    margin-right: 12px;
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
+    &__hr {
+      width: 100%;
+      margin: 0;
+      border: none;
+      border-top: 1px solid #d8d8d8;
+    }
+
+    &__icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      margin-right: 12px;
+    }
   }
-}
 </style>

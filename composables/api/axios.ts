@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios from 'axios'
 
 export const useAxios = () => {
-  const config = useRuntimeConfig();
-  const authToken = useCookie('authToken');
+  const config = useRuntimeConfig()
+  const authToken = useCookie('authToken')
 
   const instance = axios.create({
     baseURL: config.public.apiBaseUrl as string,
@@ -10,7 +10,7 @@ export const useAxios = () => {
       'Content-Type': 'application/json',
       Authorization: authToken.value ? `Bearer ${authToken.value}` : '',
     },
-  });
+  })
 
-  return instance;
-};
+  return instance
+}

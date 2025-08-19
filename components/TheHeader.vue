@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { useMediaQuery } from "@vueuse/core";
-import IconMagnifyingGlass from "~/assets/icons/Icon-magnifyingGlass.svg";
-import IconShoppingCart from "~/assets/icons/Icon-shoppingCart.svg";
-import IconPerson from "~/assets/icons/Icon-person.svg";
-import IconBurgerMenu from "~/assets/icons/Icon-burgerMenu.svg";
-import IconShoppingCartMobile from "~/assets/icons/Icon-shoppingCartMobile.svg";
-import IconMagnifyingGlassMobile from "~/assets/icons/Icon-magnifyingGlass-mobile.svg";
-import IconCross from "~/assets/icons/Icon-cross.svg";
-import { BREAKPOINTS } from "~/constants/breakpoints";
+  import { useMediaQuery } from '@vueuse/core'
+  import IconMagnifyingGlass from '~/assets/icons/Icon-magnifyingGlass.svg'
+  import IconShoppingCart from '~/assets/icons/Icon-shoppingCart.svg'
+  import IconPerson from '~/assets/icons/Icon-person.svg'
+  import IconBurgerMenu from '~/assets/icons/Icon-burgerMenu.svg'
+  import IconShoppingCartMobile from '~/assets/icons/Icon-shoppingCartMobile.svg'
+  import IconMagnifyingGlassMobile from '~/assets/icons/Icon-magnifyingGlass-mobile.svg'
+  import IconCross from '~/assets/icons/Icon-cross.svg'
+  import { BREAKPOINTS } from '~/constants/breakpoints'
 
-const isMobile = useMediaQuery(`(max-width: ${BREAKPOINTS.mobile})`);
-const isShowMenu = ref(false);
+  const isMobile = useMediaQuery(`(max-width: ${BREAKPOINTS.mobile})`)
+  const isShowMenu = ref(false)
 
-const toggleMenu = () => {
-  isShowMenu.value = !isShowMenu.value;
-};
+  const toggleMenu = () => {
+    isShowMenu.value = !isShowMenu.value
+  }
 </script>
 
 <template>
@@ -77,131 +77,136 @@ const toggleMenu = () => {
 </template>
 
 <style lang="scss" scoped>
-.header {
-  --icon-size: 24px;
-  --mobile-icon-size: 20px;
-  --logo-initial-color: #{$accent-color};
-  --logo-accent-color: #{$primary-color};
-  --link-hover-color: #{$accent-color};
+  .header {
+    --icon-size: 24px;
+    --mobile-icon-size: 20px;
+    --logo-initial-color: #{$accent-color};
+    --logo-accent-color: #{$primary-color};
+    --link-hover-color: #{$accent-color};
 
-  height: 42px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  z-index: 100;
-
-  &__logo {
-    font-family: $logoFontFamily;
-    font-weight: 400;
-    font-size: 35px;
-    text-decoration: none;
+    position: relative;
+    z-index: 100;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    height: 42px;
+    margin-bottom: 16px;
 
     @media (max-width: $breakpoints-mobile) {
-      font-size: 25px;
+      margin-bottom: 0;
+    }
+
+    &__logo {
+      display: flex;
+      align-items: center;
+      font-family: $logoFontFamily;
+      font-size: 35px;
+      font-weight: 400;
+      text-decoration: none;
+
+      @media (max-width: $breakpoints-mobile) {
+        font-size: 25px;
+      }
+    }
+
+    &__logo-initial {
+      color: var(--logo-initial-color);
+    }
+
+    &__logo-accent {
+      color: var(--logo-accent-color);
+    }
+
+    // Desktop Navigation
+    &__nav {
+      display: flex;
+      align-items: center;
+    }
+
+    &__menu {
+      position: relative;
+      display: flex;
+      gap: 64px;
+      padding: 0;
+      margin: 0 96px 0 0;
+      list-style: none;
+
+      &::after {
+        position: absolute;
+        top: 10%;
+        right: -48px;
+        bottom: 10%;
+        width: 2px;
+        content: '';
+        background: $main-text-color;
+      }
+    }
+
+    &__menu-link {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: var(--link-hover-color);
+      }
+    }
+
+    &__icons {
+      display: flex;
+      gap: 39px;
+    }
+
+    &__icon-button {
+      padding: 0;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    &__icon {
+      display: block;
+      width: var(--icon-size);
+      height: var(--icon-size);
+    }
+
+    // Mobile Elements
+    &__mobile-controls {
+      display: flex;
+      gap: 13px;
+    }
+
+    &__mobile-button {
+      padding: 0;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    &__mobile-icon {
+      display: block;
+      width: var(--mobile-icon-size);
+      height: var(--mobile-icon-size);
+    }
+
+    &__search {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      width: calc(100% - 10px);
+      height: 32px;
+      padding-left: 10px;
+      margin: 8px 0 16px;
+      font-size: 14px;
+      color: $main-text-color;
+      background: #efefef;
+      border-radius: 4px;
+    }
+
+    &__search-icon {
+      width: 16px;
+      height: 16px;
     }
   }
-
-  &__logo-initial {
-    color: var(--logo-initial-color);
-  }
-
-  &__logo-accent {
-    color: var(--logo-accent-color);
-  }
-
-  // Desktop Navigation
-  &__nav {
-    display: flex;
-    align-items: center;
-  }
-
-  &__menu {
-    list-style: none;
-    padding: 0;
-    margin: 0 96px 0 0;
-    display: flex;
-    gap: 64px;
-    position: relative;
-
-    &::after {
-      content: "";
-      position: absolute;
-      right: -48px;
-      top: 10%;
-      bottom: 10%;
-      width: 2px;
-      background: $main-text-color;
-    }
-  }
-
-  &__menu-link {
-    color: inherit;
-    text-decoration: none;
-    transition: color 0.2s ease;
-    cursor: pointer;
-
-    &:hover {
-      color: var(--link-hover-color);
-    }
-  }
-
-  &__icons {
-    display: flex;
-    gap: 39px;
-  }
-
-  &__icon-button {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-  }
-
-  &__icon {
-    width: var(--icon-size);
-    height: var(--icon-size);
-    display: block;
-  }
-
-  // Mobile Elements
-  &__mobile-controls {
-    display: flex;
-    gap: 13px;
-  }
-
-  &__mobile-button {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-  }
-
-  &__mobile-icon {
-    width: var(--mobile-icon-size);
-    height: var(--mobile-icon-size);
-    display: block;
-  }
-
-  &__search {
-    width: calc(100% - 10px);
-    background: #efefef;
-    height: 32px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding-left: 10px;
-    color: $main-text-color;
-    font-size: 14px;
-    margin-top: 8px;
-  }
-
-  &__search-icon {
-    width: 16px;
-    height: 16px;
-  }
-}
 </style>

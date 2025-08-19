@@ -1,13 +1,13 @@
-import {useAxios} from '@/composables/api/axios'
+import { useAxios } from '@/composables/api/axios'
 
 export const useGetAllProducts = async () => {
-  const axiosInstance = useAxios();
-  
+  const axiosInstance = useAxios()
+
   try {
-    const response = await axiosInstance.get<Product[]>('/products');
-    return response.data;
+    const response = await axiosInstance.get<Product[]>('/products')
+    return response.data
   } catch (error) {
-    console.error('Error fetching products:', error);
-    throw error;
+    console.error('Error fetching products:', error)
+    throw error
   }
 }

@@ -1,3 +1,3 @@
 export const BREAKPOINTS = {
-  mobile: "856px",
-};
+  mobile: '856px',
+}
