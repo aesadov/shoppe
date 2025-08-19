@@ -16,6 +16,8 @@
     "create-hook": "husky add .husky/pre-commit \"npm test\""
   },
   "dependencies": {
+    "@vueuse/core": "^13.3.0",
+    "@vueuse/nuxt": "^13.5.0",
     "axios": "^1.9.0",
     "nuxt": "^3.17.3",
     "swiper": "^11.2.8",

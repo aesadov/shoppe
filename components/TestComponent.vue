@@ -2,7 +2,6 @@
   import IconTwitter from '~/assets/icons/Icon-twitter.svg'
   import IconInstagram from '~/assets/icons/Icon-Instagram.svg'
   import IconFaceBook from '~/assets/icons/Icon-FB.svg'
-
   import { onMounted } from 'vue'
   import { useGetAllProducts } from '@/composables/api/products/getAllProducts'
   import { useAddNewPropduct } from '@/composables/api/products/addNewProduct'
