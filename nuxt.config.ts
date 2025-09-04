@@ -2,7 +2,7 @@ import svgLoader from 'vite-svg-loader'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-23',
-  modules: ['@vueuse/nuxt'],
+  modules: ['@vueuse/nuxt', '@nuxt/image'],
   vite: {
     css: {
       preprocessorOptions: {
@@ -27,6 +27,18 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.API_BASE_URL,
+    },
+  },
+  image: {
+    format: ['webp'],
+    quality: 80,
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
     },
   },
 })
