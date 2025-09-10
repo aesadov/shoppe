@@ -25,6 +25,8 @@
 
 <style lang="scss" scoped>
   .latest {
+    position: relative;
+
     &__header {
       display: flex;
       align-items: center;

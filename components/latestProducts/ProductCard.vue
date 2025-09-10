@@ -1,9 +1,15 @@
 <script setup lang="ts">
+  import { useNotification } from '~/composables/notification/useNotification'
+
   interface Props {
     product: Product
   }
-
   const { product } = defineProps<Props>()
+  const { showNotification } = useNotification()
+
+  const addToCart = () => {
+    showNotification('The item was added to your Shopping bag', 'VIEW CART', product.id)
+  }
 </script>
 
 <template>
@@ -16,7 +22,7 @@
         alt="product img"
         loading="lazy"
       />
-      <div class="product__hover-plate">ADD TO CART</div>
+      <div class="product__hover-plate" @click="addToCart">ADD TO CART</div>
     </div>
     <h3 class="product__name">{{ product.title }}</h3>
     <p class="product__price">$ {{ product.price }}</p>
@@ -60,6 +66,11 @@
       border-bottom-right-radius: 8px;
       border-bottom-left-radius: 8px;
       transition: height 0.3s ease;
+
+      @media (max-width: $breakpoints-mobile) {
+        font-size: 12px;
+        font-weight: 400;
+      }
     }
 
     .product__image-wrapper:hover &__hover-plate {
