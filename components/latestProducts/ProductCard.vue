@@ -8,11 +8,11 @@
   }
 
   const { product, loading = false } = defineProps<Props>()
-  const { showNotification } = useNotification()
+  const { showSuccess } = useNotification()
 
   const addToCart = () => {
     if (!product) return
-    showNotification('The item was added to your Shopping bag', 'VIEW CART', product.id)
+    showSuccess('The item was added to your Shopping bag', { link: 'VIEW CART' })
   }
 </script>
 
