@@ -1,10 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import LatestProducts_1 from './components/latestProducts/LatestProducts_1.vue'
+</script>
 
 <template>
   <div class="app-container">
     <TheHeader />
     <HomeSlider />
-    <LatestProducts />
+    <LatestProducts_1 />
     <TestComponent />
     <Notification />
   </div>

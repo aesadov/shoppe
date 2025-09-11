@@ -1,7 +1,7 @@
 <script setup lang="ts">
+  import ProductCard from '~/components/latestProducts/ProductCard.vue'
   import { useGetAllProducts } from '~/composables/api/products/getAllProducts'
   import { onMounted, ref } from 'vue'
-  import ProductCard from './ProductCard.vue'
 
   const latestProducts = ref<Product[]>([])
   const isLoading = ref(true)
@@ -26,10 +26,10 @@
       <NuxtLink to="" class="latest__link">View All</NuxtLink>
     </div>
     <div class="latest__products">
-      <!-- Отображаем скелетоны во время загрузки -->
+      <!-- Скелетоны во время загрузки -->
       <ProductCard v-if="isLoading" v-for="n of 6" :key="'skeleton-' + n" :loading="true" />
 
-      <!-- Отображаем реальные продукты после загрузки -->
+      <!-- Реальные продукты после загрузки -->
       <ProductCard
         v-else
         v-for="product in latestProducts"

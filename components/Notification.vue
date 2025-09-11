@@ -14,9 +14,9 @@
             <IconDone class="notification__message-icon" />
             <p class="notification__message-text">{{ n.message }}</p>
           </div>
-          <nuxtlink v-if="n.link" class="notification__link" @click="hideNotification(n.id)">
+          <NuxtLink v-if="n.link" class="notification__link" @click.native="hideNotification(n.id)">
             {{ n.link }}
-          </nuxtlink>
+          </NuxtLink>
         </div>
       </div>
     </transition-group>

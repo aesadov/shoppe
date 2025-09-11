@@ -1,13 +1,17 @@
 <script setup lang="ts">
   import { useNotification } from '~/composables/notification/useNotification'
+  import { ContentLoader } from 'vue-content-loader'
 
   interface Props {
-    product: Product
+    product?: Product
+    loading?: boolean
   }
-  const { product } = defineProps<Props>()
+
+  const { product, loading = false } = defineProps<Props>()
   const { showNotification } = useNotification()
 
   const addToCart = () => {
+    if (!product) return
     showNotification('The item was added to your Shopping bag', 'VIEW CART', product.id)
   }
 </script>
@@ -15,17 +19,58 @@
 <template>
   <div class="product">
     <div class="product__image-wrapper">
-      <NuxtImg
-        class="product__img"
-        v-if="product.image"
-        :src="product.image"
-        alt="product img"
-        loading="lazy"
-      />
-      <div class="product__hover-plate" @click="addToCart">ADD TO CART</div>
+      <template v-if="loading">
+        <ContentLoader
+          :viewBox="'0 0 300 300'"
+          :width="'100%'"
+          :height="'100%'"
+          :speed="2"
+          primary-color="#f3f3f3"
+          secondary-color="#ecebeb"
+        >
+          <rect x="0" y="0" rx="8" ry="8" width="100%" height="100%" />
+        </ContentLoader>
+      </template>
+      <template v-else>
+        <NuxtImg
+          class="product__img"
+          v-if="product?.image"
+          :src="product.image"
+          alt="product img"
+          loading="lazy"
+        />
+        <div class="product__hover-plate" @click="addToCart">ADD TO CART</div>
+      </template>
     </div>
-    <h3 class="product__name">{{ product.title }}</h3>
-    <p class="product__price">$ {{ product.price }}</p>
+
+    <template v-if="loading">
+      <ContentLoader
+        :viewBox="'0 0 250 25'"
+        :width="'80%'"
+        :height="'20px'"
+        :speed="2"
+        primary-color="#f3f3f3"
+        secondary-color="#ecebeb"
+        class="skeleton-text skeleton-name"
+      >
+        <rect x="0" y="0" rx="4" ry="4" width="100%" height="20" />
+      </ContentLoader>
+      <ContentLoader
+        :viewBox="'0 0 150 25'"
+        :width="'60%'"
+        :height="'20px'"
+        :speed="2"
+        primary-color="#f3f3f3"
+        secondary-color="#ecebeb"
+        class="skeleton-text skeleton-price"
+      >
+        <rect x="0" y="0" rx="4" ry="4" width="100%" height="20" />
+      </ContentLoader>
+    </template>
+    <template v-else-if="product">
+      <h3 class="product__name">{{ product.title }}</h3>
+      <p class="product__price">$ {{ product.price }}</p>
+    </template>
   </div>
 </template>
 
@@ -46,6 +91,26 @@
 
       @media (max-width: $breakpoints-mobile) {
         border-radius: 4px;
+      }
+    }
+
+    .skeleton-text {
+      display: block;
+    }
+
+    .skeleton-name {
+      margin-top: 24px;
+
+      @media (max-width: $breakpoints-mobile) {
+        margin-top: 6px;
+      }
+    }
+
+    .skeleton-price {
+      margin-top: 16px;
+
+      @media (max-width: $breakpoints-mobile) {
+        margin-top: 4px;
       }
     }
 
