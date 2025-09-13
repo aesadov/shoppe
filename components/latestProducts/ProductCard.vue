@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { useNotification } from '~/composables/notification/useNotification'
+  import type { Product } from '~/types/api'
   import { ContentLoader } from 'vue-content-loader'
 
   interface Props {
@@ -33,8 +34,8 @@
       </template>
       <template v-else>
         <NuxtImg
-          class="product__img"
           v-if="product?.image"
+          class="product__img"
           :src="product.image"
           alt="product img"
           loading="lazy"

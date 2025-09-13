@@ -3,7 +3,7 @@ declare interface Rating {
   count: number
 }
 
-declare interface Product {
+export declare interface Product {
   id: number
   title: string
   price: number

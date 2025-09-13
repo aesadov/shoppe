@@ -1,3 +1,4 @@
+// eslint.config.js
 import js from '@eslint/js'
 import prettier from 'eslint-config-prettier'
 import tseslint from '@typescript-eslint/eslint-plugin'
@@ -8,9 +9,11 @@ import globals from 'globals'
 
 export default [
   js.configs.recommended,
+
   {
     ignores: ['.nuxt/**', '.output/**', 'dist/**', 'node_modules/**'],
   },
+
   {
     files: ['**/*.{js,ts,vue}'],
     plugins: {
@@ -27,6 +30,30 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.node,
+
+        // Nuxt
+        defineNuxtConfig: 'readonly',
+        useAsyncData: 'readonly',
+        useFetch: 'readonly',
+        useRuntimeConfig: 'readonly',
+        useCookie: 'readonly',
+
+        // Vue
+        defineProps: 'readonly',
+        defineEmits: 'readonly',
+        defineExpose: 'readonly',
+        ref: 'readonly',
+        reactive: 'readonly',
+        computed: 'readonly',
+        watch: 'readonly',
+        watchEffect: 'readonly',
+        onMounted: 'readonly',
+        onUnmounted: 'readonly',
+
+        // Твои типы
+        Product: 'readonly',
+        Cart: 'readonly',
+        User: 'readonly',
       },
     },
 
@@ -89,6 +116,15 @@ export default [
       ],
       'vue/multi-word-component-names': 'off',
       'vue/define-props-declaration': ['error', 'type-based'],
+    },
+  },
+
+  // Отключаем no-unused-vars для d.ts и Vue
+  {
+    files: ['**/*.d.ts', '**/*.vue'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+      'no-unused-vars': 'off',
     },
   },
 

@@ -57,8 +57,8 @@
       </button>
       <button
         class="header__mobile-button"
-        @click="toggleMenu"
         :aria-label="isShowMenu ? 'Close menu' : 'Open menu'"
+        @click="toggleMenu"
       >
         <IconBurgerMenu v-if="!isShowMenu" class="header__mobile-icon" />
         <IconCross v-if="isShowMenu" class="header__mobile-icon" />

@@ -2,6 +2,7 @@
   import ProductCard from '~/components/latestProducts/ProductCard.vue'
   import { useGetAllProducts } from '~/composables/api/products/getAllProducts'
   import { useNotification } from '~/composables/notification/useNotification'
+  import type { Product } from '~/types/api'
   import { onMounted, ref } from 'vue'
 
   const latestProducts = ref<Product[]>([])
@@ -30,12 +31,12 @@
     </div>
     <div class="latest__products">
       <!-- Скелетоны во время загрузки -->
-      <ProductCard v-if="isLoading" v-for="n of 6" :key="'skeleton-' + n" :loading="true" />
+      <ProductCard v-for="n of 6" v-if="isLoading" :key="'skeleton-' + n" :loading="true" />
 
       <!-- Реальные продукты после загрузки -->
       <ProductCard
-        v-else
         v-for="product in latestProducts"
+        v-else
         :key="product.id"
         :product="product"
         :loading="false"
