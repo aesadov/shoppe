@@ -1,4 +1,5 @@
-import { useAxios } from '@/composables/api/axios'
+import { useAxios } from '~/composables/api/axios'
+import type { User } from '~/types/api'
 
 export const useGetASingleUser = async (id: number) => {
   const axiosInstance = useAxios()
