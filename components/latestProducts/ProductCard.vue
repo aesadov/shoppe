@@ -153,9 +153,15 @@
     }
 
     &__name {
+      display: -webkit-box;
       margin-top: 24px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
       font-size: 20px;
       font-weight: 400;
+      -webkit-box-orient: vertical;
 
       @media (max-width: $breakpoints-mobile) {
         margin-top: 6px;
