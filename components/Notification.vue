@@ -42,7 +42,7 @@
 <style lang="scss" scoped>
   .notification-wrapper {
     position: fixed;
-    top: 0;
+    top: 24px;
     right: 0;
     left: 0;
     z-index: 9999;
@@ -50,6 +50,10 @@
     flex-direction: column;
     align-items: center;
     pointer-events: none;
+
+    @media (max-width: $breakpoints-mobile) {
+      top: 12px;
+    }
   }
 
   .notification-container {
@@ -57,10 +61,12 @@
     width: 100%;
     max-width: 1440px;
     padding: 0 96px;
+    margin-top: 8px;
     pointer-events: auto;
 
     @media (max-width: $breakpoints-mobile) {
       padding: 0 26px;
+      margin-top: 4px;
     }
   }
 
