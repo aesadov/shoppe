@@ -9,8 +9,24 @@
   import IconCross from '~/assets/icons/Icon-cross.svg'
   import { BREAKPOINTS } from '~/constants/breakpoints'
 
-  const isMobile = useMediaQuery(`(max-width: ${BREAKPOINTS.mobile})`)
   const isShowMenu = ref(false)
+  const isMobile = ref(false) // Инициализируем как false
+
+  // Используем onMounted для клиент-сайд только кода
+  onMounted(() => {
+    // Проверяем медиазапрос только на клиенте
+    const checkMobile = () => {
+      isMobile.value = window.matchMedia(`(max-width: ${BREAKPOINTS.mobile})`).matches
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
+    // Чистим слушатель при уничтожении компонента
+    onUnmounted(() => {
+      window.removeEventListener('resize', checkMobile)
+    })
+  })
 
   const toggleMenu = () => {
     isShowMenu.value = !isShowMenu.value
