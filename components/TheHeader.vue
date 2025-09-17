@@ -10,10 +10,12 @@
   import { BREAKPOINTS } from '~/constants/breakpoints'
 
   const isShowMenu = ref(false)
+  const isMounted = ref(false)
   const isMobile = ref(false) // Инициализируем как false
 
   // Используем onMounted для клиент-сайд только кода
   onMounted(() => {
+    isMounted.value = true
     // Проверяем медиазапрос только на клиенте
     const checkMobile = () => {
       isMobile.value = window.matchMedia(`(max-width: ${BREAKPOINTS.mobile})`).matches
@@ -40,8 +42,8 @@
       <span class="header__logo-accent">HOPPE</span>
     </a>
 
-    <!-- Desktop Navigation -->
-    <nav v-if="!isMobile" class="header__nav">
+    <!-- Рендерим обе версии, но управляем видимостью через CSS -->
+    <nav class="header__nav" :class="{ 'header__nav--hidden': isMounted && isMobile }">
       <ul class="header__menu">
         <li class="header__menu-item">
           <nuxt-link to="" class="header__menu-link">Shop</nuxt-link>
@@ -66,8 +68,11 @@
       </div>
     </nav>
 
-    <!-- Mobile Controls -->
-    <div v-if="isMobile" class="header__mobile-controls">
+    <!-- Мобильные контролы -->
+    <div
+      class="header__mobile-controls"
+      :class="{ 'header__mobile-controls--hidden': isMounted && !isMobile }"
+    >
       <button class="header__mobile-button" aria-label="Cart">
         <IconShoppingCartMobile class="header__mobile-icon" />
       </button>
@@ -82,14 +87,14 @@
     </div>
   </header>
 
-  <!-- Mobile Search -->
-  <div v-if="isMobile" class="header__search">
+  <!-- Мобильный поиск -->
+  <div class="header__search" :class="{ 'header__search--hidden': isMounted && !isMobile }">
     <IconMagnifyingGlassMobile class="header__search-icon" />
     <span class="header__search-text">Search</span>
   </div>
 
-  <!-- Mobile Menu -->
-  <MobileMenu v-if="isShowMenu" @close="toggleMenu" />
+  <!-- Мобильное меню -->
+  <MobileMenu v-if="isShowMenu && isMounted && isMobile" @close="toggleMenu" />
 </template>
 
 <style lang="scss" scoped>
@@ -137,6 +142,14 @@
     &__nav {
       display: flex;
       align-items: center;
+
+      &--hidden {
+        display: none !important;
+      }
+
+      @media (max-width: $breakpoints-mobile) {
+        display: none;
+      }
     }
 
     &__menu {
@@ -156,6 +169,10 @@
         content: '';
         background: $main-text-color;
       }
+
+      @media (max-width: $breakpoints-mobile) {
+        display: none;
+      }
     }
 
     &__menu-link {
@@ -172,6 +189,10 @@
     &__icons {
       display: flex;
       gap: 39px;
+
+      @media (max-width: $breakpoints-mobile) {
+        display: none;
+      }
     }
 
     &__icon-button {
@@ -189,8 +210,16 @@
 
     // Mobile Elements
     &__mobile-controls {
-      display: flex;
+      display: none;
       gap: 13px;
+
+      &--hidden {
+        display: none !important;
+      }
+
+      @media (max-width: $breakpoints-mobile) {
+        display: flex;
+      }
     }
 
     &__mobile-button {
@@ -207,7 +236,7 @@
     }
 
     &__search {
-      display: flex;
+      display: none;
       gap: 8px;
       align-items: center;
       width: calc(100% - 10px);
@@ -218,6 +247,14 @@
       color: $main-text-color;
       background: #efefef;
       border-radius: 4px;
+
+      &--hidden {
+        display: none !important;
+      }
+
+      @media (max-width: $breakpoints-mobile) {
+        display: flex;
+      }
     }
 
     &__search-icon {
