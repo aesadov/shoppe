@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { useNotification } from '~/composables/notification/useNotification'
   import type { Product } from '~/types/api'
-  import { ContentLoader } from 'vue-content-loader'
 
   interface Props {
     product?: Product
@@ -21,16 +20,7 @@
   <div class="product">
     <div class="product__image-wrapper">
       <template v-if="loading">
-        <ContentLoader
-          :viewBox="'0 0 300 300'"
-          :width="'100%'"
-          :height="'100%'"
-          :speed="2"
-          primary-color="#f3f3f3"
-          secondary-color="#ecebeb"
-        >
-          <rect x="0" y="0" rx="8" ry="8" width="100%" height="100%" />
-        </ContentLoader>
+        <div class="skeleton-image"></div>
       </template>
       <template v-else>
         <NuxtImg
@@ -45,29 +35,10 @@
     </div>
 
     <template v-if="loading">
-      <ContentLoader
-        :viewBox="'0 0 250 25'"
-        :width="'80%'"
-        :height="'20px'"
-        :speed="2"
-        primary-color="#f3f3f3"
-        secondary-color="#ecebeb"
-        class="skeleton-text skeleton-name"
-      >
-        <rect x="0" y="0" rx="4" ry="4" width="100%" height="20" />
-      </ContentLoader>
-      <ContentLoader
-        :viewBox="'0 0 150 25'"
-        :width="'60%'"
-        :height="'20px'"
-        :speed="2"
-        primary-color="#f3f3f3"
-        secondary-color="#ecebeb"
-        class="skeleton-text skeleton-price"
-      >
-        <rect x="0" y="0" rx="4" ry="4" width="100%" height="20" />
-      </ContentLoader>
+      <div class="skeleton-text skeleton-name"></div>
+      <div class="skeleton-text skeleton-price"></div>
     </template>
+
     <template v-else-if="product">
       <h3 class="product__name">{{ product.title }}</h3>
       <p class="product__price">$ {{ product.price }}</p>
@@ -95,23 +66,61 @@
       }
     }
 
+    .skeleton-image {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, #f3f3f3 0%, #ecebeb 50%, #f3f3f3 100%);
+      background-size: 200% 100%;
+      border-radius: 8px;
+      animation: loading 1.5s infinite;
+
+      @media (max-width: $breakpoints-mobile) {
+        border-radius: 4px;
+      }
+    }
+
     .skeleton-text {
       display: block;
+      margin-right: auto;
+      margin-left: 0;
+      background: linear-gradient(90deg, #f3f3f3 0%, #ecebeb 50%, #f3f3f3 100%);
+      background-size: 200% 100%;
+      border-radius: 4px;
+      animation: loading 1.5s infinite;
     }
 
     .skeleton-name {
+      width: 80%;
+      height: 20px;
       margin-top: 24px;
 
       @media (max-width: $breakpoints-mobile) {
+        width: 60%;
+        height: 16px;
         margin-top: 6px;
       }
     }
 
     .skeleton-price {
+      width: 60%;
+      height: 20px;
       margin-top: 16px;
 
       @media (max-width: $breakpoints-mobile) {
+        width: 40%;
+        height: 16px;
         margin-top: 4px;
+      }
+    }
+
+    // Анимация загрузки
+    @keyframes loading {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
       }
     }
 
