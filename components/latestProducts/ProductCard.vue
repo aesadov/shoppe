@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { useNotification } from '~/composables/notification/useNotification'
   import type { Product } from '~/types/api'
+  import { ref } from 'vue'
 
   interface Props {
     product?: Product
@@ -9,15 +10,26 @@
 
   const { product, loading = false } = defineProps<Props>()
   const { showSuccess } = useNotification()
+  const isHovered = ref(false)
 
   const addToCart = () => {
     if (!product) return
     showSuccess('The item was added to your Shopping bag', { link: 'VIEW CART' })
   }
+
+  const handleMouseOver = () => {
+    if (!loading && product) {
+      isHovered.value = true
+    }
+  }
+
+  const handleMouseOut = () => {
+    isHovered.value = false
+  }
 </script>
 
 <template>
-  <div class="product">
+  <div class="product" @mouseover="handleMouseOver" @mouseout="handleMouseOut">
     <div class="product__image-wrapper">
       <template v-if="loading">
         <div class="skeleton-image"></div>
@@ -30,7 +42,13 @@
           alt="product img"
           loading="lazy"
         />
-        <div class="product__hover-plate" @click="addToCart">ADD TO CART</div>
+        <div
+          class="product__hover-plate"
+          :class="{ 'product__hover-plate--visible': isHovered }"
+          @click="addToCart"
+        >
+          ADD TO CART
+        </div>
       </template>
     </div>
 
@@ -146,10 +164,10 @@
         font-size: 12px;
         font-weight: 400;
       }
-    }
 
-    .product__image-wrapper:hover &__hover-plate {
-      height: 17%;
+      &--visible {
+        height: 17%;
+      }
     }
 
     &__img {
