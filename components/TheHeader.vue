@@ -13,7 +13,7 @@
   const isMounted = ref(false)
   const isMobile = ref(false) // Инициализируем как false
 
-  // Используем onMounted для клиент-сайд только кода
+  // Используем onMounted  только для клиент-сайд кода
   onMounted(() => {
     isMounted.value = true
     // Проверяем медиазапрос только на клиенте

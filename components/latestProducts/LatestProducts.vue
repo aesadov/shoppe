@@ -12,8 +12,7 @@
   onMounted(async () => {
     try {
       isLoading.value = true
-      const allProducts = await useGetAllProducts()
-      latestProducts.value = allProducts.slice(0, 6)
+      latestProducts.value = await useGetAllProducts(6)
     } catch (error) {
       console.error('Error loading products:', error)
       showError('Error loading products')
