@@ -28,7 +28,9 @@ export function useNotification() {
     } = {},
   ) => {
     const id = options.id ?? generateId()
-    const duration = options.duration ?? (type === 'error' ? 8000 : 5000)
+    const errorDuration = 8000
+    const usualDuration = 5000
+    const duration = options.duration ?? (type === 'error' ? errorDuration : usualDuration)
 
     notifications.value.push({
       id,
@@ -48,31 +50,19 @@ export function useNotification() {
     return id
   }
 
-  const showError = (
-    message: string,
-    options?: Omit<Parameters<typeof showNotification>[2], 'type'>,
-  ) => {
+  const showError = (message: string, options?: Parameters<typeof showNotification>[2]) => {
     return showNotification(message, 'error', options)
   }
 
-  const showSuccess = (
-    message: string,
-    options?: Omit<Parameters<typeof showNotification>[2], 'type'>,
-  ) => {
+  const showSuccess = (message: string, options?: Parameters<typeof showNotification>[2]) => {
     return showNotification(message, 'success', options)
   }
 
-  const showWarning = (
-    message: string,
-    options?: Omit<Parameters<typeof showNotification>[2], 'type'>,
-  ) => {
+  const showWarning = (message: string, options?: Parameters<typeof showNotification>[2]) => {
     return showNotification(message, 'warning', options)
   }
 
-  const showInfo = (
-    message: string,
-    options?: Omit<Parameters<typeof showNotification>[2], 'type'>,
-  ) => {
+  const showInfo = (message: string, options?: Parameters<typeof showNotification>[2]) => {
     return showNotification(message, 'info', options)
   }
 
