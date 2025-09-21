@@ -2,6 +2,8 @@
   import { useNotification } from '~/composables/notification/useNotification'
   import type { Product } from '~/types/api'
   import { ref } from 'vue'
+  import SkeletonImg from '~/components/skeletons/SkeletonImg.vue'
+  import SkeletoneDescription from '~/components/skeletons/SkeletoneDescription.vue'
 
   interface Props {
     product?: Product
@@ -31,9 +33,7 @@
 <template>
   <div class="product" @mouseover="handleMouseOver" @mouseout="handleMouseOut">
     <div class="product__image-wrapper">
-      <template v-if="loading">
-        <div class="skeleton-image"></div>
-      </template>
+      <SkeletonImg v-if="loading" />
       <template v-else>
         <NuxtImg
           v-if="product?.image"
@@ -51,12 +51,7 @@
         </div>
       </template>
     </div>
-
-    <template v-if="loading">
-      <div class="skeleton-text skeleton-name"></div>
-      <div class="skeleton-text skeleton-price"></div>
-    </template>
-
+    <SkeletoneDescription v-if="loading" />
     <template v-else-if="product">
       <h3 class="product__name">{{ product.title }}</h3>
       <p class="product__price">$ {{ product.price }}</p>
@@ -81,68 +76,6 @@
 
       @media (max-width: $breakpoints-mobile) {
         border-radius: 4px;
-      }
-    }
-
-    .skeleton-base {
-      background: linear-gradient(90deg, #f3f3f3 0%, #ecebeb 50%, #f3f3f3 100%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite;
-    }
-
-    .skeleton-image {
-      @extend.skeleton-base;
-
-      width: 100%;
-      height: 100%;
-      border-radius: 8px;
-
-      @media (max-width: $breakpoints-mobile) {
-        border-radius: 4px;
-      }
-    }
-
-    .skeleton-text {
-      @extend.skeleton-base;
-
-      display: block;
-      margin-right: auto;
-      margin-left: 0;
-      border-radius: 4px;
-    }
-
-    .skeleton-name {
-      width: 80%;
-      height: 20px;
-      margin-top: 24px;
-
-      @media (max-width: $breakpoints-mobile) {
-        width: 60%;
-        height: 16px;
-        margin-top: 6px;
-      }
-    }
-
-    .skeleton-price {
-      width: 60%;
-      height: 20px;
-      margin-top: 16px;
-
-      @media (max-width: $breakpoints-mobile) {
-        width: 40%;
-        height: 16px;
-        margin-top: 4px;
-      }
-    }
-
-    // Анимация загрузки
-    @keyframes loading {
-      0% {
-        background-position: 200% 0;
-      }
-
-      100% {
-        background-position: -200% 0;
       }
     }
 
