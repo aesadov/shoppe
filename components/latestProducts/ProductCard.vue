@@ -84,13 +84,18 @@
       }
     }
 
-    .skeleton-image {
-      width: 100%;
-      height: 100%;
+    .skeleton-base {
       background: linear-gradient(90deg, #f3f3f3 0%, #ecebeb 50%, #f3f3f3 100%);
       background-size: 200% 100%;
-      border-radius: 8px;
       animation: loading 1.5s infinite;
+    }
+
+    .skeleton-image {
+      @extend.skeleton-base;
+
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
 
       @media (max-width: $breakpoints-mobile) {
         border-radius: 4px;
@@ -98,13 +103,12 @@
     }
 
     .skeleton-text {
+      @extend.skeleton-base;
+
       display: block;
       margin-right: auto;
       margin-left: 0;
-      background: linear-gradient(90deg, #f3f3f3 0%, #ecebeb 50%, #f3f3f3 100%);
-      background-size: 200% 100%;
       border-radius: 4px;
-      animation: loading 1.5s infinite;
     }
 
     .skeleton-name {
