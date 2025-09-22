@@ -28,9 +28,9 @@ export function useNotification() {
     } = {},
   ) => {
     const id = options.id ?? generateId()
-    const errorDuration = 8000
-    const usualDuration = 5000
-    const duration = options.duration ?? (type === 'error' ? errorDuration : usualDuration)
+    const ERROR_DURATION = 8000
+    const USUAL_DURATION = 5000
+    const duration = options.duration ?? (type === 'error' ? ERROR_DURATION : USUAL_DURATION)
 
     notifications.value.push({
       id,
