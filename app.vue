@@ -1,10 +1,9 @@
 <template>
   <div class="app-container">
-    <!-- <NuxtRouteAnnouncer />
-    <NuxtWelcome /> -->
-    <TheHeader />
+    <Header />
     <HomeSlider />
+    <LatestProducts />
     <TestComponent />
+    <Notification />
   </div>
 </template>
-<style lang="scss"></style>

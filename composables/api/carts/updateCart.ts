@@ -1,4 +1,5 @@
-import { useAxios } from '@/composables/api/axios'
+import { useAxios } from '~/composables/api/axios'
+import type { Cart } from '~/types/api'
 
 export const useUpdateACart = async (cart: Cart) => {
   const axiosInstance = useAxios()

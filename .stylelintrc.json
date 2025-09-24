@@ -8,5 +8,11 @@
         "message": "Селектор класса должен соответствовать БЭМ: block__element--modifier"
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.scss"],
+      "customSyntax": "postcss-scss"
+    }
+  ]
 }

@@ -1,4 +1,6 @@
-import { useAxios } from '@/composables/api/axios'
+import { useAxios } from '~/composables/api/axios'
+import type { Product } from '~/types/api'
+import type { Cart } from '~/types/api'
 
 export const useAddNewCart = async (userId: number, products: Product[]) => {
   const axiosInstance = useAxios()
