@@ -29,7 +29,7 @@
     </div>
     <div class="info">
       <input v-model="isChecked" class="info__checkbox" type="checkbox" />
-      <span class="info__text">i agree to the website's terms and conditions</span>
+      <span class="info__agriment">i agree to the website's terms and conditions</span>
     </div>
   </div>
 </template>
@@ -37,6 +37,10 @@
 <style lang="scss" scoped>
   .input-container {
     position: relative;
+
+    @media (max-width: $breakpoints-mobile) {
+      width: 100%;
+    }
   }
 
   .input-wrapper {
@@ -96,13 +100,21 @@
     align-items: center;
     margin-top: 8px;
 
+    @media (max-width: $breakpoints-mobile) {
+      margin-top: 11px;
+    }
+
     &__checkbox {
       margin-right: 8px;
     }
 
-    &__text {
+    &__agriment {
       font-size: 14px;
-      color: $main-text-color;
+      color: #000;
+
+      @media (max-width: $breakpoints-mobile) {
+        font-size: 12px;
+      }
     }
   }
 </style>

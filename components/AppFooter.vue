@@ -16,7 +16,7 @@
     FACEBOOK_LINK,
   } = APP_LINKS
 
-  const errMessage = ref('')
+  const PLACEHOLDER = 'Give an email, get the newsletter.'
 </script>
 
 <template>
@@ -28,7 +28,7 @@
         <NuxtLink class="main__link" :to="TERMS_LINK">TERMS OF SERVICES</NuxtLink>
         <NuxtLink class="main__link" :to="SHIPPING_LINK">SHIPPING AND RETURNS</NuxtLink>
       </nav>
-      <BaseInput :error="inputErr" :placeholder="PLACEHOLDER" />
+      <BaseInput :placeholder="PLACEHOLDER" />
     </div>
     <div class="bottom">
       <div class="bottom__terms">
@@ -48,10 +48,18 @@
 <style lang="scss" scoped>
   .footer {
     margin-top: 253px;
+
+    @media (max-width: $breakpoints-mobile) {
+      margin-top: 94px;
+    }
   }
 
   .divider {
     background-color: #d8d8d8;
+
+    @media (max-width: $breakpoints-mobile) {
+      display: none;
+    }
   }
 
   .main {
@@ -61,20 +69,35 @@
     margin-top: 37px;
     color: $main-text-color;
 
+    @media (max-width: $breakpoints-mobile) {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+    }
+
     &__nav {
       display: flex;
       gap: 41px;
       justify-content: space-between;
+
+      @media (max-width: $breakpoints-mobile) {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 40px;
+      }
     }
 
     &__link {
       font-size: 16px;
-      color: inherit; /* ← Наследует цвет от родителя */
-      text-decoration: none; /* ← Убирает подчеркивание */
+      color: inherit;
+      text-decoration: none;
       cursor: pointer;
 
       &:hover {
-        color: #000; /* ← Цвет при наведении */
+        color: #000;
+      }
+
+      @media (max-width: $breakpoints-mobile) {
+        font-size: 12px;
       }
     }
   }
@@ -85,9 +108,22 @@
     justify-content: space-between;
     margin-top: 30px;
 
+    @media (max-width: $breakpoints-mobile) {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+      margin-top: 32px;
+    }
+
     &__icon {
+      width: auto;
+      height: 19px;
       color: $main-text-color;
       cursor: pointer;
+
+      @media (max-width: $breakpoints-mobile) {
+        width: auto;
+        height: 12px;
+      }
 
       &:hover {
         color: #000;
@@ -97,10 +133,19 @@
     &__social {
       display: flex;
       gap: 30px;
+
+      @media (max-width: $breakpoints-mobile) {
+        gap: 16px;
+      }
     }
 
     &__terms {
       font-size: 16px;
+
+      @media (max-width: $breakpoints-mobile) {
+        margin-top: 36px;
+        font-size: 12px;
+      }
     }
 
     &__terms-link {
