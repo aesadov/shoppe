@@ -6,24 +6,40 @@
     error?: boolean
     placeholder?: string
     errorMessage?: string
+    modelValue?: string
   }
 
   const {
     error = false,
     placeholder = 'Введите текст',
     errorMessage = 'Ошибка ввода',
+    modelValue = '',
   } = defineProps<Props>()
 
+  const emit = defineEmits<{
+    'update:modelValue': [value: string]
+  }>()
+
   const isChecked = ref(false)
+
+  const handleInput = (event: Event) => {
+    const target = event.target as HTMLInputElement
+    emit('update:modelValue', target.value)
+  }
 </script>
 
 <template>
   <div class="input-container">
+    <div class="error-msg">
+      <span v-if="error">{{ errorMessage }}</span>
+    </div>
     <div class="input-wrapper">
       <input
         class="input"
         :class="{ 'input--error': error }"
-        :placeholder="error ? errorMessage : placeholder"
+        :placeholder="placeholder"
+        :value="modelValue"
+        @input="handleInput"
       />
       <IconArrow class="input__icon" :class="{ 'input__icon--disabled': !isChecked }" />
     </div>
@@ -57,10 +73,6 @@
     border: none;
     border-bottom: 2px solid $main-text-color;
 
-    &:focus {
-      border-bottom-color: blue;
-    }
-
     &::placeholder {
       color: $main-text-color;
       transition: color 0.2s ease;
@@ -68,10 +80,6 @@
 
     &--error {
       border-bottom-color: red;
-
-      &::placeholder {
-        color: red;
-      }
     }
   }
 
@@ -92,6 +100,20 @@
       pointer-events: none;
       cursor: not-allowed;
       fill: #ccc;
+    }
+  }
+
+  /* Стили для блока ошибки */
+  .error-msg {
+    height: 16px; // фиксированная высота, всегда занимает место
+    margin-bottom: 4px;
+    font-size: 12px;
+    line-height: 1;
+    color: red;
+
+    // Когда нет текста — место сохраняется, но пустое
+    span:empty {
+      display: none;
     }
   }
 
