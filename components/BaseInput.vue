@@ -123,9 +123,8 @@
     }
   }
 
-  /* Стили для блока ошибки */
   .error-msg {
-    height: 16px; // фиксированная высота, всегда занимает место
+    height: 16px;
     margin-bottom: 4px;
     font-size: 12px;
     line-height: 1;

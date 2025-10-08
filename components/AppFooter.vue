@@ -1,10 +1,11 @@
 <script setup>
-  import { ref } from 'vue'
   import IconTwitter from '~/assets/icons/Icon-twitter.svg'
   import IconInstagram from '~/assets/icons/Icon-Instagram.svg'
   import IconFaceBook from '~/assets/icons/Icon-FB.svg'
 
   import { APP_LINKS } from '~/constants/links'
+  import { useInput } from '~/composables/useInput'
+  import { useNotification } from '~/composables/notification/useNotification'
 
   const {
     CONTACT_LINK,
@@ -18,57 +19,19 @@
 
   const PLACEHOLDER = 'Give an email, get the newsletter.'
 
-  const email = ref('')
-  const isChecked = ref(false)
-  const emailError = ref('')
-  const hasError = ref(false)
+  const { email, isChecked, emailError, hasError, processSubmit, saveToStorage, resetForm } =
+    useInput()
+  const { showSuccess } = useNotification()
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email)
-  }
-
-  const processSubmit = () => {
-    if (!isChecked.value) {
-      emailError.value = 'Please agree to the terms and conditions'
-      hasError.value = true
-      return
-    }
-
-    if (!email.value.trim()) {
-      emailError.value = 'Email is required'
-      hasError.value = true
-      return
-    }
-
-    if (!validateEmail(email.value)) {
-      emailError.value = 'Please enter a valid email address'
-      hasError.value = true
-      return
-    }
-
-    // Сохранение в localStorage
-    try {
-      const savedEmails = JSON.parse(localStorage.getItem('newsletterEmails') || '[]')
-
-      savedEmails.push({
-        email: email.value,
-        date: new Date().toISOString(),
-      })
-
-      localStorage.setItem('newsletterEmails', JSON.stringify(savedEmails))
-
-      // СБРАСЫВАЕМ ВСЕ СОСТОЯНИЯ
-      email.value = ''
-      isChecked.value = false
-      emailError.value = ''
-      hasError.value = false
-
-      console.log('Email successfully saved to localStorage')
-    } catch (error) {
-      console.error('Error saving email to localStorage:', error)
-      emailError.value = 'Error saving email. Please try again.'
-      hasError.value = true
+  const handleSubmit = () => {
+    if (processSubmit()) {
+      if (saveToStorage()) {
+        resetForm()
+        showSuccess('The Email successfully sent')
+      } else {
+        emailError.value = 'Error saving email. Please try again.'
+        hasError.value = true
+      }
     }
   }
 </script>
@@ -88,7 +51,7 @@
         :placeholder="PLACEHOLDER"
         :error="hasError"
         :error-message="emailError"
-        @submit="processSubmit"
+        @submit="handleSubmit"
       />
     </div>
     <div class="bottom">
