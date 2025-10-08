@@ -1,12 +1,12 @@
 <script setup lang="ts">
   import IconArrow from '~/assets/icons/Icon-arrow.svg'
-  import { ref } from 'vue'
 
   interface Props {
     error?: boolean
     placeholder?: string
     errorMessage?: string
     modelValue?: string
+    isChecked?: boolean
   }
 
   const {
@@ -14,17 +14,27 @@
     placeholder = 'Введите текст',
     errorMessage = 'Ошибка ввода',
     modelValue = '',
+    isChecked = false,
   } = defineProps<Props>()
 
   const emit = defineEmits<{
     'update:modelValue': [value: string]
+    'update:isChecked': [value: boolean]
+    submit: []
   }>()
-
-  const isChecked = ref(false)
 
   const handleInput = (event: Event) => {
     const target = event.target as HTMLInputElement
     emit('update:modelValue', target.value)
+  }
+
+  const handleCheckboxChange = (event: Event) => {
+    const target = event.target as HTMLInputElement
+    emit('update:isChecked', target.checked)
+  }
+
+  const handleSubmit = () => {
+    emit('submit')
   }
 </script>
 
@@ -40,11 +50,21 @@
         :placeholder="placeholder"
         :value="modelValue"
         @input="handleInput"
+        @keypress.enter="handleSubmit"
       />
-      <IconArrow class="input__icon" :class="{ 'input__icon--disabled': !isChecked }" />
+      <IconArrow
+        class="input__icon"
+        :class="{ 'input__icon--disabled': !isChecked }"
+        @click="handleSubmit"
+      />
     </div>
     <div class="info">
-      <input v-model="isChecked" class="info__checkbox" type="checkbox" />
+      <input
+        :checked="isChecked"
+        class="info__checkbox"
+        type="checkbox"
+        @change="handleCheckboxChange"
+      />
       <span class="info__agriment">i agree to the website's terms and conditions</span>
     </div>
   </div>

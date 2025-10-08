@@ -18,24 +18,23 @@
 
   const PLACEHOLDER = 'Give an email, get the newsletter.'
 
-  // Реактивные данные
   const email = ref('')
+  const isChecked = ref(false)
   const emailError = ref('')
-  const hasError = ref(false) // Добавляем отдельный флаг для ошибки
+  const hasError = ref(false)
 
-  // Валидация email
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email)
   }
 
-  // Обработка отправки формы
-  const handleSubmit = () => {
-    // Сброс ошибки
-    emailError.value = ''
-    hasError.value = false
+  const processSubmit = () => {
+    if (!isChecked.value) {
+      emailError.value = 'Please agree to the terms and conditions'
+      hasError.value = true
+      return
+    }
 
-    // Валидация
     if (!email.value.trim()) {
       emailError.value = 'Email is required'
       hasError.value = true
@@ -50,22 +49,21 @@
 
     // Сохранение в localStorage
     try {
-      // Получаем текущие emails из localStorage
       const savedEmails = JSON.parse(localStorage.getItem('newsletterEmails') || '[]')
 
-      // Добавляем новый email (можно добавить проверку на дубликаты)
       savedEmails.push({
         email: email.value,
         date: new Date().toISOString(),
       })
 
-      // Сохраняем обратно в localStorage
       localStorage.setItem('newsletterEmails', JSON.stringify(savedEmails))
 
-      // Очищаем поле после успешного сохранения
+      // СБРАСЫВАЕМ ВСЕ СОСТОЯНИЯ
       email.value = ''
+      isChecked.value = false
+      emailError.value = ''
+      hasError.value = false
 
-      // Можно добавить уведомление об успехе
       console.log('Email successfully saved to localStorage')
     } catch (error) {
       console.error('Error saving email to localStorage:', error)
@@ -84,15 +82,14 @@
         <NuxtLink class="main__link" :to="TERMS_LINK">TERMS OF SERVICES</NuxtLink>
         <NuxtLink class="main__link" :to="SHIPPING_LINK">SHIPPING AND RETURNS</NuxtLink>
       </nav>
-      <!-- Форма для email -->
-      <form class="email-form" @submit.prevent="handleSubmit">
-        <BaseInput
-          v-model="email"
-          :placeholder="PLACEHOLDER"
-          :error="hasError"
-          :errorMessage="emailError"
-        />
-      </form>
+      <BaseInput
+        v-model="email"
+        v-model:is-checked="isChecked"
+        :placeholder="PLACEHOLDER"
+        :error="hasError"
+        :error-message="emailError"
+        @submit="processSubmit"
+      />
     </div>
     <div class="bottom">
       <div class="bottom__terms">
