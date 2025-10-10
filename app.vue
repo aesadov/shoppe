@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <Header />
+    <AppHeader />
     <HomeSlider />
     <LatestProducts />
-    <TestComponent />
+    <AppFooter />
     <Notification />
   </div>
 </template>
