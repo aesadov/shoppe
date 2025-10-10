@@ -102,6 +102,7 @@
       display: flex;
       gap: 41px;
       justify-content: space-between;
+      margin-right: 20px;
 
       @media (max-width: $breakpoints-mobile) {
         flex-direction: column;
