@@ -19,12 +19,27 @@
 
   const PLACEHOLDER = 'Give an email, get the newsletter.'
 
-  const { email, isChecked, emailError, hasError, processSubmit, saveToStorage, resetForm } =
-    useInput()
+  const {
+    value: email,
+    isChecked,
+    error: emailError,
+    hasError,
+    approvedSubmit,
+    resetForm,
+    saveToStorage,
+  } = useInput({
+    validation: (email) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      return emailRegex.test(email) || 'Please enter a valid email address'
+    },
+    required: true,
+    storageKey: 'newsletterEmails',
+  })
+
   const { showSuccess } = useNotification()
 
   const handleSubmit = () => {
-    if (processSubmit()) {
+    if (approvedSubmit()) {
       if (saveToStorage()) {
         resetForm()
         showSuccess('The Email successfully sent')
