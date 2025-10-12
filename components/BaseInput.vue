@@ -5,39 +5,34 @@
     error?: boolean
     placeholder?: string
     errorMessage?: string
-    modelValue?: string
-    isChecked?: boolean
   }
 
   const {
     error = false,
     placeholder = 'Введите текст',
     errorMessage = 'Ошибка ввода',
-    modelValue = '',
-    isChecked = false,
   } = defineProps<Props>()
 
+  const modelValue = defineModel<string>({ default: '' })
+  const isChecked = defineModel<boolean>('isChecked', { default: false })
+
   const emit = defineEmits<{
-    'update:modelValue': [value: string]
-    'update:isChecked': [value: boolean]
     submit: []
   }>()
 
   const handleInput = (event: Event) => {
     const target = event.target as HTMLInputElement
-    emit('update:modelValue', target.value)
+    modelValue.value = target.value
   }
 
   const handleCheckboxChange = (event: Event) => {
     const target = event.target as HTMLInputElement
-    emit('update:isChecked', target.checked)
+    isChecked.value = target.checked
   }
 
   const handleSubmit = () => {
     emit('submit')
   }
-
-  const checkboxId = 'agreement-checkbox'
 </script>
 
 <template>
@@ -63,16 +58,15 @@
       </div>
     </div>
     <div class="info">
-      <input
-        :id="checkboxId"
-        :checked="isChecked"
-        class="info__checkbox"
-        type="checkbox"
-        @change="handleCheckboxChange"
-      />
-      <label :for="checkboxId" class="info__agriment"
-        >i agree to the website's terms and conditions</label
-      >
+      <label class="info__label">
+        <input
+          :checked="isChecked"
+          class="info__checkbox"
+          type="checkbox"
+          @change="handleCheckboxChange"
+        />
+        <span class="info__agriment"> i agree to the website's terms and conditions </span>
+      </label>
     </div>
   </div>
 </template>
