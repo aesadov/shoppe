@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { useMediaQuery } from '@vueuse/core'
   import IconMagnifyingGlass from '~/assets/icons/Icon-magnifyingGlass.svg'
   import IconShoppingCart from '~/assets/icons/Icon-shoppingCart.svg'
   import IconPerson from '~/assets/icons/Icon-person.svg'
