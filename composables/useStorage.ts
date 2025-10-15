@@ -1,5 +1,3 @@
-// composables/useStorage.ts
-
 interface StorageItem {
   value: string
   date: string
@@ -8,7 +6,7 @@ interface StorageItem {
 type StorageData = StorageItem[]
 
 export const useStorage = () => {
-  const saveToStorage = (key: string, value: string): boolean => {
+  const saveToStorage = (key: string, value: string) => {
     try {
       const existingData = localStorage.getItem(key)
       const items: StorageData = existingData ? JSON.parse(existingData) : []
@@ -20,10 +18,8 @@ export const useStorage = () => {
 
       items.push(newItem)
       localStorage.setItem(key, JSON.stringify(items))
-      return true
     } catch (error) {
       console.error('Error saving to storage:', error)
-      return false
     }
   }
 
@@ -39,13 +35,11 @@ export const useStorage = () => {
     }
   }
 
-  const clearStorage = (key: string): boolean => {
+  const clearStorage = (key: string) => {
     try {
       localStorage.removeItem(key)
-      return true
     } catch (error) {
       console.error('Error clearing storage:', error)
-      return false
     }
   }
 

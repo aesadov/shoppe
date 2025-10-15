@@ -40,13 +40,9 @@
 
   const handleSubmit = () => {
     if (approvedSubmit()) {
-      if (saveToStorage()) {
-        resetForm()
-        showSuccess('The Email successfully sent')
-      } else {
-        emailError.value = 'Error saving email. Please try again.'
-        hasError.value = true
-      }
+      saveToStorage()
+      resetForm()
+      showSuccess('The Email successfully sent')
     }
   }
 </script>
