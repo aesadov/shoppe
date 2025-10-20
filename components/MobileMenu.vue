@@ -1,25 +1,28 @@
 <script setup lang="ts">
   import IconPerson from '~/assets/icons/Icon-person.svg'
   import IconExit from '~/assets/icons/Icon-exit.svg'
+  import { APP_LINKS } from '~/constants/links'
+
+  const { CATALOGUE_LINK } = APP_LINKS
 </script>
 
 <template>
   <nav class="menu">
-    <nuxt-link to="" class="menu__link">Shop</nuxt-link>
-    <nuxt-link to="" class="menu__link">Blog</nuxt-link>
-    <nuxt-link to="" class="menu__link">Our Story</nuxt-link>
-    <nuxt-link to="" class="menu__link">Contact</nuxt-link>
-    <nuxt-link to="" class="menu__link">Terms Of Services</nuxt-link>
-    <nuxt-link to="" class="menu__link">Shipping And Returns</nuxt-link>
+    <NuxtLink :to="CATALOGUE_LINK" class="menu__link">Shop</NuxtLink>
+    <NuxtLink to="" class="menu__link">Blog</NuxtLink>
+    <NuxtLink to="" class="menu__link">Our Story</NuxtLink>
+    <NuxtLink to="" class="menu__link">Contact</NuxtLink>
+    <NuxtLink to="" class="menu__link">Terms Of Services</NuxtLink>
+    <NuxtLink to="" class="menu__link">Shipping And Returns</NuxtLink>
     <hr class="menu__hr" />
-    <nuxt-link to="" class="menu__link">
+    <NuxtLink to="" class="menu__link">
       <IconPerson class="menu__icon" />
       <div>My account</div>
-    </nuxt-link>
-    <nuxt-link to="" class="menu__link">
+    </NuxtLink>
+    <NuxtLink to="" class="menu__link">
       <IconExit class="menu__icon" />
       <div>Logout</div>
-    </nuxt-link>
+    </NuxtLink>
   </nav>
 </template>
 

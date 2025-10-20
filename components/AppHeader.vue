@@ -7,6 +7,9 @@
   import IconMagnifyingGlassMobile from '~/assets/icons/Icon-magnifyingGlass-mobile.svg'
   import IconCross from '~/assets/icons/Icon-cross.svg'
   import { BREAKPOINTS } from '~/constants/breakpoints'
+  import { APP_LINKS } from '~/constants/links'
+
+  const { CATALOGUE_LINK } = APP_LINKS
 
   const isShowMenu = ref(false)
   const isMounted = ref(false)
@@ -36,22 +39,22 @@
 
 <template>
   <header class="header">
-    <a class="header__logo" href="/" aria-label="Homepage">
+    <NuxtLink class="header__logo" to="/" aria-label="Homepage">
       <span class="header__logo-initial">S</span>
       <span class="header__logo-accent">HOPPE</span>
-    </a>
+    </NuxtLink>
 
     <!-- Рендерим обе версии, но управляем видимостью через CSS -->
     <nav class="header__nav" :class="{ 'header__nav--hidden': isMounted && isMobile }">
       <ul class="header__menu">
         <li class="header__menu-item">
-          <nuxt-link to="" class="header__menu-link">Shop</nuxt-link>
+          <NuxtLink :to="CATALOGUE_LINK" class="header__menu-link">Shop</NuxtLink>
         </li>
         <li class="header__menu-item">
-          <nuxt-link to="" class="header__menu-link">Blog</nuxt-link>
+          <NuxtLink to="" class="header__menu-link">Blog</NuxtLink>
         </li>
         <li class="header__menu-item">
-          <nuxt-link to="" class="header__menu-link">Our Story</nuxt-link>
+          <NuxtLink to="" class="header__menu-link">Our Story</NuxtLink>
         </li>
       </ul>
       <div class="header__icons">
