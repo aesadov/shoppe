@@ -3,23 +3,35 @@
   import IconExit from '~/assets/icons/Icon-exit.svg'
   import { APP_LINKS } from '~/constants/links'
 
-  const { CATALOGUE_LINK } = APP_LINKS
+  const { CATALOGUE_LINK, CONTACT_LINK, TERMS_LINK, SHIPPING_LINK } = APP_LINKS
+
+  const emit = defineEmits<{
+    linkClick: []
+  }>()
+
+  const handleLinkClick = () => {
+    emit('linkClick')
+  }
 </script>
 
 <template>
   <nav class="menu">
-    <NuxtLink :to="CATALOGUE_LINK" class="menu__link">Shop</NuxtLink>
-    <NuxtLink to="" class="menu__link">Blog</NuxtLink>
-    <NuxtLink to="" class="menu__link">Our Story</NuxtLink>
-    <NuxtLink to="" class="menu__link">Contact</NuxtLink>
-    <NuxtLink to="" class="menu__link">Terms Of Services</NuxtLink>
-    <NuxtLink to="" class="menu__link">Shipping And Returns</NuxtLink>
+    <NuxtLink :to="CATALOGUE_LINK" class="menu__link" @click="handleLinkClick">Shop</NuxtLink>
+    <NuxtLink to="" class="menu__link" @click="handleLinkClick">Blog</NuxtLink>
+    <NuxtLink to="" class="menu__link" @click="handleLinkClick">Our Story</NuxtLink>
+    <NuxtLink :to="CONTACT_LINK" class="menu__link" @click="handleLinkClick">Contact</NuxtLink>
+    <NuxtLink :to="TERMS_LINK" class="menu__link" @click="handleLinkClick"
+      >Terms Of Services</NuxtLink
+    >
+    <NuxtLink :to="SHIPPING_LINK" class="menu__link" @click="handleLinkClick"
+      >Shipping And Returns</NuxtLink
+    >
     <hr class="menu__hr" />
-    <NuxtLink to="" class="menu__link">
+    <NuxtLink to="" class="menu__link" @click="handleLinkClick">
       <IconPerson class="menu__icon" />
       <div>My account</div>
     </NuxtLink>
-    <NuxtLink to="" class="menu__link">
+    <NuxtLink to="" class="menu__link" @click="handleLinkClick">
       <IconExit class="menu__icon" />
       <div>Logout</div>
     </NuxtLink>

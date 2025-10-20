@@ -96,7 +96,11 @@
   </div>
 
   <!-- Мобильное меню -->
-  <MobileMenu v-if="isShowMenu && isMounted && isMobile" @close="toggleMenu" />
+  <MobileMenu
+    v-if="isShowMenu && isMounted && isMobile"
+    @link-click="toggleMenu"
+    @close="toggleMenu"
+  />
 </template>
 
 <style lang="scss" scoped>
