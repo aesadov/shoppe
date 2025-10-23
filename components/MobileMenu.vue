@@ -3,7 +3,15 @@
   import IconExit from '~/assets/icons/Icon-exit.svg'
   import { APP_LINKS } from '~/constants/links'
 
-  const { CATALOGUE_LINK, CONTACT_LINK, TERMS_LINK, SHIPPING_LINK } = APP_LINKS
+  const {
+    CATALOGUE_LINK,
+    BLOG_LINK,
+    OUR_STORY_LINK,
+    PROFILE_LINK,
+    CONTACT_LINK,
+    TERMS_LINK,
+    SHIPPING_LINK,
+  } = APP_LINKS
 
   const emit = defineEmits<{
     linkClick: []
@@ -17,8 +25,8 @@
 <template>
   <nav class="menu">
     <NuxtLink :to="CATALOGUE_LINK" class="menu__link" @click="handleLinkClick">Shop</NuxtLink>
-    <NuxtLink to="" class="menu__link" @click="handleLinkClick">Blog</NuxtLink>
-    <NuxtLink to="" class="menu__link" @click="handleLinkClick">Our Story</NuxtLink>
+    <NuxtLink :to="BLOG_LINK" class="menu__link" @click="handleLinkClick">Blog</NuxtLink>
+    <NuxtLink :to="OUR_STORY_LINK" class="menu__link" @click="handleLinkClick">Our Story</NuxtLink>
     <NuxtLink :to="CONTACT_LINK" class="menu__link" @click="handleLinkClick">Contact</NuxtLink>
     <NuxtLink :to="TERMS_LINK" class="menu__link" @click="handleLinkClick"
       >Terms Of Services</NuxtLink
@@ -27,7 +35,7 @@
       >Shipping And Returns</NuxtLink
     >
     <hr class="menu__hr" />
-    <NuxtLink to="" class="menu__link" @click="handleLinkClick">
+    <NuxtLink :to="PROFILE_LINK" class="menu__link" @click="handleLinkClick">
       <IconPerson class="menu__icon" />
       <div>My account</div>
     </NuxtLink>
@@ -50,6 +58,8 @@
     margin: 39px 0 0;
     font-size: 20px;
     background: white;
+    opacity: 0;
+    animation: fade-in-up 0.4s ease-out forwards;
 
     &__link {
       position: relative;
@@ -58,6 +68,15 @@
       padding: 0;
       color: inherit;
       text-decoration: none;
+      opacity: 0;
+      animation: fade-in 0.4s ease-out forwards;
+
+      /* Задержки для ссылок через SCSS цикл */
+      @for $i from 1 through 8 {
+        &:nth-child(#{$i}) {
+          animation-delay: 0.1s * $i;
+        }
+      }
     }
 
     &__hr {
@@ -65,6 +84,8 @@
       margin: 0;
       border: none;
       border-top: 1px solid #d8d8d8;
+      opacity: 0;
+      animation: fade-in 0.3s ease-out 0.8s forwards;
     }
 
     &__icon {
@@ -72,6 +93,28 @@
       width: 20px;
       height: 20px;
       margin-right: 12px;
+    }
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
     }
   }
 </style>
