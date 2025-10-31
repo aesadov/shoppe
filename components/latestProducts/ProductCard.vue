@@ -62,6 +62,7 @@
 <style lang="scss" scoped>
   .product {
     position: relative;
+    width: 100%;
 
     &__image-wrapper {
       position: relative;
