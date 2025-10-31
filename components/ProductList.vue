@@ -6,8 +6,9 @@
     loading?: boolean
   }
 
+  const SKELETONS_COUNT = 6
   const { products, loading } = defineProps<Props>()
-  const skeletonCount = products?.length || 6
+  const skeletonCount = products?.length || SKELETONS_COUNT
 </script>
 
 <template>
@@ -35,9 +36,9 @@
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 70px 24px;
 
-    @media (width <= 768px) {
+    @media (max-width: $breakpoints-mobile) {
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 40px 16px;
+      gap: 24px 16px;
     }
   }
 </style>

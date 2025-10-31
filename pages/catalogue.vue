@@ -29,11 +29,22 @@
     h1 {
       font-size: 32px;
       font-weight: 500;
+
+      @media (max-width: $breakpoints-mobile) {
+        margin-top: 24px;
+        font-size: 20px;
+        font-weight: 400;
+      }
     }
 
     &_main {
       display: flex;
       margin-top: 39px;
+
+      @media (max-width: $breakpoints-mobile) {
+        flex-direction: column;
+        margin-top: 15px;
+      }
     }
   }
 </style>

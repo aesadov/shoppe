@@ -4,12 +4,6 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-05-23',
   modules: ['@vueuse/nuxt', '@nuxt/image'],
   vite: {
-    server: {
-      hmr: {
-        clientPort: 3000, // порт, на котором работает браузер
-        port: 5173, // порт Vite сервера
-      },
-    },
     css: {
       preprocessorOptions: {
         scss: {
