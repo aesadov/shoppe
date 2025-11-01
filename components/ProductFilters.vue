@@ -19,7 +19,7 @@
 
 <style lang="scss" scoped>
   .mob-filters {
-    display: flex;
+    display: none;
     align-items: center;
     width: 70px;
     padding: 0;
@@ -28,6 +28,10 @@
     cursor: pointer;
     background: none;
     border: none;
+
+    @media (max-width: $breakpoints-mobile) {
+      display: flex;
+    }
   }
 
   .icon-filter {

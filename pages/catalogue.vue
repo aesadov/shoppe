@@ -21,11 +21,13 @@
   <MobileFilters v-show="isShowMobFilters" @icon-click="toggleShowMobFilters" />
   <div v-show="!isShowMobFilters" class="catalogue">
     <h1>Shop</h1>
-    <div class="catalogue_main">
+    <div class="catalogue__main">
       <ProductFilters @btn-click="toggleShowMobFilters" />
-      <ProductList :products="products" :loading="pending" />
+      <div class="catalogue__pagination">
+        <ProductList :products="products" :loading="pending" />
+        <Pagination />
+      </div>
     </div>
-    <Pagination />
   </div>
 </template>
 
@@ -42,7 +44,7 @@
       }
     }
 
-    &_main {
+    &__main {
       display: flex;
       margin-top: 39px;
 
@@ -50,6 +52,12 @@
         flex-direction: column;
         margin-top: 15px;
       }
+    }
+
+    &__pagination {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
   }
 </style>
