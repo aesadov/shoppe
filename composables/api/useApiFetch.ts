@@ -4,9 +4,9 @@ export const useApiFetch = <DataT = unknown>(request: string, options?: UseFetch
   const config = useRuntimeConfig()
   const authToken = useCookie('authToken')
 
-  if (!config.public.apiBaseUrl) {
-    throw new Error('API_BASE_URL is not set')
-  }
+  // if (!config.public.apiBaseUrl) {
+  //   throw new Error('API_BASE_URL is not set')
+  // }
 
   const defaults: UseFetchOptions<DataT> = {
     baseURL: config.public.apiBaseUrl,
