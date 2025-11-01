@@ -2,6 +2,7 @@
   import { useRoute, useRouter } from 'nuxt/app'
   import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
   import { useNotification } from '~/composables/notification/useNotification'
+  import { useWindowSize } from '@vueuse/core'
 
   const route = useRoute()
   const router = useRouter()
@@ -9,25 +10,34 @@
   const { showError } = useNotification()
   const { data: products, pending, error, refresh } = useGetAllProducts()
 
-  // Получаем текущую страницу из URL
+  // Используем VueUse для получения размера окна (SSR-совместимо)
+  const { width: windowWidth } = useWindowSize()
+
   const currentPage = computed(() => {
     const page = Number(route.query.page) || 1
     return Math.max(1, page)
   })
 
   // Настройки пагинации
-  const itemsPerPage = 6
+  const ITEMS_PER_PAGE = 6
+  const MOBILE_BREAKPOINT = 768
   const totalPages = computed(() => {
     if (!products.value) return 1
-    return Math.ceil(products.value.length / itemsPerPage)
+    return Math.ceil(products.value.length / ITEMS_PER_PAGE)
   })
 
-  // Получаем товары для текущей страницы
   const paginatedProducts = computed(() => {
     if (!products.value) return []
 
-    const startIndex = (currentPage.value - 1) * itemsPerPage
-    const endIndex = startIndex + itemsPerPage
+    // Для мобильной версии показываем все товары
+    const isMobile = windowWidth.value <= MOBILE_BREAKPOINT
+    if (isMobile) {
+      return products.value
+    }
+
+    // Для десктопа - пагинация
+    const startIndex = (currentPage.value - 1) * ITEMS_PER_PAGE
+    const endIndex = startIndex + ITEMS_PER_PAGE
 
     return products.value.slice(startIndex, endIndex)
   })

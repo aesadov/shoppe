@@ -32,12 +32,12 @@
 <style lang="scss" scoped>
   .products {
     display: grid;
-    flex: 1;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 70px 24px;
+    align-items: start;
 
     @media (max-width: $breakpoints-mobile) {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 24px 16px;
     }
   }
