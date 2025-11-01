@@ -57,6 +57,7 @@
         </div>
       </template>
     </div>
+
     <SkeletoneDescription v-if="loading" />
     <template v-else-if="product">
       <h3 class="product__name">{{ product.title }}</h3>
