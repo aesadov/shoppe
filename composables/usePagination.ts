@@ -80,7 +80,7 @@
 import { useRoute, useRouter } from 'nuxt/app'
 import type { Ref } from 'vue'
 import type { Product } from '~/types/api'
-import { useMobile } from '~/composables/useMobile'
+import { useBreakpoints } from '@vueuse/core'
 
 export interface PaginationOptions {
   itemsPerPage?: number
@@ -93,7 +93,13 @@ export function usePagination(items: Ref<Product[] | null>, options: PaginationO
 
   const route = useRoute()
   const router = useRouter()
-  const { isMobile } = useMobile()
+
+  // Используем useBreakpoints для определения мобильных устройств
+  const breakpoints = useBreakpoints({
+    mobile: 768, // breakpoint для мобильных
+  })
+
+  const isMobile = breakpoints.smaller('mobile')
 
   const currentPage = computed(() => {
     const page = Number(route.query.page) || 1
@@ -108,12 +114,12 @@ export function usePagination(items: Ref<Product[] | null>, options: PaginationO
   const paginatedItems = computed(() => {
     if (!items.value) return []
 
-    // На мобильных показываем все товары (только на клиенте)
-    if (isMobile.value && process.client) {
+    // На мобильных показываем все товары
+    if (isMobile.value) {
       return items.value
     }
 
-    // На десктопе и SSR - пагинация
+    // На десктопе - пагинация
     const startIndex = (currentPage.value - 1) * itemsPerPage
     const endIndex = startIndex + itemsPerPage
 

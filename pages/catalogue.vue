@@ -81,11 +81,16 @@
   import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
   import { useNotification } from '~/composables/notification/useNotification'
   import { usePagination } from '~/composables/usePagination'
-  import { useMobile } from '~/composables/useMobile'
+  import { useBreakpoints } from '@vueuse/core'
 
   const { showError } = useNotification()
   const { data: products, pending, error } = useGetAllProducts()
-  const { isMobile } = useMobile()
+
+  const breakpoints = useBreakpoints({
+    mobile: 768,
+  })
+
+  const isMobile = breakpoints.smaller('mobile')
 
   const {
     currentPage,
@@ -96,12 +101,10 @@
     itemsPerPage: 6,
   })
 
-  // Для мобильных используем все продукты, для десктопа - пагинированные
   const displayProducts = computed(() => {
     return isMobile.value ? products.value : paginatedProducts.value
   })
 
-  // Скрываем пагинацию на мобильных
   const showPagination = computed(() => !isMobile.value)
 
   watch(error, (newError) => {
