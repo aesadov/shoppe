@@ -1,35 +1,33 @@
-<script setup>
+<script setup lang="ts">
   import IconFilterMobile from '~/assets/icons/Icon-filter-mobile.svg'
+
+  const emit = defineEmits<{
+    btnClick: []
+  }>()
+
+  const handleBtnClick = () => {
+    emit('btnClick')
+  }
 </script>
 <template>
-  <div class="filters">Desktop Filters</div>
-  <div class="mob-filters">
+  <DesktopProductFilters />
+  <button class="mob-filters" @click="handleBtnClick">
     <IconFilterMobile class="icon-filter" />
     <span>Filters</span>
-  </div>
+  </button>
 </template>
 
 <style lang="scss" scoped>
-  .filters {
-    flex-shrink: 0;
-    width: 266px;
-    height: 336px;
-    margin-right: 31px;
-    background-color: rgb(205 205 205);
-
-    @media (max-width: $breakpoints-mobile) {
-      display: none;
-    }
-  }
-
   .mob-filters {
-    display: none;
+    display: flex;
+    align-items: center;
+    width: 70px;
+    padding: 0;
+    margin-bottom: 16px;
     color: $accent-color;
-
-    @media (max-width: $breakpoints-mobile) {
-      display: block;
-      margin-bottom: 16px;
-    }
+    cursor: pointer;
+    background: none;
+    border: none;
   }
 
   .icon-filter {

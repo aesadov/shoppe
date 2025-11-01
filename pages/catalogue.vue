@@ -11,13 +11,18 @@
       showError('Error loading products')
     }
   })
+  const isShowMobFilters = ref(false)
+  const toggleShowMobFilters = () => {
+    isShowMobFilters.value = !isShowMobFilters.value
+  }
 </script>
 
 <template>
-  <div class="catalogue">
+  <MobileFilters v-show="isShowMobFilters" @icon-click="toggleShowMobFilters" />
+  <div v-show="!isShowMobFilters" class="catalogue">
     <h1>Shop</h1>
     <div class="catalogue_main">
-      <ProductFilters />
+      <ProductFilters @btn-click="toggleShowMobFilters" />
       <ProductList :products="products" :loading="pending" />
     </div>
     <Pagination />
