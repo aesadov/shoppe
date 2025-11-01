@@ -4,6 +4,9 @@
   import { ref } from 'vue'
   import SkeletonImg from '~/components/skeletons/SkeletonImg.vue'
   import SkeletoneDescription from '~/components/skeletons/SkeletoneDescription.vue'
+  import { APP_LINKS } from '~/constants/links'
+
+  const { CART_LINK } = APP_LINKS
 
   interface Props {
     product?: Product
@@ -16,7 +19,10 @@
 
   const addToCart = () => {
     if (!product) return
-    showSuccess('The item was added to your Shopping bag', { link: 'VIEW CART' })
+    showSuccess('The item was added to your Shopping bag', {
+      link: 'VIEW CART',
+      LinkAdress: CART_LINK,
+    })
   }
 
   const handleMouseOver = () => {
