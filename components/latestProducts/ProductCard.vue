@@ -13,15 +13,13 @@
     loading?: boolean
   }
 
-  const props = withDefaults(defineProps<Props>(), {
-    loading: false,
-  })
+  const { loading = false, product } = defineProps<Props>()
 
   const { showSuccess } = useNotification()
   const isHovered = ref(false)
 
   function addToCart() {
-    if (!props.product) return
+    if (!product) return
     showSuccess('The item was added to your Shopping bag', {
       link: 'VIEW CART',
       LinkAdress: CART_LINK,
@@ -29,7 +27,7 @@
   }
 
   function handleHover(state: boolean) {
-    if (!props.loading && props.product) {
+    if (!loading && product) {
       isHovered.value = state
     }
   }

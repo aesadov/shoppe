@@ -7,10 +7,7 @@
     loading?: boolean
   }
 
-  const props = withDefaults(defineProps<Props>(), {
-    products: null,
-    loading: false,
-  })
+  const { products = [], loading = false } = defineProps<Props>()
 
   const SKELETONS_COUNT = 6
 </script>

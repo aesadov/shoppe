@@ -78,10 +78,6 @@
     gap: 12px;
     margin-top: 86px;
 
-    @media (max-width: $breakpoints-mobile) {
-      display: none;
-    }
-
     &__item {
       display: flex;
       align-items: center;

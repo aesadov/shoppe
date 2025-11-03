@@ -1,7 +1,6 @@
 import { useRoute, useRouter } from 'nuxt/app'
 import type { Ref } from 'vue'
 import type { Product } from '~/types/api'
-import { useBreakpoints } from '@vueuse/core'
 
 export interface PaginationOptions {
   itemsPerPage?: number
@@ -14,13 +13,6 @@ export function usePagination(items: Ref<Product[] | null>, options: PaginationO
 
   const route = useRoute()
   const router = useRouter()
-
-  // Используем useBreakpoints для определения мобильных устройств
-  const breakpoints = useBreakpoints({
-    mobile: 768, // breakpoint для мобильных
-  })
-
-  const isMobile = breakpoints.smaller('mobile')
 
   const currentPage = computed(() => {
     const page = Number(route.query.page) || 1
@@ -35,19 +27,11 @@ export function usePagination(items: Ref<Product[] | null>, options: PaginationO
   const paginatedItems = computed(() => {
     if (!items.value) return []
 
-    // На мобильных показываем все товары
-    if (isMobile.value) {
-      return items.value
-    }
-
-    // На десктопе - пагинация
     const startIndex = (currentPage.value - 1) * itemsPerPage
     const endIndex = startIndex + itemsPerPage
 
     return items.value.slice(startIndex, endIndex)
   })
-
-  const showPagination = computed(() => !isMobile.value)
 
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages.value) {
@@ -62,8 +46,6 @@ export function usePagination(items: Ref<Product[] | null>, options: PaginationO
     currentPage,
     totalPages,
     paginatedItems,
-    showPagination,
-    isMobile,
     goToPage,
     nextPage: () => goToPage(currentPage.value + 1),
     prevPage: () => goToPage(currentPage.value - 1),

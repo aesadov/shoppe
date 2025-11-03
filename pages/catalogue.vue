@@ -2,16 +2,9 @@
   import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
   import { useNotification } from '~/composables/notification/useNotification'
   import { usePagination } from '~/composables/usePagination'
-  import { useBreakpoints } from '@vueuse/core'
 
   const { showError } = useNotification()
   const { data: products, pending, error } = useGetAllProducts()
-
-  const breakpoints = useBreakpoints({
-    mobile: 768,
-  })
-
-  const isMobile = breakpoints.smaller('mobile')
 
   const {
     currentPage,
@@ -21,12 +14,6 @@
   } = usePagination(products, {
     itemsPerPage: 6,
   })
-
-  const displayProducts = computed(() => {
-    return isMobile.value ? products.value : paginatedProducts.value
-  })
-
-  const showPagination = computed(() => !isMobile.value)
 
   watch(error, (newError) => {
     if (newError) {
@@ -48,9 +35,8 @@
     <div class="catalogue__main">
       <ProductFilters @btn-click="toggleShowMobFilters" />
       <div class="catalogue__pagination">
-        <ProductList :products="displayProducts" :loading="pending" />
+        <ProductList :products="paginatedProducts" :loading="pending" />
         <Pagination
-          v-if="showPagination"
           :current-page="currentPage"
           :total-pages="totalPages"
           @page-change="handlePageChange"
