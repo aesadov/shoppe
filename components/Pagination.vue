@@ -5,38 +5,38 @@
     maxVisiblePages?: number
   }
 
-  const props = withDefaults(defineProps<Props>(), {
-    maxVisiblePages: 5,
-  })
+  const MAX_VISIBLE_PAGES = 5
+
+  const { maxVisiblePages = MAX_VISIBLE_PAGES, currentPage, totalPages } = defineProps<Props>()
 
   const emit = defineEmits<{
     pageChange: [page: number]
   }>()
 
   const visiblePages = computed(() => {
-    if (props.totalPages <= props.maxVisiblePages) {
-      return Array.from({ length: props.totalPages }, (_, i) => i + 1)
+    if (totalPages <= maxVisiblePages) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1)
     }
 
-    const half = Math.floor(props.maxVisiblePages / 2)
-    let start = props.currentPage - half
-    let end = props.currentPage + half
+    const half = Math.floor(maxVisiblePages / 2)
+    let start = currentPage - half
+    let end = currentPage + half
 
     if (start < 1) {
       start = 1
-      end = props.maxVisiblePages
+      end = maxVisiblePages
     }
 
-    if (end > props.totalPages) {
-      end = props.totalPages
-      start = props.totalPages - props.maxVisiblePages + 1
+    if (end > totalPages) {
+      end = totalPages
+      start = totalPages - maxVisiblePages + 1
     }
 
     return Array.from({ length: end - start + 1 }, (_, i) => start + i)
   })
 
   const goToPage = (page: number) => {
-    if (page >= 1 && page <= props.totalPages) {
+    if (page >= 1 && page <= totalPages) {
       emit('pageChange', page)
     }
   }
