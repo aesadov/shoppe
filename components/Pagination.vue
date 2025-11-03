@@ -13,7 +13,6 @@
     pageChange: [page: number]
   }>()
 
-  // Вычисляем видимые страницы
   const visiblePages = computed(() => {
     if (props.totalPages <= props.maxVisiblePages) {
       return Array.from({ length: props.totalPages }, (_, i) => i + 1)
@@ -45,7 +44,6 @@
 
 <template>
   <div class="pagination">
-    <!-- Кнопка "Назад" -->
     <div
       class="pagination__item pagination__item--prev"
       :class="{ 'pagination__item--disabled': currentPage === 1 }"
@@ -54,7 +52,6 @@
       <
     </div>
 
-    <!-- Номера страниц -->
     <div
       v-for="page in visiblePages"
       :key="page"
@@ -65,7 +62,6 @@
       {{ page }}
     </div>
 
-    <!-- Кнопка "Вперед" -->
     <div
       class="pagination__item pagination__item--next"
       :class="{ 'pagination__item--disabled': currentPage === totalPages }"

@@ -17,12 +17,10 @@
 
 <template>
   <div class="products">
-    <!-- Если идёт загрузка или продукты ещё не получены -->
     <template v-if="loading || !products">
       <ProductCard v-for="n in SKELETONS_COUNT" :key="'skeleton-' + n" :loading="true" />
     </template>
 
-    <!-- Когда данные есть -->
     <template v-else>
       <ProductCard v-for="product in products" :key="product.id" :product="product" />
     </template>
