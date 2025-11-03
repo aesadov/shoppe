@@ -4,7 +4,6 @@
   import IconPerson from '~/assets/icons/Icon-person.svg'
   import IconBurgerMenu from '~/assets/icons/Icon-burgerMenu.svg'
   import IconShoppingCartMobile from '~/assets/icons/Icon-shoppingCartMobile.svg'
-  import IconMagnifyingGlassMobile from '~/assets/icons/Icon-magnifyingGlass-mobile.svg'
   import IconCross from '~/assets/icons/Icon-cross.svg'
   import { BREAKPOINTS } from '~/constants/breakpoints'
   import { APP_LINKS } from '~/constants/links'
@@ -51,10 +50,7 @@
 <template>
   <div class="header-wrapper" :class="{ 'header-wrapper--bordered': !isHomePage }">
     <header class="header">
-      <NuxtLink class="header__logo" to="/" aria-label="Homepage">
-        <span class="header__logo-initial">S</span>
-        <span class="header__logo-accent">HOPPE</span>
-      </NuxtLink>
+      <AppLogo />
 
       <!-- Рендерим обе версии, но управляем видимостью через CSS -->
       <nav class="header__nav" :class="{ 'header__nav--hidden': isMounted && isMobile }">
@@ -110,13 +106,8 @@
     </header>
   </div>
 
-  <!-- Мобильный поиск -->
-  <div class="header__search" :class="{ 'header__search--hidden': isMounted && !isMobile }">
-    <IconMagnifyingGlassMobile class="header__search-icon" />
-    <span class="header__search-text">Search</span>
-  </div>
+  <MobileSearch :is-mobile="isMobile" :is-mounted="isMounted" />
 
-  <!-- Мобильное меню -->
   <MobileMenu
     v-if="isShowMenu && isMounted && isMobile"
     @link-click="toggleMenu"
@@ -151,27 +142,6 @@
 
     @media (max-width: $breakpoints-mobile) {
       margin-bottom: 0;
-    }
-
-    &__logo {
-      display: flex;
-      align-items: center;
-      font-family: $logoFontFamily;
-      font-size: 35px;
-      font-weight: 400;
-      text-decoration: none;
-
-      @media (max-width: $breakpoints-mobile) {
-        font-size: 25px;
-      }
-    }
-
-    &__logo-initial {
-      color: var(--logo-initial-color);
-    }
-
-    &__logo-accent {
-      color: var(--logo-accent-color);
     }
 
     // Desktop Navigation
@@ -312,33 +282,6 @@
       display: block;
       width: var(--mobile-icon-size);
       height: var(--mobile-icon-size);
-    }
-
-    &__search {
-      display: none;
-      gap: 8px;
-      align-items: center;
-      width: calc(100% - 10px);
-      height: 32px;
-      padding-left: 10px;
-      margin: 8px 0 16px;
-      font-size: 14px;
-      color: $main-text-color;
-      background: #efefef;
-      border-radius: 4px;
-
-      &--hidden {
-        display: none !important;
-      }
-
-      @media (max-width: $breakpoints-mobile) {
-        display: flex;
-      }
-    }
-
-    &__search-icon {
-      width: 16px;
-      height: 16px;
     }
   }
 </style>

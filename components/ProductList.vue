@@ -14,7 +14,7 @@
 
 <template>
   <div class="products">
-    <template v-if="loading || !products">
+    <template v-if="loading">
       <ProductCard v-for="n in SKELETONS_COUNT" :key="'skeleton-' + n" :loading="true" />
     </template>
 
