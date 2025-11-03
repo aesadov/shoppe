@@ -9,9 +9,5 @@
     height: 336px;
     margin-right: 31px;
     background-color: rgb(205 205 205);
-
-    @media (max-width: $breakpoints-mobile) {
-      display: none;
-    }
   }
 </style>

@@ -10,14 +10,20 @@
   }
 </script>
 <template>
-  <DesktopProductFilters />
+  <DesktopProductFilters class="desctop-filters" />
   <button class="mob-filters" @click="handleBtnClick">
-    <IconFilterMobile class="icon-filter" />
+    <IconFilterMobile class="mob-filters__icon" />
     <span>Filters</span>
   </button>
 </template>
 
 <style lang="scss" scoped>
+  .desctop-filters {
+    @media (max-width: $breakpoints-mobile) {
+      display: none;
+    }
+  }
+
   .mob-filters {
     display: none;
     align-items: center;
@@ -32,10 +38,10 @@
     @media (max-width: $breakpoints-mobile) {
       display: flex;
     }
-  }
 
-  .icon-filter {
-    width: 13px;
-    margin-right: 5px;
+    &__icon {
+      width: 13px;
+      margin-right: 5px;
+    }
   }
 </style>
