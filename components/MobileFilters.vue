@@ -2,20 +2,27 @@
   import IconCross from '~/assets/icons/Icon-cross.svg'
 
   const emit = defineEmits<{
-    iconClick: []
+    closeClick: []
   }>()
 
-  const handleIconClick = () => {
-    emit('iconClick')
+  const handleOverlayClick = (event: MouseEvent) => {
+    if (event.target === event.currentTarget) {
+      //проверяем, что кликнули именно по серой зоне
+      emit('closeClick')
+    }
+  }
+
+  const handleCrossClick = () => {
+    emit('closeClick')
   }
 </script>
 
 <template>
-  <div class="filters-overlay">
+  <div class="filters-overlay" @click="handleOverlayClick">
     <div class="filters">
       <div class="filters__header">
         <h2 class="filters__title">Filters</h2>
-        <IconCross class="filters__cross" @click="handleIconClick" />
+        <IconCross class="filters__cross" @click="handleCrossClick" />
       </div>
       <div class="filters__content">
         <div>Mobile Filters Content</div>
@@ -62,8 +69,6 @@
     }
 
     &__cross {
-      width: 20px;
-      height: 20px;
       cursor: pointer;
     }
 

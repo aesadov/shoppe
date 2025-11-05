@@ -25,12 +25,13 @@
   const isShowMobFilters = ref(false)
   const toggleShowMobFilters = () => {
     isShowMobFilters.value = !isShowMobFilters.value
+    console.log('togleShowFilters')
   }
 </script>
 
 <template>
-  <MobileFilters v-show="isShowMobFilters" @icon-click="toggleShowMobFilters" />
-  <div v-show="!isShowMobFilters" class="catalogue">
+  <MobileFilters v-show="isShowMobFilters" @close-click="toggleShowMobFilters" />
+  <div class="catalogue">
     <h1>Shop</h1>
     <div class="catalogue__main">
       <ProductFilters @btn-click="toggleShowMobFilters" />

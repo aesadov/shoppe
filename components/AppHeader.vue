@@ -4,7 +4,6 @@
   import IconPerson from '~/assets/icons/Icon-person.svg'
   import IconBurgerMenu from '~/assets/icons/Icon-burgerMenu.svg'
   import IconShoppingCartMobile from '~/assets/icons/Icon-shoppingCartMobile.svg'
-  import IconCross from '~/assets/icons/Icon-cross.svg'
   import { BREAKPOINTS } from '~/constants/breakpoints'
   import { APP_LINKS } from '~/constants/links'
   import { useRoute } from 'nuxt/app'
@@ -113,8 +112,7 @@
     :is-mobile="isMobile"
     :is-mounted="isMounted"
     @link-click="toggleMenu"
-    @close="toggleMenu"
-    @cross-click="toggleMenu"
+    @close-click="toggleMenu"
   />
 </template>
 
