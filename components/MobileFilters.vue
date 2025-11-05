@@ -9,35 +9,86 @@
     emit('iconClick')
   }
 </script>
+
 <template>
-  <Transition name="fade-slide">
+  <div class="filters-overlay">
     <div class="filters">
-      <div>Mobile Filters</div>
-      <IconCross @click="handleIconClick" />
+      <div class="filters__header">
+        <h2 class="filters__title">Filters</h2>
+        <IconCross class="filters__cross" @click="handleIconClick" />
+      </div>
+      <div class="filters__content">
+        <div>Mobile Filters Content</div>
+      </div>
     </div>
-  </Transition>
+  </div>
 </template>
 
 <style lang="scss" scoped>
+  .filters-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgb(0 0 0 / 50%);
+    animation: fade-in 0.3s ease-out forwards;
+  }
+
   .filters {
+    position: fixed;
+    inset: 0 0 0 auto;
+    box-sizing: border-box;
     display: flex;
-    justify-content: space-between;
-    height: 200px;
-    background-color: beige;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    padding: 16px;
+    overflow-y: auto;
+    background: white;
+    transform: translateX(100%);
+    animation: slide-in 0.4s ease-out forwards;
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    &__title {
+      margin: 0;
+      font-family: $logoFontFamily;
+      font-size: 25px;
+      font-weight: 400;
+    }
+
+    &__cross {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    &__content {
+      flex: 1;
+    }
   }
 
-  .fade-slide-enter-active,
-  .fade-slide-leave-active {
-    transition: all 0.3s ease-in-out;
+  @keyframes slide-in {
+    from {
+      transform: translateX(100%);
+    }
+
+    to {
+      transform: translateX(0);
+    }
   }
 
-  .fade-slide-enter-from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
 
-  .fade-slide-leave-to {
-    opacity: 0;
-    transform: translateY(-10px);
+    to {
+      opacity: 1;
+    }
   }
 </style>
