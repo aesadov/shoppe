@@ -7,6 +7,9 @@
 
 <style lang="scss" scoped>
   .logo {
+    --logo-initial-color: #{$accent-color};
+    --logo-accent-color: #{$primary-color};
+
     display: flex;
     align-items: center;
     font-family: $logoFontFamily;

@@ -10,7 +10,7 @@
   box-sizing: border-box;
   /* Мобильная версия*/
   width: 100%;
-  padding: 15px 16px 26px;
+  padding: 16px;
   margin: 0 auto;
   font-family: $textFontFamily;
   h1,
@@ -33,5 +33,6 @@ a {
 }
 
 body {
+  margin: 0;
   font-family: $textFontFamily;
 }

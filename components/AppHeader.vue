@@ -99,8 +99,8 @@
           :aria-label="isShowMenu ? 'Close menu' : 'Open menu'"
           @click="toggleMenu"
         >
-          <IconBurgerMenu v-if="!isShowMenu" class="header__mobile-icon" />
-          <IconCross v-if="isShowMenu" class="header__mobile-icon" />
+          <IconBurgerMenu class="header__mobile-icon" />
+          <!-- <IconCross v-if="isShowMenu" class="header__mobile-icon" /> -->
         </button>
       </div>
     </header>
@@ -110,8 +110,11 @@
 
   <MobileMenu
     v-if="isShowMenu && isMounted && isMobile"
+    :is-mobile="isMobile"
+    :is-mounted="isMounted"
     @link-click="toggleMenu"
     @close="toggleMenu"
+    @cross-click="toggleMenu"
   />
 </template>
 
@@ -128,8 +131,6 @@
   .header {
     --icon-size: 24px;
     --mobile-icon-size: 20px;
-    --logo-initial-color: #{$accent-color};
-    --logo-accent-color: #{$primary-color};
     --link-hover-color: #{$accent-color};
 
     position: relative;
@@ -137,7 +138,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 42px;
     margin-bottom: 16px;
 
     @media (max-width: $breakpoints-mobile) {
