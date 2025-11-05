@@ -19,7 +19,7 @@
     isMobile: boolean
   }
 
-  const { isMounted = false, isMobile = false } = defineProps<Props>()
+  const { isMounted = false, isMobile } = defineProps<Props>()
 
   const emit = defineEmits<{
     linkClick: []
@@ -40,6 +40,20 @@
   const handleCrossClick = () => {
     emit('closeClick')
   }
+
+  const mainLinks = [
+    { to: CATALOGUE_LINK, text: 'Shop' },
+    { to: BLOG_LINK, text: 'Blog' },
+    { to: OUR_STORY_LINK, text: 'Our Story' },
+    { to: CONTACT_LINK, text: 'Contact' },
+    { to: TERMS_LINK, text: 'Terms Of Services' },
+    { to: SHIPPING_LINK, text: 'Shipping And Returns' },
+  ]
+
+  const profileLinks = [
+    { to: PROFILE_LINK, text: 'My account', icon: IconPerson },
+    { to: '', text: 'Logout', icon: IconExit },
+  ]
 </script>
 
 <template>
@@ -51,26 +65,27 @@
       </div>
       <MobileSearch :is-mobile="isMobile" :is-mounted="isMounted" />
       <nav class="menu__links">
-        <NuxtLink :to="CATALOGUE_LINK" class="menu__link" @click="handleLinkClick">Shop</NuxtLink>
-        <NuxtLink :to="BLOG_LINK" class="menu__link" @click="handleLinkClick">Blog</NuxtLink>
-        <NuxtLink :to="OUR_STORY_LINK" class="menu__link" @click="handleLinkClick"
-          >Our Story</NuxtLink
+        <NuxtLink
+          v-for="link in mainLinks"
+          :key="link.to"
+          :to="link.to"
+          class="menu__link"
+          @click="handleLinkClick"
         >
-        <NuxtLink :to="CONTACT_LINK" class="menu__link" @click="handleLinkClick">Contact</NuxtLink>
-        <NuxtLink :to="TERMS_LINK" class="menu__link" @click="handleLinkClick"
-          >Terms Of Services</NuxtLink
-        >
-        <NuxtLink :to="SHIPPING_LINK" class="menu__link" @click="handleLinkClick"
-          >Shipping And Returns</NuxtLink
-        >
-        <hr class="menu__hr" />
-        <NuxtLink :to="PROFILE_LINK" class="menu__link" @click="handleLinkClick">
-          <IconPerson class="menu__icon" />
-          <div>My account</div>
+          {{ link.text }}
         </NuxtLink>
-        <NuxtLink to="" class="menu__link" @click="handleLinkClick">
-          <IconExit class="menu__icon" />
-          <div>Logout</div>
+
+        <hr class="menu__hr" />
+
+        <NuxtLink
+          v-for="link in profileLinks"
+          :key="link.to"
+          :to="link.to"
+          class="menu__link"
+          @click="handleLinkClick"
+        >
+          <component :is="link.icon" class="menu__icon" />
+          <div>{{ link.text }}</div>
         </NuxtLink>
       </nav>
     </div>

@@ -6,7 +6,7 @@
     isMobile: boolean
   }
 
-  const { isMounted = false, isMobile = false } = defineProps<Props>()
+  const { isMounted = false, isMobile } = defineProps<Props>()
 </script>
 
 <template>
