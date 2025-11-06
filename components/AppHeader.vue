@@ -12,12 +12,10 @@
 
   const isShowMenu = ref(false)
   const isMounted = ref(false)
-  const isMobile = ref(false) // Инициализируем как false
+  const isMobile = ref(false)
 
-  // Используем onMounted  только для клиент-сайд кода
   onMounted(() => {
     isMounted.value = true
-    // Проверяем медиазапрос только на клиенте
     const checkMobile = () => {
       isMobile.value = window.matchMedia(`(max-width: ${BREAKPOINTS.mobile})`).matches
     }
@@ -25,7 +23,6 @@
     checkMobile()
     window.addEventListener('resize', checkMobile)
 
-    // Чистим слушатель при уничтожении компонента
     onUnmounted(() => {
       window.removeEventListener('resize', checkMobile)
     })
@@ -35,10 +32,12 @@
     isShowMenu.value = !isShowMenu.value
   }
 
+  const closeMenu = () => {
+    isShowMenu.value = false
+  }
+
   const route = useRoute()
-
   const isHomePage = computed(() => route.path === '/')
-
   const isShopActive = computed(() => route.path.startsWith(CATALOGUE_LINK))
   const isBlogActive = computed(() => route.path.startsWith(BLOG_LINK))
   const isOurStoryActive = computed(() => route.path.startsWith(OUR_STORY_LINK))
@@ -51,7 +50,7 @@
     <header class="header">
       <AppLogo />
 
-      <!-- Рендерим обе версии, но управляем видимостью через CSS -->
+      <!-- Десктопная навигация -->
       <nav class="header__nav" :class="{ 'header__nav--hidden': isMounted && isMobile }">
         <ul class="header__menu">
           <li class="header__menu-item" :class="{ 'header__menu-item--active': isShopActive }">
@@ -99,7 +98,6 @@
           @click="toggleMenu"
         >
           <IconBurgerMenu class="header__mobile-icon" />
-          <!-- <IconCross v-if="isShowMenu" class="header__mobile-icon" /> -->
         </button>
       </div>
     </header>
@@ -111,8 +109,7 @@
     v-if="isShowMenu && isMounted && isMobile"
     :is-mobile="isMobile"
     :is-mounted="isMounted"
-    @link-click="toggleMenu"
-    @close-click="toggleMenu"
+    @close="closeMenu"
   />
 </template>
 
@@ -142,7 +139,6 @@
       margin-bottom: 0;
     }
 
-    // Desktop Navigation
     &__nav {
       display: flex;
       align-items: center;
@@ -255,7 +251,6 @@
       }
     }
 
-    // Mobile Elements
     &__mobile-controls {
       display: none;
       gap: 13px;

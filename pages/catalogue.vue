@@ -23,57 +23,116 @@
   })
 
   const isShowMobFilters = ref(false)
+
   const toggleShowMobFilters = () => {
     isShowMobFilters.value = !isShowMobFilters.value
-    console.log('togleShowFilters')
+  }
+
+  const closeMobFilters = () => {
+    isShowMobFilters.value = false
   }
 </script>
 
 <template>
-  <MobileFilters v-show="isShowMobFilters" @close-click="toggleShowMobFilters" />
   <div class="catalogue">
-    <h1>Shop</h1>
+    <MobileFilters v-if="isShowMobFilters" @close="closeMobFilters" />
+
+    <h1 class="catalogue__title">Shop</h1>
+
     <div class="catalogue__main">
       <ProductFilters @btn-click="toggleShowMobFilters" />
-      <div class="catalogue__pagination">
-        <ProductList :products="paginatedProducts" :loading="pending" />
-        <Pagination
-          :current-page="currentPage"
-          :total-pages="totalPages"
-          @page-change="handlePageChange"
-        />
-      </div>
+
+      <main class="catalogue__content">
+        <div class="catalogue__products">
+          <ProductList :products="paginatedProducts" :loading="pending" />
+        </div>
+
+        <div class="catalogue__pagination">
+          <Pagination
+            :current-page="currentPage"
+            :total-pages="totalPages"
+            @page-change="handlePageChange"
+          />
+        </div>
+      </main>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
   .catalogue {
-    h1 {
+    max-width: 1200px;
+    padding: 0 16px;
+    margin: 0 auto;
+
+    &__title {
+      margin: 0 0 32px;
       font-size: 32px;
       font-weight: 500;
+      color: $main-text-color;
 
       @media (max-width: $breakpoints-mobile) {
         margin-top: 24px;
+        margin-bottom: 16px;
         font-size: 20px;
         font-weight: 400;
       }
     }
 
     &__main {
-      display: flex;
-      margin-top: 39px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 40px;
+      align-items: start;
 
       @media (max-width: $breakpoints-mobile) {
-        flex-direction: column;
+        grid-template-columns: 1fr;
+        gap: 20px;
         margin-top: 15px;
       }
     }
 
-    &__pagination {
+    &__filters {
+      position: sticky;
+      top: 100px;
+
+      @media (max-width: $breakpoints-mobile) {
+        position: static;
+        display: none;
+      }
+    }
+
+    &__content {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      min-height: 500px;
+    }
+
+    &__products {
+      flex: 1;
+      margin-bottom: 40px;
+    }
+
+    &__pagination {
+      display: flex;
+      justify-content: center;
+      padding-top: 20px;
+      margin-top: auto;
+      border-top: 1px solid $divider-color;
+    }
+  }
+
+  @media (max-width: $breakpoints-mobile) {
+    .catalogue {
+      padding: 0 8px;
+
+      &__products {
+        margin-bottom: 24px;
+      }
+
+      &__pagination {
+        padding-top: 16px;
+      }
     }
   }
 </style>

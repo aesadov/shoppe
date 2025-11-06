@@ -29,7 +29,6 @@
     align-items: center;
     width: 70px;
     padding: 0;
-    margin-bottom: 16px;
     color: $accent-color;
     cursor: pointer;
     background: none;

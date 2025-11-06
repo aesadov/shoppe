@@ -3,6 +3,8 @@
   import IconExit from '~/assets/icons/Icon-exit.svg'
   import { APP_LINKS } from '~/constants/links'
   import IconCross from '~/assets/icons/Icon-cross.svg'
+  import AppLogo from '~/components/AppLogo.vue'
+  import MobileSearch from '~/components/MobileSearch.vue'
 
   const {
     CATALOGUE_LINK,
@@ -22,23 +24,15 @@
   const { isMounted = false, isMobile } = defineProps<Props>()
 
   const emit = defineEmits<{
-    linkClick: []
-    closeClick: []
+    close: []
   }>()
 
   const handleLinkClick = () => {
-    emit('linkClick')
+    emit('close')
   }
 
-  const handleOverlayClick = (event: MouseEvent) => {
-    if (event.target === event.currentTarget) {
-      //проверяем, что кликнули именно по серой зоне
-      emit('closeClick')
-    }
-  }
-
-  const handleCrossClick = () => {
-    emit('closeClick')
+  const handlePanelClose = () => {
+    emit('close')
   }
 
   const mainLinks = [
@@ -57,124 +51,69 @@
 </script>
 
 <template>
-  <div class="menu-overlay" @click="handleOverlayClick">
-    <div class="menu">
-      <div class="menu__header">
-        <AppLogo />
-        <IconCross class="menu__cross" @click="handleCrossClick" />
-      </div>
-      <MobileSearch :is-mobile="isMobile" :is-mounted="isMounted" />
-      <nav class="menu__links">
-        <NuxtLink
-          v-for="link in mainLinks"
-          :key="link.to"
-          :to="link.to"
-          class="menu__link"
-          @click="handleLinkClick"
-        >
-          {{ link.text }}
-        </NuxtLink>
+  <MobilePanel @close="handlePanelClose">
+    <template #header>
+      <AppLogo />
+      <IconCross class="panel__close" @click="handlePanelClose" />
+    </template>
 
-        <hr class="menu__hr" />
+    <MobileSearch :is-mobile="isMobile" :is-mounted="isMounted" />
 
-        <NuxtLink
-          v-for="link in profileLinks"
-          :key="link.to"
-          :to="link.to"
-          class="menu__link"
-          @click="handleLinkClick"
-        >
-          <component :is="link.icon" class="menu__icon" />
-          <div>{{ link.text }}</div>
-        </NuxtLink>
-      </nav>
-    </div>
-  </div>
+    <nav class="menu-links">
+      <NuxtLink
+        v-for="link in mainLinks"
+        :key="link.to"
+        :to="link.to"
+        class="menu-link"
+        @click="handleLinkClick"
+      >
+        {{ link.text }}
+      </NuxtLink>
+
+      <hr class="menu-hr" />
+
+      <NuxtLink
+        v-for="link in profileLinks"
+        :key="link.to"
+        :to="link.to"
+        class="menu-link"
+        @click="handleLinkClick"
+      >
+        <component :is="link.icon" class="menu-icon" />
+        <div>{{ link.text }}</div>
+      </NuxtLink>
+    </nav>
+  </MobilePanel>
 </template>
 
 <style lang="scss" scoped>
-  .menu-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    background: rgb(0 0 0 / 50%);
-    animation: fade-in 0.3s ease-out forwards;
-  }
-
-  .menu {
-    position: fixed;
-    inset: 0 0 0 auto;
-    box-sizing: border-box;
+  .menu-links {
     display: flex;
     flex-direction: column;
+    gap: 24px;
+    margin-top: 24px;
+  }
+
+  .menu-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .menu-hr {
     width: 100%;
-    max-width: 400px;
-    padding: 16px;
-    overflow-y: auto;
-    background: white;
-    transform: translateX(100%);
-    animation: slide-in 0.4s ease-out forwards;
-
-    &__header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    &__links {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      margin-top: 24px;
-    }
-
-    &__link {
-      position: relative;
-      display: flex;
-      align-items: center;
-      padding: 0;
-      color: inherit;
-      text-decoration: none;
-    }
-
-    &__hr {
-      width: 100%;
-      margin: 0;
-      border: none;
-      border-top: 1px solid #d8d8d8;
-    }
-
-    &__icon {
-      flex-shrink: 0;
-      width: 20px;
-      height: 20px;
-      margin-right: 12px;
-    }
+    margin: 0;
+    border: none;
+    border-top: 1px solid #d8d8d8;
   }
 
-  @keyframes slide-in {
-    from {
-      transform: translateX(100%);
-    }
-
-    to {
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-
-    to {
-      opacity: 1;
-    }
-  }
-
-  @media (width <= 400px) {
-    .menu {
-      max-width: 100%;
-    }
+  .menu-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
   }
 </style>
