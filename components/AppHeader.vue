@@ -38,11 +38,33 @@
 
   const route = useRoute()
   const isHomePage = computed(() => route.path === '/')
+
   const isShopActive = computed(() => route.path.startsWith(CATALOGUE_LINK))
   const isBlogActive = computed(() => route.path.startsWith(BLOG_LINK))
   const isOurStoryActive = computed(() => route.path.startsWith(OUR_STORY_LINK))
   const isCartActive = computed(() => route.path.startsWith(CART_LINK))
   const isProfileActive = computed(() => route.path.startsWith(PROFILE_LINK))
+
+  const navLinks = [
+    { to: CATALOGUE_LINK, text: 'Shop', isActive: () => isShopActive.value },
+    { to: BLOG_LINK, text: 'Blog', isActive: () => isBlogActive.value },
+    { to: OUR_STORY_LINK, text: 'Our Story', isActive: () => isOurStoryActive.value },
+  ]
+
+  const iconLinks = [
+    {
+      to: CART_LINK,
+      icon: IconShoppingCart,
+      isActive: () => isCartActive.value,
+      ariaLabel: 'Cart',
+    },
+    {
+      to: PROFILE_LINK,
+      icon: IconPerson,
+      isActive: () => isProfileActive.value,
+      ariaLabel: 'Profile',
+    },
+  ]
 </script>
 
 <template>
@@ -52,40 +74,36 @@
 
       <!-- Десктопная навигация -->
       <nav class="header__nav" :class="{ 'header__nav--hidden': isMounted && isMobile }">
-        <ul class="header__menu">
-          <li class="header__menu-item" :class="{ 'header__menu-item--active': isShopActive }">
-            <NuxtLink :to="CATALOGUE_LINK" class="header__menu-link">Shop</NuxtLink>
-          </li>
-          <li class="header__menu-item" :class="{ 'header__menu-item--active': isBlogActive }">
-            <NuxtLink :to="BLOG_LINK" class="header__menu-link">Blog</NuxtLink>
-          </li>
-          <li class="header__menu-item" :class="{ 'header__menu-item--active': isOurStoryActive }">
-            <NuxtLink :to="OUR_STORY_LINK" class="header__menu-link">Our Story</NuxtLink>
-          </li>
-        </ul>
+        <div class="header__menu">
+          <NuxtLink
+            v-for="link in navLinks"
+            :key="link.to"
+            :to="link.to"
+            class="header__menu-link"
+            :class="{ 'header__menu-link--active': link.isActive() }"
+          >
+            {{ link.text }}
+          </NuxtLink>
+        </div>
         <div class="header__icons">
           <button class="header__icon-button" aria-label="Search">
             <IconMagnifyingGlass class="header__icon" />
           </button>
           <NuxtLink
-            :to="CART_LINK"
+            v-for="iconLink in iconLinks"
+            :key="iconLink.to"
+            :to="iconLink.to"
             class="header__icon-button"
-            :class="{ 'header__icon-button--active': isCartActive }"
+            :class="{ 'header__icon-button--active': iconLink.isActive() }"
+            :aria-label="iconLink.ariaLabel"
           >
-            <IconShoppingCart class="header__icon" />
-          </NuxtLink>
-          <NuxtLink
-            :to="PROFILE_LINK"
-            class="header__icon-button"
-            :class="{ 'header__icon-button--active': isProfileActive }"
-          >
-            <IconPerson class="header__icon" />
+            <component :is="iconLink.icon" class="header__icon" />
           </NuxtLink>
         </div>
       </nav>
 
-      <!-- Мобильные контролы -->
-      <div
+      <!-- Мобильная навигация -->
+      <nav
         class="header__mobile-controls"
         :class="{ 'header__mobile-controls--hidden': isMounted && !isMobile }"
       >
@@ -99,7 +117,7 @@
         >
           <IconBurgerMenu class="header__mobile-icon" />
         </button>
-      </div>
+      </nav>
     </header>
   </div>
 
@@ -158,7 +176,6 @@
       gap: 64px;
       padding: 0;
       margin: 0 96px 0 0;
-      list-style: none;
 
       &::after {
         position: absolute;
@@ -175,8 +192,12 @@
       }
     }
 
-    &__menu-item {
+    &__menu-link {
       position: relative;
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s ease;
 
       &::after {
         position: absolute;
@@ -193,13 +214,6 @@
       &--active::after {
         width: 100%;
       }
-    }
-
-    &__menu-link {
-      color: inherit;
-      text-decoration: none;
-      cursor: pointer;
-      transition: color 0.2s ease;
 
       &:hover {
         color: var(--link-hover-color);
