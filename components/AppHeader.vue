@@ -4,18 +4,18 @@
   import IconPerson from '~/assets/icons/Icon-person.svg'
   import IconBurgerMenu from '~/assets/icons/Icon-burgerMenu.svg'
   import IconShoppingCartMobile from '~/assets/icons/Icon-shoppingCartMobile.svg'
-  import IconMagnifyingGlassMobile from '~/assets/icons/Icon-magnifyingGlass-mobile.svg'
-  import IconCross from '~/assets/icons/Icon-cross.svg'
   import { BREAKPOINTS } from '~/constants/breakpoints'
+  import { APP_LINKS } from '~/constants/links'
+  import { useRoute } from 'nuxt/app'
+
+  const { CATALOGUE_LINK, BLOG_LINK, OUR_STORY_LINK, CART_LINK, PROFILE_LINK } = APP_LINKS
 
   const isShowMenu = ref(false)
   const isMounted = ref(false)
-  const isMobile = ref(false) // Инициализируем как false
+  const isMobile = ref(false)
 
-  // Используем onMounted  только для клиент-сайд кода
   onMounted(() => {
     isMounted.value = true
-    // Проверяем медиазапрос только на клиенте
     const checkMobile = () => {
       isMobile.value = window.matchMedia(`(max-width: ${BREAKPOINTS.mobile})`).matches
     }
@@ -23,7 +23,6 @@
     checkMobile()
     window.addEventListener('resize', checkMobile)
 
-    // Чистим слушатель при уничтожении компонента
     onUnmounted(() => {
       window.removeEventListener('resize', checkMobile)
     })
@@ -32,76 +31,119 @@
   const toggleMenu = () => {
     isShowMenu.value = !isShowMenu.value
   }
+
+  const closeMenu = () => {
+    isShowMenu.value = false
+  }
+
+  const route = useRoute()
+  const isHomePage = computed(() => route.path === '/')
+
+  const isShopActive = computed(() => route.path.startsWith(CATALOGUE_LINK))
+  const isBlogActive = computed(() => route.path.startsWith(BLOG_LINK))
+  const isOurStoryActive = computed(() => route.path.startsWith(OUR_STORY_LINK))
+  const isCartActive = computed(() => route.path.startsWith(CART_LINK))
+  const isProfileActive = computed(() => route.path.startsWith(PROFILE_LINK))
+
+  const navLinks = [
+    { to: CATALOGUE_LINK, text: 'Shop', isActive: () => isShopActive.value },
+    { to: BLOG_LINK, text: 'Blog', isActive: () => isBlogActive.value },
+    { to: OUR_STORY_LINK, text: 'Our Story', isActive: () => isOurStoryActive.value },
+  ]
+
+  const iconLinks = [
+    {
+      to: CART_LINK,
+      icon: IconShoppingCart,
+      isActive: () => isCartActive.value,
+      ariaLabel: 'Cart',
+    },
+    {
+      to: PROFILE_LINK,
+      icon: IconPerson,
+      isActive: () => isProfileActive.value,
+      ariaLabel: 'Profile',
+    },
+  ]
 </script>
 
 <template>
-  <header class="header">
-    <a class="header__logo" href="/" aria-label="Homepage">
-      <span class="header__logo-initial">S</span>
-      <span class="header__logo-accent">HOPPE</span>
-    </a>
+  <div class="header-wrapper" :class="{ 'header-wrapper--bordered': !isHomePage }">
+    <header class="header">
+      <AppLogo />
 
-    <!-- Рендерим обе версии, но управляем видимостью через CSS -->
-    <nav class="header__nav" :class="{ 'header__nav--hidden': isMounted && isMobile }">
-      <ul class="header__menu">
-        <li class="header__menu-item">
-          <nuxt-link to="" class="header__menu-link">Shop</nuxt-link>
-        </li>
-        <li class="header__menu-item">
-          <nuxt-link to="" class="header__menu-link">Blog</nuxt-link>
-        </li>
-        <li class="header__menu-item">
-          <nuxt-link to="" class="header__menu-link">Our Story</nuxt-link>
-        </li>
-      </ul>
-      <div class="header__icons">
-        <button class="header__icon-button" aria-label="Search">
-          <IconMagnifyingGlass class="header__icon" />
-        </button>
-        <button class="header__icon-button" aria-label="Cart">
-          <IconShoppingCart class="header__icon" />
-        </button>
-        <button class="header__icon-button" aria-label="Account">
-          <IconPerson class="header__icon" />
-        </button>
-      </div>
-    </nav>
+      <!-- Десктопная навигация -->
+      <nav class="header__nav" :class="{ 'header__nav--hidden': isMounted && isMobile }">
+        <div class="header__menu">
+          <NuxtLink
+            v-for="link in navLinks"
+            :key="link.to"
+            :to="link.to"
+            class="header__menu-link"
+            :class="{ 'header__menu-link--active': link.isActive() }"
+          >
+            {{ link.text }}
+          </NuxtLink>
+        </div>
+        <div class="header__icons">
+          <button class="header__icon-button" aria-label="Search">
+            <IconMagnifyingGlass class="header__icon" />
+          </button>
+          <NuxtLink
+            v-for="iconLink in iconLinks"
+            :key="iconLink.to"
+            :to="iconLink.to"
+            class="header__icon-button"
+            :class="{ 'header__icon-button--active': iconLink.isActive() }"
+            :aria-label="iconLink.ariaLabel"
+          >
+            <component :is="iconLink.icon" class="header__icon" />
+          </NuxtLink>
+        </div>
+      </nav>
 
-    <!-- Мобильные контролы -->
-    <div
-      class="header__mobile-controls"
-      :class="{ 'header__mobile-controls--hidden': isMounted && !isMobile }"
-    >
-      <button class="header__mobile-button" aria-label="Cart">
-        <IconShoppingCartMobile class="header__mobile-icon" />
-      </button>
-      <button
-        class="header__mobile-button"
-        :aria-label="isShowMenu ? 'Close menu' : 'Open menu'"
-        @click="toggleMenu"
+      <!-- Мобильная навигация -->
+      <nav
+        class="header__mobile-controls"
+        :class="{ 'header__mobile-controls--hidden': isMounted && !isMobile }"
       >
-        <IconBurgerMenu v-if="!isShowMenu" class="header__mobile-icon" />
-        <IconCross v-if="isShowMenu" class="header__mobile-icon" />
-      </button>
-    </div>
-  </header>
-
-  <!-- Мобильный поиск -->
-  <div class="header__search" :class="{ 'header__search--hidden': isMounted && !isMobile }">
-    <IconMagnifyingGlassMobile class="header__search-icon" />
-    <span class="header__search-text">Search</span>
+        <NuxtLink :to="CART_LINK" class="header__mobile-button">
+          <IconShoppingCartMobile class="header__mobile-icon" />
+        </NuxtLink>
+        <button
+          class="header__mobile-button"
+          :aria-label="isShowMenu ? 'Close menu' : 'Open menu'"
+          @click="toggleMenu"
+        >
+          <IconBurgerMenu class="header__mobile-icon" />
+        </button>
+      </nav>
+    </header>
   </div>
 
-  <!-- Мобильное меню -->
-  <MobileMenu v-if="isShowMenu && isMounted && isMobile" @close="toggleMenu" />
+  <MobileSearch :is-mobile="isMobile" :is-mounted="isMounted" />
+
+  <MobileMenu
+    v-if="isShowMenu && isMounted && isMobile"
+    :is-mobile="isMobile"
+    :is-mounted="isMounted"
+    @close="closeMenu"
+  />
 </template>
 
 <style lang="scss" scoped>
+  .header-wrapper {
+    &--bordered {
+      @media (width >= calc(#{$breakpoints-mobile} + 1px)) {
+        margin-bottom: 96px;
+        border-bottom: 2px solid $divider-color;
+      }
+    }
+  }
+
   .header {
     --icon-size: 24px;
     --mobile-icon-size: 20px;
-    --logo-initial-color: #{$accent-color};
-    --logo-accent-color: #{$primary-color};
     --link-hover-color: #{$accent-color};
 
     position: relative;
@@ -109,35 +151,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 42px;
     margin-bottom: 16px;
 
     @media (max-width: $breakpoints-mobile) {
       margin-bottom: 0;
     }
 
-    &__logo {
-      display: flex;
-      align-items: center;
-      font-family: $logoFontFamily;
-      font-size: 35px;
-      font-weight: 400;
-      text-decoration: none;
-
-      @media (max-width: $breakpoints-mobile) {
-        font-size: 25px;
-      }
-    }
-
-    &__logo-initial {
-      color: var(--logo-initial-color);
-    }
-
-    &__logo-accent {
-      color: var(--logo-accent-color);
-    }
-
-    // Desktop Navigation
     &__nav {
       display: flex;
       align-items: center;
@@ -157,7 +176,6 @@
       gap: 64px;
       padding: 0;
       margin: 0 96px 0 0;
-      list-style: none;
 
       &::after {
         position: absolute;
@@ -175,10 +193,27 @@
     }
 
     &__menu-link {
+      position: relative;
       color: inherit;
       text-decoration: none;
       cursor: pointer;
       transition: color 0.2s ease;
+
+      &::after {
+        position: absolute;
+        bottom: -28px;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        content: '';
+        background: $primary-color;
+        transform: translateX(-50%);
+        transition: all 0.3s ease;
+      }
+
+      &--active::after {
+        width: 100%;
+      }
 
       &:hover {
         color: var(--link-hover-color);
@@ -195,19 +230,41 @@
     }
 
     &__icon-button {
+      position: relative;
       padding: 0;
       cursor: pointer;
       background: none;
       border: none;
+
+      &::after {
+        position: absolute;
+        bottom: -26px;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        content: '';
+        background: $primary-color;
+        transform: translateX(-50%);
+        transition: all 0.3s ease;
+      }
+
+      &.header__icon-button--active::after {
+        width: 100%;
+      }
     }
 
     &__icon {
       display: block;
       width: var(--icon-size);
       height: var(--icon-size);
+      color: $primary-color;
+      transition: fill 0.2s ease;
+
+      &:hover {
+        color: $accent-color;
+      }
     }
 
-    // Mobile Elements
     &__mobile-controls {
       display: none;
       gap: 13px;
@@ -232,33 +289,6 @@
       display: block;
       width: var(--mobile-icon-size);
       height: var(--mobile-icon-size);
-    }
-
-    &__search {
-      display: none;
-      gap: 8px;
-      align-items: center;
-      width: calc(100% - 10px);
-      height: 32px;
-      padding-left: 10px;
-      margin: 8px 0 16px;
-      font-size: 14px;
-      color: $main-text-color;
-      background: #efefef;
-      border-radius: 4px;
-
-      &--hidden {
-        display: none !important;
-      }
-
-      @media (max-width: $breakpoints-mobile) {
-        display: flex;
-      }
-    }
-
-    &__search-icon {
-      width: 16px;
-      height: 16px;
     }
   }
 </style>

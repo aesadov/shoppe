@@ -1,47 +1,52 @@
 <script setup lang="ts">
-  import { useNotification } from '~/composables/notification/useNotification'
-  import type { Product } from '~/types/api'
   import { ref } from 'vue'
+  import { useNotification } from '~/composables/notification/useNotification'
   import SkeletonImg from '~/components/skeletons/SkeletonImg.vue'
   import SkeletoneDescription from '~/components/skeletons/SkeletoneDescription.vue'
+  import type { Product } from '~/types/api'
+  import { APP_LINKS } from '~/constants/links'
+
+  const { CART_LINK } = APP_LINKS
 
   interface Props {
     product?: Product
     loading?: boolean
   }
 
-  const { product, loading = false } = defineProps<Props>()
+  const { loading = false, product } = defineProps<Props>()
+
   const { showSuccess } = useNotification()
   const isHovered = ref(false)
 
-  const addToCart = () => {
+  function addToCart() {
     if (!product) return
-    showSuccess('The item was added to your Shopping bag', { link: 'VIEW CART' })
+    showSuccess('The item was added to your Shopping bag', {
+      link: 'VIEW CART',
+      LinkAdress: CART_LINK,
+    })
   }
 
-  const handleMouseOver = () => {
+  function handleHover(state: boolean) {
     if (!loading && product) {
-      isHovered.value = true
+      isHovered.value = state
     }
-  }
-
-  const handleMouseOut = () => {
-    isHovered.value = false
   }
 </script>
 
 <template>
-  <div class="product" @mouseover="handleMouseOver" @mouseout="handleMouseOut">
+  <div class="product" @mouseenter="handleHover(true)" @mouseleave="handleHover(false)">
     <div class="product__image-wrapper">
       <SkeletonImg v-if="loading" />
+
       <template v-else>
         <NuxtImg
           v-if="product?.image"
           class="product__img"
           :src="product.image"
-          alt="product img"
+          alt="product image"
           loading="lazy"
         />
+
         <div
           class="product__hover-plate"
           :class="{ 'product__hover-plate--visible': isHovered }"
@@ -51,7 +56,9 @@
         </div>
       </template>
     </div>
+
     <SkeletoneDescription v-if="loading" />
+
     <template v-else-if="product">
       <h3 class="product__name">{{ product.title }}</h3>
       <p class="product__price">$ {{ product.price }}</p>
@@ -62,6 +69,7 @@
 <style lang="scss" scoped>
   .product {
     position: relative;
+    width: 100%;
 
     &__image-wrapper {
       position: relative;

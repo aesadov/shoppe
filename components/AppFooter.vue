@@ -90,7 +90,7 @@
   }
 
   .divider {
-    background-color: #d8d8d8;
+    background-color: $divider-color;
 
     @media (max-width: $breakpoints-mobile) {
       display: none;

@@ -1,23 +1,18 @@
 <script setup lang="ts">
   import ProductCard from '~/components/latestProducts/ProductCard.vue'
-  import { useGetAllProducts } from '~/composables/api/products/getAllProducts'
+  import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
   import { useNotification } from '~/composables/notification/useNotification'
-  import type { Product } from '~/types/api'
-  import { onMounted, ref } from 'vue'
-
-  const latestProducts = ref<Product[]>([])
-  const isLoading = ref(true)
 
   const { showError } = useNotification()
-  onMounted(async () => {
-    try {
-      isLoading.value = true
-      latestProducts.value = await useGetAllProducts(6)
-    } catch (error) {
-      console.error('Error loading products:', error)
+
+  const PRODUCTS_LIMIT = 6
+
+  const { data: products, pending, error, refresh } = useGetAllProducts({ limit: PRODUCTS_LIMIT })
+
+  watch(error, (newError) => {
+    if (newError) {
+      console.error('Error loading products:', newError)
       showError('Error loading products')
-    } finally {
-      isLoading.value = false
     }
   })
 </script>
@@ -29,13 +24,13 @@
       <NuxtLink to="" class="latest__link">View All</NuxtLink>
     </div>
     <div class="latest__products">
-      <!-- Скелетоны во время загрузки -->
-      <ProductCard v-for="n of 6" v-if="isLoading" :key="'skeleton-' + n" :loading="true" />
+      <!-- Скелетоны -->
+      <ProductCard v-for="n of 6" v-show="pending" :key="'skeleton-' + n" :loading="true" />
 
-      <!-- Реальные продукты после загрузки -->
+      <!-- Реальные продукты -->
       <ProductCard
-        v-for="product in latestProducts"
-        v-else
+        v-for="product in products"
+        v-show="!pending"
         :key="product.id"
         :product="product"
         :loading="false"

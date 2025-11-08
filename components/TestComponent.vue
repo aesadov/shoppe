@@ -3,7 +3,7 @@
   import IconInstagram from '~/assets/icons/Icon-Instagram.svg'
   import IconFaceBook from '~/assets/icons/Icon-FB.svg'
   import { onMounted } from 'vue'
-  import { useGetAllProducts } from '@/composables/api/products/getAllProducts'
+  import { useGetAllProducts } from '@/composables/api/products/getProducts'
   import { useAddNewPropduct } from '@/composables/api/products/addNewProduct'
   import { useGetASingleProduct } from '@/composables/api/products/getSingleProduct'
   import { useUpdateAPropduct } from '@/composables/api/products/updateProduct'

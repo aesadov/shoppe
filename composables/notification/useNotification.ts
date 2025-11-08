@@ -22,6 +22,7 @@ export function useNotification() {
       message,
       type,
       link: options.link,
+      LinkAdress: options.LinkAdress,
       duration,
       icon: options.icon,
     })

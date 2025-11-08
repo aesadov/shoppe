@@ -29,9 +29,14 @@
             <component :is="iconMap[n.type]" class="notification__message-icon" />
             <p class="notification__message-text">{{ n.message }}</p>
           </div>
-          <button v-if="n.link" class="notification__link" @click="hideNotification(n.id)">
+          <NuxtLink
+            v-if="n.link"
+            :to="n.LinkAdress"
+            class="notification__link"
+            @click="hideNotification(n.id)"
+          >
             {{ n.link }}
-          </button>
+          </NuxtLink>
           <button v-else class="notification__close" @click="hideNotification(n.id)">×</button>
         </div>
       </div>
