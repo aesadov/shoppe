@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import IconCross from '~/assets/icons/Icon-cross.svg'
+  import AppLogo from '~/components/AppLogo.vue'
 
   interface Props {
     title?: string
-    showCloseButton?: boolean
   }
 
   defineProps<Props>()
@@ -26,11 +26,10 @@
 <template>
   <div class="panel-overlay" @click="handleOverlayClick">
     <div class="panel">
-      <div v-if="$slots.header || title" class="panel__header">
-        <slot name="header">
-          <h2 v-if="title" class="panel__title">{{ title }}</h2>
-          <IconCross v-if="showCloseButton" class="panel__close" @click="handleCloseClick" />
-        </slot>
+      <div class="panel__header">
+        <AppLogo v-if="!title" />
+        <h2 v-else class="panel__title">{{ title }}</h2>
+        <IconCross class="panel__close" @click="handleCloseClick" />
       </div>
 
       <div class="panel__content">

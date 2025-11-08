@@ -2,8 +2,6 @@
   import IconPerson from '~/assets/icons/Icon-person.svg'
   import IconExit from '~/assets/icons/Icon-exit.svg'
   import { APP_LINKS } from '~/constants/links'
-  import IconCross from '~/assets/icons/Icon-cross.svg'
-  import AppLogo from '~/components/AppLogo.vue'
   import MobileSearch from '~/components/MobileSearch.vue'
 
   const {
@@ -27,11 +25,7 @@
     close: []
   }>()
 
-  const handleLinkClick = () => {
-    emit('close')
-  }
-
-  const handlePanelClose = () => {
+  const closeMenu = () => {
     emit('close')
   }
 
@@ -51,12 +45,7 @@
 </script>
 
 <template>
-  <MobilePanel @close="handlePanelClose">
-    <template #header>
-      <AppLogo />
-      <IconCross class="panel__close" @click="handlePanelClose" />
-    </template>
-
+  <MobilePanel @close="closeMenu">
     <MobileSearch :is-mobile="isMobile" :is-mounted="isMounted" />
 
     <nav class="menu-links">
@@ -65,7 +54,7 @@
         :key="link.to"
         :to="link.to"
         class="menu-link"
-        @click="handleLinkClick"
+        @click="closeMenu"
       >
         {{ link.text }}
       </NuxtLink>
@@ -77,7 +66,7 @@
         :key="link.to"
         :to="link.to"
         class="menu-link"
-        @click="handleLinkClick"
+        @click="closeMenu"
       >
         <component :is="link.icon" class="menu-icon" />
         <div>{{ link.text }}</div>
