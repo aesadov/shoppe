@@ -204,31 +204,7 @@
 </template>
 
 <style lang="scss" scoped>
-  $border-radius: 4px;
-  $transition: all 0.2s ease-in-out;
-  $gray-medium: #6c757d;
-  $white: #fff;
-
-  @mixin focus-state {
-    outline: none;
-    border-color: $accent-color;
-    box-shadow: 0 0 0 2px rgba($accent-color, 0.25);
-  }
-
-  @mixin input-base {
-    height: 53px;
-    padding: 8px;
-    font-family: $textFontFamily;
-    font-size: 14px;
-    color: $main-text-color;
-    border: 1px solid $divider-color;
-    border-radius: $border-radius;
-    transition: $transition;
-
-    &:focus {
-      @include focus-state;
-    }
-  }
+  @use '~/assets/scss/mixins/input';
 
   .filters {
     display: flex;
@@ -268,7 +244,7 @@
   }
 
   .filters__input {
-    @include input-base;
+    @include input.input-base;
 
     flex: 1;
     height: 35px;
@@ -290,7 +266,7 @@
   }
 
   .filters__select {
-    @include input-base;
+    @include input.input-base;
 
     width: 100%;
     padding: 12px 16px;
