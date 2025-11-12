@@ -23,7 +23,7 @@
 
 <template>
   <div class="desktop-filters">
-    <FiltersContetnt :is-mobile-panel-open="isMobilePanelOpen" />
+    <FiltersContetnt />
   </div>
 
   <button class="mobile-filters-button" @click="handleToggle">
@@ -32,7 +32,7 @@
   </button>
 
   <MobilePanel v-if="isMobilePanelOpen" title="Filters" @close="handleClose">
-    <FiltersContetnt :is-mobile-panel-open="isMobilePanelOpen" />
+    <FiltersContetnt />
   </MobilePanel>
 </template>
 
@@ -40,9 +40,7 @@
   .desktop-filters {
     flex-shrink: 0;
     width: 266px;
-    height: 336px;
     margin-right: 31px;
-    background-color: rgb(205 205 205);
 
     @media (max-width: $breakpoints-mobile) {
       display: none;
