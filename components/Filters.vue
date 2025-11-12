@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
   import IconFilterMobile from '~/assets/icons/Icon-filter-mobile.svg'
 
   interface Props {
@@ -33,6 +33,60 @@
 
   <MobilePanel v-if="isMobilePanelOpen" title="Filters" @close="handleClose">
     <FiltersContetnt />
+  </MobilePanel>
+</template> -->
+
+<script setup lang="ts">
+  import IconFilterMobile from '~/assets/icons/Icon-filter-mobile.svg'
+  import type { FiltersState } from '~/pages/catalogue.vue'
+
+  interface Props {
+    filters: FiltersState
+    categories?: { value: string; label: string }[]
+    isMobilePanelOpen?: boolean
+  }
+
+  const props = defineProps<Props>()
+
+  const emit = defineEmits<{
+    'filters-change': [filters: FiltersState]
+    toggle: []
+    close: []
+  }>()
+
+  const handleToggle = () => {
+    emit('toggle')
+  }
+
+  const handleClose = () => {
+    emit('close')
+  }
+
+  const handleFiltersChange = (newFilters: FiltersState) => {
+    emit('filters-change', newFilters)
+  }
+</script>
+
+<template>
+  <div class="desktop-filters">
+    <FiltersContent
+      :filters="filters"
+      :categories="categories"
+      @filters-change="handleFiltersChange"
+    />
+  </div>
+
+  <button class="mobile-filters-button" @click="handleToggle">
+    <IconFilterMobile class="mobile-filters-button__icon" />
+    <span>Filters</span>
+  </button>
+
+  <MobilePanel v-if="isMobilePanelOpen" title="Filters" @close="handleClose">
+    <FiltersContent
+      :filters="filters"
+      :categories="categories"
+      @filters-change="handleFiltersChange"
+    />
   </MobilePanel>
 </template>
 

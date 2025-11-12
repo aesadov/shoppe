@@ -1,16 +1,7 @@
 <script setup lang="ts">
   import IconMagnifyingGlass from '~/assets/icons/Icon-magnifyingGlass.svg'
   import IconArrowDown from '~/assets/icons/icon-arrow-down.svg'
-
-  interface FilterState {
-    search: string
-    category: string
-    sortBy: string
-    minPrice: number
-    maxPrice: number
-    onSale: boolean
-    inStock: boolean
-  }
+  import type { FiltersState } from '~/pages/catalogue.vue'
 
   interface SelectOption {
     value: string
@@ -18,20 +9,16 @@
   }
 
   const props = defineProps<{
+    filters: FiltersState
     categories?: SelectOption[]
     sortOptions?: SelectOption[]
-    initialMinPrice?: number
-    initialMaxPrice?: number
     minPriceLimit?: number
     maxPriceLimit?: number
   }>()
 
-  const defaultCategories: SelectOption[] = [
-    { value: 'electronics', label: 'Electronics' },
-    { value: 'clothing', label: 'Clothing' },
-    { value: 'books', label: 'Books' },
-    { value: 'home', label: 'Home & Garden' },
-  ]
+  const emit = defineEmits<{
+    'filters-change': [filters: FiltersState]
+  }>()
 
   const defaultSortOptions: SelectOption[] = [
     { value: 'price-asc', label: 'Price: Low to High' },
@@ -39,80 +26,77 @@
     { value: 'name-asc', label: 'Name: A to Z' },
     { value: 'name-desc', label: 'Name: Z to A' },
     { value: 'newest', label: 'Newest First' },
+    { value: 'rating-desc', label: 'Highest Rated' },
   ]
 
   const MIN_PRICE = props.minPriceLimit || 0
   const MAX_PRICE = props.maxPriceLimit || 500
-  const INITIAL_MIN = props.initialMinPrice || 40
-  const INITIAL_MAX = props.initialMaxPrice || 180
 
-  const filters = reactive<FilterState>({
-    search: '',
-    category: '',
-    sortBy: '',
-    minPrice: INITIAL_MIN,
-    maxPrice: INITIAL_MAX,
-    onSale: false,
-    inStock: false,
-  })
+  const localFilters = reactive({ ...props.filters })
 
-  const categories = computed(() => props.categories || defaultCategories)
+  const categories = computed(() => props.categories || [])
   const sortOptions = computed(() => props.sortOptions || defaultSortOptions)
 
   const minPriceLimit = MIN_PRICE
   const maxPriceLimit = MAX_PRICE
 
+  // Отслеживание изменений в локальных фильтрах
+  watch(
+    localFilters,
+    (newFilters) => {
+      emit('filters-change', newFilters)
+    },
+    { deep: true },
+  )
+
+  // Синхронизация с props
+  watch(
+    () => props.filters,
+    (newFilters) => {
+      Object.assign(localFilters, newFilters)
+    },
+    { deep: true },
+  )
+
   const updateMinPrice = (event: Event) => {
     const value = Number((event.target as HTMLInputElement).value)
-    if (value > filters.maxPrice) {
-      filters.minPrice = filters.maxPrice
+    if (value > localFilters.maxPrice) {
+      localFilters.minPrice = localFilters.maxPrice
     } else {
-      filters.minPrice = value
+      localFilters.minPrice = value
     }
   }
 
   const updateMaxPrice = (event: Event) => {
     const value = Number((event.target as HTMLInputElement).value)
-    if (value < filters.minPrice) {
-      filters.maxPrice = filters.minPrice
+    if (value < localFilters.minPrice) {
+      localFilters.maxPrice = localFilters.minPrice
     } else {
-      filters.maxPrice = value
+      localFilters.maxPrice = value
     }
   }
 
   const resetFilters = () => {
-    Object.assign(filters, {
+    Object.assign(localFilters, {
       search: '',
       category: '',
       sortBy: '',
-      minPrice: INITIAL_MIN,
-      maxPrice: INITIAL_MAX,
+      minPrice: MIN_PRICE,
+      maxPrice: MAX_PRICE,
       onSale: false,
       inStock: false,
     })
   }
 
-  const emit = defineEmits<{
-    'filters-change': [filters: FilterState]
-  }>()
-
-  watch(
-    filters,
-    (newFilters) => {
-      emit('filters-change', newFilters)
-    },
-    { deep: true, immediate: true },
-  )
-
   const sliderTrackStyle = computed(() => {
-    const minPercent = ((filters.minPrice - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100
-    const maxPercent = ((filters.maxPrice - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100
+    const minPercent = ((localFilters.minPrice - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100
+    const maxPercent = ((localFilters.maxPrice - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100
     return {
       background: `linear-gradient(to right, 
-      #ddd ${minPercent}%, 
-      #000000 ${minPercent}%, 
-      #000000 ${maxPercent}%, 
-      #ddd ${maxPercent}%)`,
+    #ddd ${minPercent}%, 
+    #000000 ${minPercent}%, 
+    #000000 ${maxPercent}%, 
+    #ddd ${maxPercent}%)`,
     }
   })
 
@@ -131,7 +115,7 @@
       <div class="filters__input-wrapper">
         <input
           :id="searchId"
-          v-model="filters.search"
+          v-model="localFilters.search"
           type="text"
           placeholder="Search..."
           class="filters__input"
@@ -142,8 +126,8 @@
 
     <!-- Category -->
     <div class="filters__group">
-      <select :id="categoryId" v-model="filters.category" class="filters__select">
-        <option value="" disabled selected>Categories</option>
+      <select :id="categoryId" v-model="localFilters.category" class="filters__select">
+        <option value="">All Categories</option>
         <option v-for="category in categories" :key="category.value" :value="category.value">
           {{ category.label }}
         </option>
@@ -153,8 +137,8 @@
 
     <!-- Sort By -->
     <div class="filters__group">
-      <select :id="sortId" v-model="filters.sortBy" class="filters__select">
-        <option value="" disabled selected>Sort by</option>
+      <select :id="sortId" v-model="localFilters.sortBy" class="filters__select">
+        <option value="">Default Sorting</option>
         <option v-for="sortOption in sortOptions" :key="sortOption.value" :value="sortOption.value">
           {{ sortOption.label }}
         </option>
@@ -167,7 +151,7 @@
       <div class="filters__slider">
         <div class="filters__slider-track" :style="sliderTrackStyle"></div>
         <input
-          v-model.number="filters.minPrice"
+          v-model.number="localFilters.minPrice"
           type="range"
           :min="minPriceLimit"
           :max="maxPriceLimit"
@@ -175,7 +159,7 @@
           @input="updateMinPrice"
         />
         <input
-          v-model.number="filters.maxPrice"
+          v-model.number="localFilters.maxPrice"
           type="range"
           :min="minPriceLimit"
           :max="maxPriceLimit"
@@ -184,9 +168,11 @@
         />
         <div class="filters__slider-values">
           <span class="filters__slider-label"
-            >Price: ${{ filters.minPrice }} - ${{ filters.maxPrice }}</span
+            >Price: ${{ localFilters.minPrice }} - ${{ localFilters.maxPrice }}</span
           >
-          <button type="reset" class="filters__reset" @click="resetFilters">Reset</button>
+          <div>
+            <button type="button" class="filters__reset" @click="resetFilters">Reset</button>
+          </div>
         </div>
       </div>
     </div>
@@ -197,17 +183,17 @@
         <span class="filters__switch-text">On sale</span>
         <input
           :id="onSaleId"
-          v-model="filters.onSale"
+          v-model="localFilters.onSale"
           type="checkbox"
           class="filters__switch-input"
         />
         <span class="filters__switch-slider"></span>
       </label>
       <label class="filters__switch">
-        <span class="filters__switch-text">In stock</span>
+        <span class="filters__switch-text">In stock only</span>
         <input
           :id="inStockId"
-          v-model="filters.inStock"
+          v-model="localFilters.inStock"
           type="checkbox"
           class="filters__switch-input"
         />
