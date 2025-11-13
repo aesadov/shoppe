@@ -1,10 +1,11 @@
 <script setup lang="ts">
   import IconFilterMobile from '~/assets/icons/Icon-filter-mobile.svg'
-  import type { FiltersState } from '~/pages/catalogue.vue'
+  import type { FiltersState, SelectOption } from '~/types/filters'
+  import { useMobileFilters } from '~/composables/filters/useMobileFilters'
 
   interface Props {
     filters: FiltersState
-    categories?: { value: string; label: string }[]
+    categories?: SelectOption[]
     isMobilePanelOpen?: boolean
   }
 
@@ -16,11 +17,15 @@
     close: []
   }>()
 
+  const { isShowMobFilters, toggleShowMobFilters, closeMobFilters } = useMobileFilters()
+
   const handleToggle = () => {
+    toggleShowMobFilters()
     emit('toggle')
   }
 
   const handleClose = () => {
+    closeMobFilters()
     emit('close')
   }
 
@@ -43,7 +48,7 @@
     <span>Filters</span>
   </button>
 
-  <MobilePanel v-if="isMobilePanelOpen" title="Filters" @close="handleClose">
+  <MobilePanel v-if="isShowMobFilters" title="Filters" @close="handleClose">
     <FiltersContent
       :filters="filters"
       :categories="categories"
@@ -51,7 +56,6 @@
     />
   </MobilePanel>
 </template>
-
 <style lang="scss" scoped>
   .desktop-filters {
     flex-shrink: 0;

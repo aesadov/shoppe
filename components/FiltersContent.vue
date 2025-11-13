@@ -1,111 +1,40 @@
 <script setup lang="ts">
   import IconMagnifyingGlass from '~/assets/icons/Icon-magnifyingGlass.svg'
   import IconArrowDown from '~/assets/icons/icon-arrow-down.svg'
-  import type { FiltersState } from '~/pages/catalogue.vue'
+  import type { FiltersState, SelectOption } from '~/types/filters'
+  import { useFiltersLogic } from '~/composables/filters/useFiltersLogic'
+  import { useFilterOptions } from '~/composables/filters/useFilterOptions'
 
-  interface SelectOption {
-    value: string
-    label: string
-  }
-
-  const props = defineProps<{
+  interface Props {
     filters: FiltersState
     categories?: SelectOption[]
     sortOptions?: SelectOption[]
     minPriceLimit?: number
     maxPriceLimit?: number
-  }>()
+  }
+
+  const props = defineProps<Props>()
 
   const emit = defineEmits<{
     'filters-change': [filters: FiltersState]
   }>()
 
-  const defaultSortOptions: SelectOption[] = [
-    { value: 'price-asc', label: 'Price: Low to High' },
-    { value: 'price-desc', label: 'Price: High to Low' },
-    { value: 'name-asc', label: 'Name: A to Z' },
-    { value: 'name-desc', label: 'Name: Z to A' },
-    { value: 'newest', label: 'Newest First' },
-    { value: 'rating-desc', label: 'Highest Rated' },
-  ]
+  const { defaultSortOptions } = useFilterOptions()
 
-  const MIN_PRICE = props.minPriceLimit || 0
-  const MAX_PRICE = props.maxPriceLimit || 500
-
-  const localFilters = reactive({ ...props.filters })
-
-  const categories = computed(() => props.categories || [])
-  const sortOptions = computed(() => props.sortOptions || defaultSortOptions)
-
-  const minPriceLimit = MIN_PRICE
-  const maxPriceLimit = MAX_PRICE
-
-  // Отслеживание изменений в локальных фильтрах
-  watch(
+  const {
     localFilters,
-    (newFilters) => {
-      emit('filters-change', newFilters)
-    },
-    { deep: true },
-  )
+    updateMinPrice,
+    updateMaxPrice,
+    resetFilters,
+    sliderTrackStyle,
+    generateUniqueId,
+  } = useFiltersLogic(props, emit)
 
-  // Синхронизация с props
-  watch(
-    () => props.filters,
-    (newFilters) => {
-      Object.assign(localFilters, newFilters)
-    },
-    { deep: true },
-  )
-
-  const updateMinPrice = (event: Event) => {
-    const value = Number((event.target as HTMLInputElement).value)
-    if (value > localFilters.maxPrice) {
-      localFilters.minPrice = localFilters.maxPrice
-    } else {
-      localFilters.minPrice = value
-    }
-  }
-
-  const updateMaxPrice = (event: Event) => {
-    const value = Number((event.target as HTMLInputElement).value)
-    if (value < localFilters.minPrice) {
-      localFilters.maxPrice = localFilters.minPrice
-    } else {
-      localFilters.maxPrice = value
-    }
-  }
-
-  const resetFilters = () => {
-    Object.assign(localFilters, {
-      search: '',
-      category: '',
-      sortBy: '',
-      minPrice: MIN_PRICE,
-      maxPrice: MAX_PRICE,
-      onSale: false,
-      inStock: false,
-    })
-  }
-
-  const sliderTrackStyle = computed(() => {
-    const minPercent = ((localFilters.minPrice - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100
-    const maxPercent = ((localFilters.maxPrice - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100
-    return {
-      background: `linear-gradient(to right, 
-    #ddd ${minPercent}%, 
-    #000000 ${minPercent}%, 
-    #000000 ${maxPercent}%, 
-    #ddd ${maxPercent}%)`,
-    }
-  })
-
-  // Генерация уникальных ID
-  const searchId = 'search-' + Math.random().toString(36).substr(2, 9)
-  const categoryId = 'category-' + Math.random().toString(36).substr(2, 9)
-  const sortId = 'sort-' + Math.random().toString(36).substr(2, 9)
-  const onSaleId = 'on-sale-' + Math.random().toString(36).substr(2, 9)
-  const inStockId = 'in-stock-' + Math.random().toString(36).substr(2, 9)
+  const searchId = generateUniqueId('search')
+  const categoryId = generateUniqueId('category')
+  const sortId = generateUniqueId('sort')
+  const onSaleId = generateUniqueId('on-sale')
+  const inStockId = generateUniqueId('in-stock')
 </script>
 
 <template>
@@ -139,7 +68,11 @@
     <div class="filters__group">
       <select :id="sortId" v-model="localFilters.sortBy" class="filters__select">
         <option value="">Default Sorting</option>
-        <option v-for="sortOption in sortOptions" :key="sortOption.value" :value="sortOption.value">
+        <option
+          v-for="sortOption in sortOptions?.length ? sortOptions : defaultSortOptions"
+          :key="sortOption.value"
+          :value="sortOption.value"
+        >
           {{ sortOption.label }}
         </option>
       </select>
@@ -167,9 +100,9 @@
           @input="updateMaxPrice"
         />
         <div class="filters__slider-values">
-          <span class="filters__slider-label"
-            >Price: ${{ localFilters.minPrice }} - ${{ localFilters.maxPrice }}</span
-          >
+          <span class="filters__slider-label">
+            Price: ${{ localFilters.minPrice }} - ${{ localFilters.maxPrice }}
+          </span>
           <div>
             <button type="button" class="filters__reset" @click="resetFilters">Reset</button>
           </div>
@@ -202,7 +135,6 @@
     </div>
   </div>
 </template>
-
 <style lang="scss" scoped>
   @use '~/assets/scss/mixins/input';
 
