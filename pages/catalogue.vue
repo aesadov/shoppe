@@ -2,24 +2,51 @@
   import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
   import { useNotification } from '~/composables/notification/useNotification'
   import { usePagination } from '~/composables/usePagination'
+  import { useProductFilters } from '~/composables/filters/useProductFilters'
+  import { useProductFiltering } from '~/composables/filters/useProductFiltering'
+  import { useProductCategories } from '~/composables/filters/useProductCategories'
+  import type { FiltersState } from '~/types/filters'
+  import { debounce } from '~/utils/debounce'
 
   const { showError } = useNotification()
-  const { data: products, pending, error } = useGetAllProducts()
+
+  const {
+    data: allProducts,
+    pending: allProductsPending,
+    error: allProductsError,
+  } = useGetAllProducts()
+
+  const { filters, initFilters, updateQueryParams } = useProductFilters()
+  const { categories } = useProductCategories(allProducts)
+  const { getFilteredProducts } = useProductFiltering(allProducts)
+  const filteredProducts = computed(() => getFilteredProducts(filters))
+
+  onMounted(() => {
+    initFilters()
+  })
+
+  watch(
+    filters,
+    debounce((newFilters: FiltersState) => {
+      updateQueryParams(newFilters)
+    }, 300),
+    { deep: true },
+  )
+
+  watch(allProductsError, (newError) => {
+    if (newError) {
+      console.error('Error loading products:', newError)
+      showError('Error loading products')
+    }
+  })
 
   const {
     currentPage,
     totalPages,
     paginatedItems: paginatedProducts,
     goToPage: handlePageChange,
-  } = usePagination(products, {
+  } = usePagination(filteredProducts, {
     itemsPerPage: 6,
-  })
-
-  watch(error, (newError) => {
-    if (newError) {
-      console.error('Error loading products:', newError)
-      showError('Error loading products')
-    }
   })
 
   const isShowMobFilters = ref(false)
@@ -31,23 +58,42 @@
   const closeMobFilters = () => {
     isShowMobFilters.value = false
   }
+
+  const handleFiltersChange = (newFilters: FiltersState) => {
+    Object.assign(filters, newFilters)
+  }
+
+  watch(
+    filters,
+    () => {
+      if (currentPage.value !== 1) {
+        handlePageChange(1)
+      }
+    },
+    { deep: true },
+  )
 </script>
 
 <template>
   <div class="catalogue">
-    <MobileFilters v-if="isShowMobFilters" @close="closeMobFilters" />
-
     <h1 class="catalogue__title">Shop</h1>
 
     <div class="catalogue__main">
-      <ProductFilters @btn-click="toggleShowMobFilters" />
+      <Filters
+        :filters="filters"
+        :categories="categories"
+        :is-mobile-panel-open="isShowMobFilters"
+        @filters-change="handleFiltersChange"
+        @toggle="toggleShowMobFilters"
+        @close="closeMobFilters"
+      />
 
       <main class="catalogue__content">
         <div class="catalogue__products">
-          <ProductList :products="paginatedProducts" :loading="pending" />
+          <ProductList :products="paginatedProducts" :loading="allProductsPending" />
         </div>
 
-        <div class="catalogue__pagination">
+        <div v-if="totalPages > 1" class="catalogue__pagination">
           <Pagination
             :current-page="currentPage"
             :total-pages="totalPages"
@@ -62,7 +108,8 @@
 <style lang="scss" scoped>
   .catalogue {
     max-width: 1200px;
-    padding: 0 16px;
+
+    // padding: 0 16px;
     margin: 0 auto;
 
     &__title {
@@ -89,16 +136,6 @@
         grid-template-columns: 1fr;
         gap: 20px;
         margin-top: 15px;
-      }
-    }
-
-    &__filters {
-      position: sticky;
-      top: 100px;
-
-      @media (max-width: $breakpoints-mobile) {
-        position: static;
-        display: none;
       }
     }
 
