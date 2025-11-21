@@ -4,6 +4,7 @@
   import type { FiltersState, SelectOption } from '~/types/filters'
   import { useFiltersLogic } from '~/composables/filters/useFiltersLogic'
   import { useFilterOptions } from '~/composables/filters/useFilterOptions'
+  import { shallowRef, onMounted } from 'vue'
 
   interface Props {
     filters: FiltersState
@@ -13,7 +14,12 @@
     maxPriceLimit?: number
   }
 
-  const props = defineProps<Props>()
+  const props = withDefaults(defineProps<Props>(), {
+    minPriceLimit: 0,
+    maxPriceLimit: 500,
+    categories: () => [],
+    sortOptions: () => [],
+  })
 
   const emit = defineEmits<{
     'filters-change': [filters: FiltersState]
@@ -21,20 +27,31 @@
 
   const { defaultSortOptions } = useFilterOptions()
 
-  const {
-    localFilters,
-    updateMinPrice,
-    updateMaxPrice,
-    resetFilters,
-    sliderTrackStyle,
-    generateUniqueId,
-  } = useFiltersLogic(props, emit)
+  const { localFilters, updatePriceRange, resetFilters, generateUniqueId } = useFiltersLogic(
+    props,
+    emit,
+  )
 
   const searchId = generateUniqueId('search')
   const categoryId = generateUniqueId('category')
   const sortId = generateUniqueId('sort')
   const onSaleId = generateUniqueId('on-sale')
   const inStockId = generateUniqueId('in-stock')
+
+  const multiRangeSlider = shallowRef()
+
+  onMounted(async () => {
+    try {
+      const module = await import('multi-range-slider-vue')
+      multiRangeSlider.value = module.default
+    } catch (error) {
+      console.error('Failed to load multi-range-slider-vue:', error)
+    }
+  })
+
+  const handleSliderInput = (event: { minValue: number; maxValue: number }) => {
+    updatePriceRange(event.minValue, event.maxValue)
+  }
 </script>
 
 <template>
@@ -82,23 +99,19 @@
     <!-- Price Range Slider -->
     <div class="filters__group">
       <div class="filters__slider">
-        <div class="filters__slider-track" :style="sliderTrackStyle"></div>
-        <input
-          v-model.number="localFilters.minPrice"
-          type="range"
-          :min="minPriceLimit"
-          :max="maxPriceLimit"
-          class="filters__slider-input filters__slider-input--min"
-          @input="updateMinPrice"
-        />
-        <input
-          v-model.number="localFilters.maxPrice"
-          type="range"
-          :min="minPriceLimit"
-          :max="maxPriceLimit"
-          class="filters__slider-input filters__slider-input--max"
-          @input="updateMaxPrice"
-        />
+        <ClientOnly>
+          <component
+            :is="multiRangeSlider"
+            :min="minPriceLimit"
+            :max="maxPriceLimit"
+            :step="1"
+            :min-value="localFilters.minPrice"
+            :max-value="localFilters.maxPrice"
+            class="filters__multi-slider"
+            @input="handleSliderInput"
+          />
+        </ClientOnly>
+
         <div class="filters__slider-values">
           <span class="filters__slider-label">
             Price: ${{ localFilters.minPrice }} - ${{ localFilters.maxPrice }}
@@ -135,6 +148,7 @@
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
   @use '~/assets/scss/mixins/input';
 
@@ -232,77 +246,24 @@
 
   .filters__slider {
     position: relative;
-    height: 60px;
-    margin: 8px 0;
+    margin: 24px 0 8px;
   }
 
-  .filters__slider-track {
-    position: absolute;
-    top: 50%;
-    z-index: 1;
-    width: 100%;
-    height: 2px;
-    transform: translateY(-50%);
-  }
-
-  .filters__slider-input {
-    position: absolute;
-    top: 50%;
-    z-index: 2;
-    width: 100%;
-    height: 2px;
-    margin: 0;
-    appearance: none;
-    pointer-events: none;
-    background: transparent;
-    transform: translateY(-50%);
-  }
-
-  .filters__slider-input--min,
-  .filters__slider-input--max {
-    &::-webkit-slider-thumb {
-      width: 3px;
-      height: 10px;
-      appearance: none;
-      pointer-events: all;
-      cursor: pointer;
-      background: $primary-color;
-      border: none;
-      border-radius: 0;
-      transition: $transition;
-    }
-
-    &::-moz-range-thumb {
-      width: 3px;
-      height: 10px;
-      pointer-events: all;
-      cursor: pointer;
-      background: $primary-color;
-      border: none;
-      border-radius: 0;
-      transition: $transition;
-    }
-
-    &::-webkit-slider-thumb:hover {
-      background: $primary-color;
-      transform: scale(1.2);
-    }
-
-    &::-moz-range-thumb:hover {
-      background: $primary-color;
-      transform: scale(1.2);
-    }
+  .filters__slider-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    font-size: 14px;
+    color: $main-text-color;
   }
 
   .filters__slider-values {
-    position: absolute;
-    right: 0;
-    bottom: -7px;
-    left: 0;
     display: flex;
     gap: 16px;
     align-items: center;
     justify-content: space-between;
+    margin-top: 16px;
   }
 
   .filters__slider-label {
@@ -391,16 +352,7 @@
       max-width: none;
     }
 
-    .filters__slider {
-      height: 40px;
-    }
-
     .filters__slider-values {
-      position: absolute;
-      right: 0;
-      bottom: -15px;
-      left: 0;
-      display: flex;
       flex-direction: row;
       gap: 16px;
       align-items: center;
@@ -414,6 +366,72 @@
 
     .filters__reset {
       align-self: center;
+    }
+  }
+</style>
+
+<style lang="scss">
+  .filters__multi-slider {
+    position: relative;
+    width: 100% !important;
+    padding: 15px 0 !important;
+    margin: -15px 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+
+    .bar-inner {
+      height: 2px;
+      background-color: $primary-color !important;
+      border: none !important;
+    }
+
+    .bar-left,
+    .bar-right {
+      height: 2px;
+      padding: 0 !important;
+      background-color: $divider-color !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    .thumb {
+      position: relative;
+      top: -4px;
+      width: 2px !important;
+      height: 10px !important;
+      background: $primary-color !important;
+
+      &::before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 10;
+        display: block !important;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        content: '' !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        transform: translate(-50%, -50%);
+      }
+
+      &:hover {
+        background: $accent-color !important;
+      }
+
+      &::after {
+        display: none !important;
+      }
+    }
+
+    .ruler {
+      display: none !important;
+    }
+
+    .label {
+      display: none !important;
     }
   }
 </style>

@@ -30,14 +30,9 @@ export const useFiltersLogic = (
     { deep: true },
   )
 
-  const updateMinPrice = (event: Event) => {
-    const value = Number((event.target as HTMLInputElement).value)
-    localFilters.minPrice = Math.min(value, localFilters.maxPrice)
-  }
-
-  const updateMaxPrice = (event: Event) => {
-    const value = Number((event.target as HTMLInputElement).value)
-    localFilters.maxPrice = Math.max(value, localFilters.minPrice)
+  const updatePriceRange = (min: number, max: number) => {
+    localFilters.minPrice = min
+    localFilters.maxPrice = max
   }
 
   const resetFilters = () => {
@@ -52,29 +47,13 @@ export const useFiltersLogic = (
     })
   }
 
-  const sliderTrackStyle = computed(() => {
-    const range = maxPriceLimit - minPriceLimit
-    const minPercent = ((localFilters.minPrice - minPriceLimit) / range) * 100
-    const maxPercent = ((localFilters.maxPrice - minPriceLimit) / range) * 100
-
-    return {
-      background: `linear-gradient(to right,
-        #ddd ${minPercent}%,
-        #000000 ${minPercent}%,
-        #000000 ${maxPercent}%,
-        #ddd ${maxPercent}%)`,
-    }
-  })
-
   const generateUniqueId = (prefix: string) =>
     `${prefix}-${Math.random().toString(36).substring(2, 11)}`
 
   return {
     localFilters,
-    updateMinPrice,
-    updateMaxPrice,
+    updatePriceRange,
     resetFilters,
-    sliderTrackStyle,
     generateUniqueId,
   }
 }

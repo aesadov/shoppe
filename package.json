@@ -22,6 +22,7 @@
     "@vueuse/core": "^13.3.0",
     "@vueuse/nuxt": "^13.5.0",
     "axios": "^1.9.0",
+    "multi-range-slider-vue": "^1.1.4",
     "nuxt": "^3.17.3",
     "swiper": "^11.2.10",
     "vite-svg-loader": "^5.1.0",
@@ -29,6 +30,7 @@
     "vue-carousel": "^0.18.0",
     "vue-content-loader": "^2.0.1",
     "vue-router": "^4.5.1",
+    "vue-slider-component": "^3.2.24",
     "vue3-carousel": "^0.16.0"
   },
   "devDependencies": {
