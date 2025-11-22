@@ -57,17 +57,15 @@
 <template>
   <div class="filters">
     <!-- Search -->
-    <div class="filters__group">
-      <div class="filters__input-wrapper">
-        <input
-          :id="searchId"
-          v-model="localFilters.search"
-          type="text"
-          placeholder="Search..."
-          class="filters__input"
-        />
-        <IconMagnifyingGlass class="filters__search-icon" />
-      </div>
+    <div class="filters__input-wrapper">
+      <input
+        :id="searchId"
+        v-model="localFilters.search"
+        type="text"
+        placeholder="Search..."
+        class="filters__input"
+      />
+      <IconMagnifyingGlass class="filters__search-icon" />
     </div>
 
     <!-- Category -->
