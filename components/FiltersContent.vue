@@ -3,7 +3,7 @@
   import type { FiltersState, SelectOption } from '~/types/filters'
   import { useFiltersLogic } from '~/composables/filters/useFiltersLogic'
   import { useFilterOptions } from '~/composables/filters/useFilterOptions'
-  import { shallowRef, onMounted } from 'vue'
+  import { shallowRef, onMounted, computed } from 'vue'
 
   interface Props {
     filters: FiltersState
@@ -55,6 +55,10 @@
   const handleSearchSubmit = () => {
     console.log('Search submitted:', localFilters.search)
   }
+
+  const sortedOptions = computed(() => {
+    return props.sortOptions?.length ? props.sortOptions : defaultSortOptions
+  })
 </script>
 
 <template>
@@ -88,7 +92,7 @@
       <select :id="sortId" v-model="localFilters.sortBy" class="filters__select">
         <option value="">Default Sorting</option>
         <option
-          v-for="sortOption in sortOptions?.length ? sortOptions : defaultSortOptions"
+          v-for="sortOption in sortedOptions"
           :key="sortOption.value"
           :value="sortOption.value"
         >
