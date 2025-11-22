@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import IconMagnifyingGlass from '~/assets/icons/Icon-magnifyingGlass.svg'
   import IconArrowDown from '~/assets/icons/icon-arrow-down.svg'
   import type { FiltersState, SelectOption } from '~/types/filters'
   import { useFiltersLogic } from '~/composables/filters/useFiltersLogic'
@@ -52,20 +51,25 @@
   const handleSliderInput = (event: { minValue: number; maxValue: number }) => {
     updatePriceRange(event.minValue, event.maxValue)
   }
+
+  const handleSearchSubmit = () => {
+    console.log('Search submitted:', localFilters.search)
+  }
 </script>
 
 <template>
   <div class="filters">
     <!-- Search -->
-    <div class="filters__input-wrapper">
-      <input
-        :id="searchId"
+    <div class="filters__search-wrapper">
+      <BaseInput
         v-model="localFilters.search"
-        type="text"
-        placeholder="Search..."
-        class="filters__input"
+        type="search"
+        :placeholder="'Search...'"
+        :show-search-icon="true"
+        :show-submit-icon="false"
+        :show-agreement="false"
+        @submit="handleSearchSubmit"
       />
-      <IconMagnifyingGlass class="filters__search-icon" />
     </div>
 
     <!-- Category -->
@@ -166,46 +170,44 @@
     gap: 8px;
   }
 
-  .filters__input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
+  .filters__search-wrapper {
     margin-bottom: 24px;
-    border-bottom: 1px solid $divider-color;
 
-    &:focus-within {
-      border-bottom-color: $accent-color;
-    }
-  }
-
-  .filters__search-icon {
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-    color: $main-text-color;
-    pointer-events: none;
-  }
-
-  .filters__input {
-    @include input.input-base;
-
-    flex: 1;
-    height: 35px;
-    padding: 0;
-    color: $main-text-color;
-    background: transparent;
-    border: none;
-    border-radius: 0;
-
-    &:focus {
-      outline: none;
-      box-shadow: none;
+    // Стилизация BaseInput для интеграции с существующим дизайном
+    :deep(.input-container) {
+      width: 100%;
     }
 
-    &::placeholder {
+    :deep(.input-wrapper) {
+      position: relative;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid $divider-color;
+
+      &:focus-within {
+        border-bottom-color: $accent-color;
+      }
+    }
+
+    :deep(.input) {
+      flex: 1;
+      height: 35px;
+      padding: 0;
+      margin: 0;
       color: $main-text-color;
-      opacity: 0.7;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+
+      &::placeholder {
+        color: $main-text-color;
+        opacity: 0.7;
+      }
     }
   }
 
