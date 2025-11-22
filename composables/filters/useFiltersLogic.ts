@@ -47,13 +47,9 @@ export const useFiltersLogic = (
     })
   }
 
-  const generateUniqueId = (prefix: string) =>
-    `${prefix}-${Math.random().toString(36).substring(2, 11)}`
-
   return {
     localFilters,
     updatePriceRange,
     resetFilters,
-    generateUniqueId,
   }
 }

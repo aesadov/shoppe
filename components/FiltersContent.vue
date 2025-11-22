@@ -4,6 +4,7 @@
   import { useFiltersLogic } from '~/composables/filters/useFiltersLogic'
   import { useFilterOptions } from '~/composables/filters/useFilterOptions'
   import { shallowRef, onMounted, computed } from 'vue'
+  import { generateUniqueId } from '~/utils/generateUniqueId'
 
   interface Props {
     filters: FiltersState
@@ -26,10 +27,7 @@
 
   const { defaultSortOptions } = useFilterOptions()
 
-  const { localFilters, updatePriceRange, resetFilters, generateUniqueId } = useFiltersLogic(
-    props,
-    emit,
-  )
+  const { localFilters, updatePriceRange, resetFilters } = useFiltersLogic(props, emit)
 
   const searchId = generateUniqueId('search')
   const categoryId = generateUniqueId('category')
