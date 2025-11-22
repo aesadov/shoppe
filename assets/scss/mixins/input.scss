@@ -1,0 +1,22 @@
+@use '../variables' as *;
+
+@mixin focus-state {
+  outline: none;
+  border-color: $accent-color;
+  box-shadow: 0 0 0 2px rgba($accent-color, 0.25);
+}
+
+@mixin input-base {
+  height: 53px;
+  padding: 8px;
+  font-family: $textFontFamily;
+  font-size: 14px;
+  color: $main-text-color;
+  border: 1px solid $divider-color;
+  border-radius: $border-radius;
+  transition: $transition;
+
+  &:focus {
+    @include focus-state;
+  }
+}

@@ -1,13 +1,16 @@
 <script setup lang="ts">
   import IconArrow from '~/assets/icons/Icon-arrow.svg'
+  import IconMagnifyingGlass from '~/assets/icons/Icon-magnifyingGlass.svg'
 
   interface Props {
+    type: 'search' | 'e-mail'
     error?: boolean
     placeholder?: string
     errorMessage?: string
   }
 
   const {
+    type,
     error = false,
     placeholder = 'Введите текст',
     errorMessage = 'Ошибка ввода',
@@ -38,7 +41,7 @@
 <template>
   <div class="input-container">
     <div class="error-msg">
-      <span v-if="error">{{ errorMessage }}</span>
+      <span v-if="error && type === 'e-mail'">{{ errorMessage }}</span>
     </div>
     <div class="input-wrapper">
       <input
@@ -50,14 +53,18 @@
         @keypress.enter="handleSubmit"
       />
       <div
+        v-if="type === 'e-mail'"
         class="input__icon-wrapper"
         :class="{ 'input__icon-wrapper--disabled': !isChecked }"
         @click="handleSubmit"
       >
         <IconArrow class="input__icon" />
       </div>
+      <div v-if="type === 'search'">
+        <IconMagnifyingGlass class="input__icon-search" />
+      </div>
     </div>
-    <div class="info">
+    <div v-if="type === 'e-mail'" class="info">
       <label class="info__label">
         <input
           :checked="isChecked"
@@ -107,6 +114,10 @@
   .input__icon {
     fill: $main-text-color;
     transition: all 0.3s ease;
+  }
+
+  .input__icon-search {
+    width: 20px;
   }
 
   .input__icon-wrapper {
