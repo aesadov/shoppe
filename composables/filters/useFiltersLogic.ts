@@ -1,5 +1,7 @@
 import type { FiltersState, SelectOption } from '~/types/filters'
 
+const MAX_PRICE_LIMIT = 500
+
 export const useFiltersLogic = (props: {
   filters: FiltersState
   categories?: SelectOption[]
@@ -7,7 +9,7 @@ export const useFiltersLogic = (props: {
   minPriceLimit?: number
   maxPriceLimit?: number
 }) => {
-  const { minPriceLimit = 0, maxPriceLimit = 500 } = props
+  const { minPriceLimit = 0, maxPriceLimit = MAX_PRICE_LIMIT } = props
 
   const localFilters = reactive<FiltersState>({ ...props.filters })
 

@@ -5,12 +5,14 @@ export const useProductFilters = () => {
   const route = useRoute()
   const router = useRouter()
 
+  const MAX_PRICE = 500
+
   const filters = reactive<FiltersState>({
     search: '',
     category: '',
     sortBy: '',
     minPrice: 0,
-    maxPrice: 500,
+    maxPrice: MAX_PRICE,
     onSale: false,
     inStock: false,
   })
@@ -34,7 +36,7 @@ export const useProductFilters = () => {
     if (newFilters.category) query.category = newFilters.category
     if (newFilters.sortBy) query.sortBy = newFilters.sortBy
     if (newFilters.minPrice > 0) query.minPrice = newFilters.minPrice.toString()
-    if (newFilters.maxPrice < 500) query.maxPrice = newFilters.maxPrice.toString()
+    if (newFilters.maxPrice < MAX_PRICE) query.maxPrice = newFilters.maxPrice.toString()
     if (newFilters.onSale) query.onSale = newFilters.onSale.toString()
     if (newFilters.inStock) query.inStock = newFilters.inStock.toString()
 
