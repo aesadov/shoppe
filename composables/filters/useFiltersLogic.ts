@@ -1,34 +1,15 @@
 import type { FiltersState, SelectOption } from '~/types/filters'
 
-export const useFiltersLogic = (
-  props: {
-    filters: FiltersState
-    categories?: SelectOption[]
-    sortOptions?: SelectOption[]
-    minPriceLimit?: number
-    maxPriceLimit?: number
-  },
-  emit: (event: 'filters-change', filters: FiltersState) => void,
-) => {
+export const useFiltersLogic = (props: {
+  filters: FiltersState
+  categories?: SelectOption[]
+  sortOptions?: SelectOption[]
+  minPriceLimit?: number
+  maxPriceLimit?: number
+}) => {
   const { minPriceLimit = 0, maxPriceLimit = 500 } = props
 
   const localFilters = reactive<FiltersState>({ ...props.filters })
-
-  watch(
-    localFilters,
-    (newFilters) => {
-      emit('filters-change', newFilters)
-    },
-    { deep: true },
-  )
-
-  watch(
-    () => props.filters,
-    (newFilters) => {
-      Object.assign(localFilters, newFilters)
-    },
-    { deep: true },
-  )
 
   const updatePriceRange = (min: number, max: number) => {
     localFilters.minPrice = min

@@ -2,9 +2,9 @@
   import IconArrowDown from '~/assets/icons/icon-arrow-down.svg'
   import type { FiltersState, SelectOption } from '~/types/filters'
   import { useFiltersLogic } from '~/composables/filters/useFiltersLogic'
-  import { useFilterOptions } from '~/composables/filters/useFilterOptions'
-  import { shallowRef, onMounted, computed } from 'vue'
+  import { shallowRef, onMounted, computed, watch } from 'vue'
   import { generateUniqueId } from '~/utils/generateUniqueId'
+  import { defaultSortOptions } from '~/constants/defaultSortOptions'
 
   interface Props {
     filters: FiltersState
@@ -25,11 +25,24 @@
     'filters-change': [filters: FiltersState]
   }>()
 
-  const { defaultSortOptions } = useFilterOptions()
+  const { localFilters, updatePriceRange, resetFilters } = useFiltersLogic(props)
 
-  const { localFilters, updatePriceRange, resetFilters } = useFiltersLogic(props, emit)
+  watch(
+    localFilters,
+    (newFilters) => {
+      emit('filters-change', newFilters)
+    },
+    { deep: true },
+  )
 
-  const searchId = generateUniqueId('search')
+  watch(
+    () => props.filters,
+    (newFilters) => {
+      Object.assign(localFilters, newFilters)
+    },
+    { deep: true },
+  )
+
   const categoryId = generateUniqueId('category')
   const sortId = generateUniqueId('sort')
   const onSaleId = generateUniqueId('on-sale')
