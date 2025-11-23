@@ -55,10 +55,6 @@
     isShowMobFilters.value = !isShowMobFilters.value
   }
 
-  const closeMobFilters = () => {
-    isShowMobFilters.value = false
-  }
-
   const handleFiltersChange = (newFilters: FiltersState) => {
     Object.assign(filters, newFilters)
   }
@@ -85,7 +81,6 @@
         :is-mobile-panel-open="isShowMobFilters"
         @filters-change="handleFiltersChange"
         @toggle="toggleShowMobFilters"
-        @close="closeMobFilters"
       />
 
       <main class="catalogue__content">

@@ -13,15 +13,10 @@
   const emit = defineEmits<{
     'filters-change': [filters: FiltersState]
     toggle: []
-    close: []
   }>()
 
   const handleToggle = () => {
     emit('toggle')
-  }
-
-  const handleClose = () => {
-    emit('close')
   }
 
   const handleFiltersChange = (newFilters: FiltersState) => {
@@ -43,7 +38,7 @@
     <span>Filters</span>
   </button>
 
-  <MobilePanel v-if="isMobilePanelOpen" title="Filters" @close="handleClose">
+  <MobilePanel v-if="isMobilePanelOpen" title="Filters" @close="handleToggle">
     <FiltersContent
       :filters="filters"
       :categories="categories"
