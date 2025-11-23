@@ -5,6 +5,15 @@ import type { Product } from '@/types/api'
 const MIN_STOCK_COUNT = 0
 const DISCOUNT = 50
 
+export enum SortType {
+  PRICE_ASC = 'price-asc',
+  PRICE_DESC = 'price-desc',
+  NAME_ASC = 'name-asc',
+  NAME_DESC = 'name-desc',
+  NEWEST = 'newest',
+  RATING_DESC = 'rating-desc',
+}
+
 export const useProductFiltering = (products: Ref<Product[] | null>) => {
   const applyFilters = (productsList: Product[], filters: FiltersState) => {
     let filtered = [...productsList]
@@ -34,22 +43,22 @@ export const useProductFiltering = (products: Ref<Product[] | null>) => {
 
     if (filters.sortBy) {
       switch (filters.sortBy) {
-        case 'price-asc':
+        case SortType.PRICE_ASC:
           filtered.sort((a, b) => a.price - b.price)
           break
-        case 'price-desc':
+        case SortType.PRICE_DESC:
           filtered.sort((a, b) => b.price - a.price)
           break
-        case 'name-asc':
+        case SortType.NAME_ASC:
           filtered.sort((a, b) => a.title.localeCompare(b.title))
           break
-        case 'name-desc':
+        case SortType.NAME_DESC:
           filtered.sort((a, b) => b.title.localeCompare(a.title))
           break
-        case 'newest':
+        case SortType.NEWEST:
           filtered.sort((a, b) => b.id - a.id)
           break
-        case 'rating-desc':
+        case SortType.RATING_DESC:
           filtered.sort((a, b) => (b.rating?.rate || 0) - (a.rating?.rate || 0))
           break
       }
@@ -66,5 +75,6 @@ export const useProductFiltering = (products: Ref<Product[] | null>) => {
   return {
     applyFilters,
     getFilteredProducts,
+    SortType,
   }
 }
