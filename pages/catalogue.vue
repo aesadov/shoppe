@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useGetProducts } from '@/composables/api/products/useGetAllProducts'
+  import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
   import { useNotification } from '~/composables/notification/useNotification'
   import { usePagination } from '~/composables/usePagination'
   import { useProductFilters } from '~/composables/filters/useProductFilters'
@@ -10,15 +10,15 @@
 
   const { showError } = useNotification()
 
-  const { data: products, pending: productsPending, error: productsError } = useGetProducts()
+  const { data: products, pending: productsPending, error: productsError } = useGetAllProducts()
 
-  const { filters, initFilters, updateQueryParams } = useProductFilters()
+  const { filters, updateFiltersFromQuery, updateQueryParams } = useProductFilters()
   const { getFilteredProducts } = useProductFiltering(products)
   const filteredProducts = computed(() => getFilteredProducts(filters))
   const { data: allCategories } = useGetCategories()
 
   onMounted(() => {
-    initFilters()
+    updateFiltersFromQuery()
   })
 
   watch(

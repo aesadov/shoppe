@@ -43,14 +43,9 @@ export const useProductFilters = () => {
     router.replace({ query })
   }
 
-  const initFilters = () => {
-    updateFiltersFromQuery()
-  }
-
   return {
     filters,
     updateFiltersFromQuery,
     updateQueryParams,
-    initFilters,
   }
 }
