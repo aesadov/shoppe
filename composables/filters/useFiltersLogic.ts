@@ -4,7 +4,7 @@ const MAX_PRICE_LIMIT = 500
 
 export const useFiltersLogic = (props: {
   filters: FiltersState
-  categories?: SelectOption[]
+  categories?: string[]
   sortOptions?: SelectOption[]
   minPriceLimit?: number
   maxPriceLimit?: number

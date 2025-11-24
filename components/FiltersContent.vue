@@ -1,15 +1,14 @@
 <script setup lang="ts">
   import IconArrowDown from '~/assets/icons/icon-arrow-down.svg'
-  import type { FiltersState, SelectOption } from '~/types/filters'
+  import type { FiltersState } from '~/types/filters'
   import { useFiltersLogic } from '~/composables/filters/useFiltersLogic'
-  import { shallowRef, onMounted, computed, watch } from 'vue'
+  import { shallowRef, onMounted, watch } from 'vue'
   import { generateUniqueId } from '~/utils/generateUniqueId'
   import { defaultSortOptions } from '~/constants/defaultSortOptions'
 
   interface Props {
     filters: FiltersState
-    categories?: SelectOption[]
-    sortOptions?: SelectOption[]
+    categories?: string[]
     minPriceLimit?: number
     maxPriceLimit?: number
   }
@@ -62,14 +61,6 @@
   const handleSliderInput = (event: { minValue: number; maxValue: number }) => {
     updatePriceRange(event.minValue, event.maxValue)
   }
-
-  const handleSearchSubmit = () => {
-    console.log('Search submitted:', localFilters.search)
-  }
-
-  const sortedOptions = computed(() => {
-    return props.sortOptions?.length ? props.sortOptions : defaultSortOptions
-  })
 </script>
 
 <template>
@@ -83,7 +74,6 @@
         :show-search-icon="true"
         :show-submit-icon="false"
         :show-agreement="false"
-        @submit="handleSearchSubmit"
       />
     </div>
 
@@ -91,8 +81,8 @@
     <div class="filters__group">
       <select :id="categoryId" v-model="localFilters.category" class="filters__select">
         <option value="">All Categories</option>
-        <option v-for="category in categories" :key="category.value" :value="category.value">
-          {{ category.label }}
+        <option v-for="category in categories" :key="category" :value="category">
+          {{ category }}
         </option>
       </select>
       <IconArrowDown class="filters__select-icon" />
@@ -103,7 +93,7 @@
       <select :id="sortId" v-model="localFilters.sortBy" class="filters__select">
         <option value="">Default Sorting</option>
         <option
-          v-for="sortOption in sortedOptions"
+          v-for="sortOption in defaultSortOptions"
           :key="sortOption.value"
           :value="sortOption.value"
         >
@@ -188,7 +178,6 @@
   .filters__search-wrapper {
     margin-bottom: 24px;
 
-    // Стилизация BaseInput для интеграции с существующим дизайном
     :deep(.input-container) {
       width: 100%;
     }
@@ -233,6 +222,7 @@
     padding: 12px 16px;
     font-size: 14px;
     color: $primary-color;
+    text-transform: capitalize;
     appearance: none;
     cursor: pointer;
     background: transparent;

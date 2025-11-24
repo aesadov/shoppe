@@ -5,7 +5,7 @@ import type { Product } from '@/types/api'
 const MIN_STOCK_COUNT = 0
 const DISCOUNT = 50
 
-export enum SortType {
+const enum SortType {
   PRICE_ASC = 'price-asc',
   PRICE_DESC = 'price-desc',
   NAME_ASC = 'name-asc',
@@ -73,8 +73,6 @@ export const useProductFiltering = (products: Ref<Product[] | null>) => {
   }
 
   return {
-    applyFilters,
     getFilteredProducts,
-    SortType,
   }
 }

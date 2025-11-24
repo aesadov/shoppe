@@ -4,7 +4,7 @@
 
   interface Props {
     filters: FiltersState
-    categories?: SelectOption[]
+    categories?: string[]
     isMobilePanelOpen?: boolean
   }
 

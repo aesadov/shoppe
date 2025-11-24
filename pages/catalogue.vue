@@ -1,25 +1,21 @@
 <script setup lang="ts">
-  import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
+  import { useGetProducts } from '@/composables/api/products/useGetAllProducts'
   import { useNotification } from '~/composables/notification/useNotification'
   import { usePagination } from '~/composables/usePagination'
   import { useProductFilters } from '~/composables/filters/useProductFilters'
   import { useProductFiltering } from '~/composables/filters/useProductFiltering'
-  import { useProductCategories } from '~/composables/filters/useProductCategories'
+  import { useGetCategories } from '~/composables/filters/useProductCategories'
   import type { FiltersState } from '~/types/filters'
   import { debounce } from '~/utils/debounce'
 
   const { showError } = useNotification()
 
-  const {
-    data: allProducts,
-    pending: allProductsPending,
-    error: allProductsError,
-  } = useGetAllProducts()
+  const { data: products, pending: productsPending, error: productsError } = useGetProducts()
 
   const { filters, initFilters, updateQueryParams } = useProductFilters()
-  const { categories } = useProductCategories(allProducts)
-  const { getFilteredProducts } = useProductFiltering(allProducts)
+  const { getFilteredProducts } = useProductFiltering(products)
   const filteredProducts = computed(() => getFilteredProducts(filters))
+  const { data: allCategories } = useGetCategories()
 
   onMounted(() => {
     initFilters()
@@ -33,7 +29,7 @@
     { deep: true },
   )
 
-  watch(allProductsError, (newError) => {
+  watch(productsError, (newError) => {
     if (newError) {
       console.error('Error loading products:', newError)
       showError('Error loading products')
@@ -77,7 +73,7 @@
     <div class="catalogue__main">
       <Filters
         :filters="filters"
-        :categories="categories"
+        :categories="allCategories || []"
         :is-mobile-panel-open="isShowMobFilters"
         @filters-change="handleFiltersChange"
         @toggle="toggleShowMobFilters"
@@ -85,7 +81,7 @@
 
       <main class="catalogue__content">
         <div class="catalogue__products">
-          <ProductList :products="paginatedProducts" :loading="allProductsPending" />
+          <ProductList :products="paginatedProducts" :loading="productsPending" />
         </div>
 
         <div v-if="totalPages > 1" class="catalogue__pagination">
