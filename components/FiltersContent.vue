@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import IconArrowDown from '~/assets/icons/icon-arrow-down.svg'
   import type { FiltersState } from '~/types/filters'
-  import { useFiltersLogic } from '~/composables/filters/useFiltersLogic'
   import { shallowRef, onMounted, watch } from 'vue'
   import { generateUniqueId } from '~/utils/generateUniqueId'
   import { defaultSortOptions } from '~/constants/defaultSortOptions'
+  import { useProductFilters } from '@/composables/useProductsFilters'
 
   interface Props {
     filters: FiltersState
@@ -24,7 +24,13 @@
     'filters-change': [filters: FiltersState]
   }>()
 
-  const { localFilters, updatePriceRange, resetFilters } = useFiltersLogic(props)
+  const { useFiltersLogic } = useProductFilters()
+  const { localFilters, updatePriceRange, resetFilters } = useFiltersLogic({
+    filters: props.filters,
+    categories: props.categories,
+    minPriceLimit: props.minPriceLimit,
+    maxPriceLimit: props.maxPriceLimit,
+  })
 
   watch(
     localFilters,
