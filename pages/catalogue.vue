@@ -1,3 +1,187 @@
+<!-- <script setup lang="ts">
+  import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
+  import { useNotification } from '~/composables/notification/useNotification'
+  import { usePagination } from '~/composables/usePagination'
+  import { useGetCategories } from '@/composables/api/products/useProductCategories'
+  import type { FiltersState } from '~/types/filters'
+  import { debounce } from '~/utils/debounce'
+  import { useProductFilters } from '@/composables/useProductsFilters'
+  import type { RefSymbol } from '@vue/reactivity'
+
+  const { showError } = useNotification()
+  const START_PAGE = 1
+
+  const currentCategory = ref('')
+
+  // Используем один экземпляр useGetAllProducts с refresh
+  const {
+    data: products,
+    pending: productsPending,
+    error: productsError,
+    refresh: refreshProducts,
+  } = useGetAllProducts({ category: currentCategory.value })
+
+  // Обновляем продукты при изменении категории
+  watch(currentCategory, () => {
+    refreshProducts()
+  })
+
+  const { filters, updateFiltersFromQuery, updateQueryParams, getFilteredProducts } =
+    useProductFilters(products)
+
+  const filteredProducts = computed(() => getFilteredProducts())
+  const { data: allCategories } = useGetCategories()
+
+  onMounted(() => {
+    updateFiltersFromQuery()
+    currentCategory.value = filters.category
+  })
+
+  watch(
+    () => filters.category,
+    (newCategory) => {
+      if (newCategory !== currentCategory.value) {
+        currentCategory.value = newCategory
+
+        if (currentPage.value !== START_PAGE) {
+          handlePageChange(START_PAGE)
+        }
+      }
+    },
+  )
+
+  watch(
+    filters,
+    debounce((newFilters: FiltersState) => {
+      updateQueryParams(newFilters)
+      if (currentPage.value !== START_PAGE) {
+        handlePageChange(START_PAGE)
+      }
+    }, 300),
+    { deep: true },
+  )
+
+  watch(productsError, (newError) => {
+    if (newError) {
+      showError('Error loading products')
+    }
+  })
+
+  const {
+    currentPage,
+    totalPages,
+    paginatedItems: paginatedProducts,
+    goToPage: handlePageChange,
+  } = usePagination(filteredProducts, {
+    itemsPerPage: 6,
+  })
+
+  const isShowMobFilters = ref(false)
+
+  const toggleShowMobFilters = () => {
+    isShowMobFilters.value = !isShowMobFilters.value
+  }
+
+  const handleFiltersChange = (newFilters: FiltersState) => {
+    Object.assign(filters, newFilters)
+  }
+</script> -->
+
+<!-- <script setup lang="ts">
+  import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
+  import { useNotification } from '~/composables/notification/useNotification'
+  import { usePagination } from '~/composables/usePagination'
+  import { useGetCategories } from '@/composables/api/products/useProductCategories'
+  import type { FiltersState } from '~/types/filters'
+  import { debounce } from '~/utils/debounce'
+  import { useProductFilters } from '@/composables/useProductsFilters'
+
+  const { showError } = useNotification()
+  const START_PAGE = 1
+
+  const currentCategory = ref('')
+
+  const productsParams = computed(() => ({
+    category: currentCategory.value,
+  }))
+
+  const {
+    data: products,
+    pending: productsPending,
+    error: productsError,
+    refresh: refreshProducts,
+  } = useGetAllProducts(productsParams.value) 
+
+  watch(
+    productsParams,
+    () => {
+      console.log('🔄 Category changed to:', currentCategory.value)
+      refreshProducts()
+    },
+    { deep: true },
+  )
+
+  const { filters, updateFiltersFromQuery, updateQueryParams, getFilteredProducts } =
+    useProductFilters(products)
+
+  const filteredProducts = computed(() => getFilteredProducts())
+  const { data: allCategories } = useGetCategories()
+
+  onMounted(() => {
+    updateFiltersFromQuery()
+    currentCategory.value = filters.category
+  })
+
+  watch(
+    () => filters.category,
+    (newCategory) => {
+      if (newCategory !== currentCategory.value) {
+        currentCategory.value = newCategory
+
+        if (currentPage.value !== START_PAGE) {
+          handlePageChange(START_PAGE)
+        }
+      }
+    },
+  )
+
+  watch(
+    filters,
+    debounce((newFilters: FiltersState) => {
+      updateQueryParams(newFilters)
+      if (currentPage.value !== START_PAGE) {
+        handlePageChange(START_PAGE)
+      }
+    }, 300),
+    { deep: true },
+  )
+
+  watch(productsError, (newError) => {
+    if (newError) {
+      showError('Error loading products')
+    }
+  })
+
+  const {
+    currentPage,
+    totalPages,
+    paginatedItems: paginatedProducts,
+    goToPage: handlePageChange,
+  } = usePagination(filteredProducts, {
+    itemsPerPage: 6,
+  })
+
+  const isShowMobFilters = ref(false)
+
+  const toggleShowMobFilters = () => {
+    isShowMobFilters.value = !isShowMobFilters.value
+  }
+
+  const handleFiltersChange = (newFilters: FiltersState) => {
+    Object.assign(filters, newFilters)
+  }
+</script> -->
+
 <script setup lang="ts">
   import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
   import { useNotification } from '~/composables/notification/useNotification'
