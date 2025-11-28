@@ -1,25 +1,79 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
   import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
   import { useNotification } from '~/composables/notification/useNotification'
   import { usePagination } from '~/composables/usePagination'
+  import { useGetCategories } from '@/composables/api/products/useProductCategories'
+  import type { FiltersState } from '~/types/filters'
+  import { debounce } from '~/utils/debounce'
+  import { useProductFilters } from '@/composables/useProductsFilters'
+  import type { RefSymbol } from '@vue/reactivity'
 
   const { showError } = useNotification()
-  const { data: products, pending, error } = useGetAllProducts()
+  const START_PAGE = 1
+
+  const currentCategory = ref('')
+
+  // Используем один экземпляр useGetAllProducts с refresh
+  const {
+    data: products,
+    pending: productsPending,
+    error: productsError,
+    refresh: refreshProducts,
+  } = useGetAllProducts({ category: currentCategory.value })
+
+  // Обновляем продукты при изменении категории
+  watch(currentCategory, () => {
+    refreshProducts()
+  })
+
+  const { filters, updateFiltersFromQuery, updateQueryParams, getFilteredProducts } =
+    useProductFilters(products)
+
+  const filteredProducts = computed(() => getFilteredProducts())
+  const { data: allCategories } = useGetCategories()
+
+  onMounted(() => {
+    updateFiltersFromQuery()
+    currentCategory.value = filters.category
+  })
+
+  watch(
+    () => filters.category,
+    (newCategory) => {
+      if (newCategory !== currentCategory.value) {
+        currentCategory.value = newCategory
+
+        if (currentPage.value !== START_PAGE) {
+          handlePageChange(START_PAGE)
+        }
+      }
+    },
+  )
+
+  watch(
+    filters,
+    debounce((newFilters: FiltersState) => {
+      updateQueryParams(newFilters)
+      if (currentPage.value !== START_PAGE) {
+        handlePageChange(START_PAGE)
+      }
+    }, 300),
+    { deep: true },
+  )
+
+  watch(productsError, (newError) => {
+    if (newError) {
+      showError('Error loading products')
+    }
+  })
 
   const {
     currentPage,
     totalPages,
     paginatedItems: paginatedProducts,
     goToPage: handlePageChange,
-  } = usePagination(products, {
+  } = usePagination(filteredProducts, {
     itemsPerPage: 6,
-  })
-
-  watch(error, (newError) => {
-    if (newError) {
-      console.error('Error loading products:', newError)
-      showError('Error loading products')
-    }
   })
 
   const isShowMobFilters = ref(false)
@@ -28,26 +82,208 @@
     isShowMobFilters.value = !isShowMobFilters.value
   }
 
-  const closeMobFilters = () => {
-    isShowMobFilters.value = false
+  const handleFiltersChange = (newFilters: FiltersState) => {
+    Object.assign(filters, newFilters)
+  }
+</script> -->
+
+<!-- <script setup lang="ts">
+  import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
+  import { useNotification } from '~/composables/notification/useNotification'
+  import { usePagination } from '~/composables/usePagination'
+  import { useGetCategories } from '@/composables/api/products/useProductCategories'
+  import type { FiltersState } from '~/types/filters'
+  import { debounce } from '~/utils/debounce'
+  import { useProductFilters } from '@/composables/useProductsFilters'
+
+  const { showError } = useNotification()
+  const START_PAGE = 1
+
+  const currentCategory = ref('')
+
+  const productsParams = computed(() => ({
+    category: currentCategory.value,
+  }))
+
+  const {
+    data: products,
+    pending: productsPending,
+    error: productsError,
+    refresh: refreshProducts,
+  } = useGetAllProducts(productsParams.value) 
+
+  watch(
+    productsParams,
+    () => {
+      console.log('🔄 Category changed to:', currentCategory.value)
+      refreshProducts()
+    },
+    { deep: true },
+  )
+
+  const { filters, updateFiltersFromQuery, updateQueryParams, getFilteredProducts } =
+    useProductFilters(products)
+
+  const filteredProducts = computed(() => getFilteredProducts())
+  const { data: allCategories } = useGetCategories()
+
+  onMounted(() => {
+    updateFiltersFromQuery()
+    currentCategory.value = filters.category
+  })
+
+  watch(
+    () => filters.category,
+    (newCategory) => {
+      if (newCategory !== currentCategory.value) {
+        currentCategory.value = newCategory
+
+        if (currentPage.value !== START_PAGE) {
+          handlePageChange(START_PAGE)
+        }
+      }
+    },
+  )
+
+  watch(
+    filters,
+    debounce((newFilters: FiltersState) => {
+      updateQueryParams(newFilters)
+      if (currentPage.value !== START_PAGE) {
+        handlePageChange(START_PAGE)
+      }
+    }, 300),
+    { deep: true },
+  )
+
+  watch(productsError, (newError) => {
+    if (newError) {
+      showError('Error loading products')
+    }
+  })
+
+  const {
+    currentPage,
+    totalPages,
+    paginatedItems: paginatedProducts,
+    goToPage: handlePageChange,
+  } = usePagination(filteredProducts, {
+    itemsPerPage: 6,
+  })
+
+  const isShowMobFilters = ref(false)
+
+  const toggleShowMobFilters = () => {
+    isShowMobFilters.value = !isShowMobFilters.value
+  }
+
+  const handleFiltersChange = (newFilters: FiltersState) => {
+    Object.assign(filters, newFilters)
+  }
+</script> -->
+
+<script setup lang="ts">
+  import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
+  import { useNotification } from '~/composables/notification/useNotification'
+  import { usePagination } from '~/composables/usePagination'
+  import { useGetCategories } from '@/composables/api/products/useProductCategories'
+  import type { FiltersState } from '~/types/filters'
+  import { debounce } from '~/utils/debounce'
+  import { useProductFilters } from '@/composables/useProductsFilters'
+
+  const { showError } = useNotification()
+  const START_PAGE = 1
+
+  const currentCategory = ref('')
+
+  const productsResult = computed(() => {
+    return useGetAllProducts({ category: currentCategory.value })
+  })
+
+  const products = computed(() => productsResult.value.data?.value)
+  const productsPending = computed(() => productsResult.value.pending.value)
+  const productsError = computed(() => productsResult.value.error.value)
+
+  const { filters, updateFiltersFromQuery, updateQueryParams, getFilteredProducts } =
+    useProductFilters(products)
+
+  const filteredProducts = computed(() => getFilteredProducts())
+  const { data: allCategories } = useGetCategories()
+
+  onMounted(() => {
+    updateFiltersFromQuery()
+    currentCategory.value = filters.category
+  })
+
+  watch(
+    () => filters.category,
+    (newCategory) => {
+      if (newCategory !== currentCategory.value) {
+        currentCategory.value = newCategory
+
+        if (currentPage.value !== START_PAGE) {
+          handlePageChange(START_PAGE)
+        }
+      }
+    },
+  )
+
+  watch(
+    filters,
+    debounce((newFilters: FiltersState) => {
+      updateQueryParams(newFilters)
+      if (currentPage.value !== START_PAGE) {
+        handlePageChange(START_PAGE)
+      }
+    }, 300),
+    { deep: true },
+  )
+
+  watch(productsError, (newError) => {
+    if (newError) {
+      showError('Error loading products')
+    }
+  })
+
+  const {
+    currentPage,
+    totalPages,
+    paginatedItems: paginatedProducts,
+    goToPage: handlePageChange,
+  } = usePagination(filteredProducts, {
+    itemsPerPage: 6,
+  })
+
+  const isShowMobFilters = ref(false)
+
+  const toggleShowMobFilters = () => {
+    isShowMobFilters.value = !isShowMobFilters.value
+  }
+
+  const handleFiltersChange = (newFilters: FiltersState) => {
+    Object.assign(filters, newFilters)
   }
 </script>
 
 <template>
   <div class="catalogue">
-    <MobileFilters v-if="isShowMobFilters" @close="closeMobFilters" />
-
     <h1 class="catalogue__title">Shop</h1>
 
     <div class="catalogue__main">
-      <ProductFilters @btn-click="toggleShowMobFilters" />
+      <Filters
+        :filters="filters"
+        :categories="allCategories || []"
+        :is-mobile-panel-open="isShowMobFilters"
+        @filters-change="handleFiltersChange"
+        @toggle="toggleShowMobFilters"
+      />
 
       <main class="catalogue__content">
         <div class="catalogue__products">
-          <ProductList :products="paginatedProducts" :loading="pending" />
+          <ProductList :products="paginatedProducts" :loading="productsPending" />
         </div>
 
-        <div class="catalogue__pagination">
+        <div v-if="totalPages > START_PAGE" class="catalogue__pagination">
           <Pagination
             :current-page="currentPage"
             :total-pages="totalPages"
@@ -62,7 +298,6 @@
 <style lang="scss" scoped>
   .catalogue {
     max-width: 1200px;
-    padding: 0 16px;
     margin: 0 auto;
 
     &__title {
@@ -89,16 +324,6 @@
         grid-template-columns: 1fr;
         gap: 20px;
         margin-top: 15px;
-      }
-    }
-
-    &__filters {
-      position: sticky;
-      top: 100px;
-
-      @media (max-width: $breakpoints-mobile) {
-        position: static;
-        display: none;
       }
     }
 

@@ -59,6 +59,7 @@
       <BaseInput
         v-model="email"
         v-model:is-checked="isChecked"
+        type="e-mail"
         :placeholder="PLACEHOLDER"
         :error="hasError"
         :error-message="emailError"
