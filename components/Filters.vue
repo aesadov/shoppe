@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import IconFilterMobile from '~/assets/icons/Icon-filter-mobile.svg'
-  import type { FiltersState, SelectOption } from '~/types/filters'
+  import type { FiltersState } from '~/types/filters'
 
   interface Props {
     filters: FiltersState

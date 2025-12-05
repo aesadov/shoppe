@@ -5,6 +5,7 @@
   import { generateUniqueId } from '~/utils/generateUniqueId'
   import { defaultSortOptions } from '~/constants/defaultSortOptions'
   import { useProductFilters } from '@/composables/useProductsFilters'
+  import { debounce } from '~/utils/debounce'
 
   interface Props {
     filters: FiltersState
@@ -25,17 +26,47 @@
   }>()
 
   const { useFiltersLogic } = useProductFilters()
-  const { localFilters, updatePriceRange, resetFilters } = useFiltersLogic({
+  const { localFilters, resetFilters } = useFiltersLogic({
     filters: props.filters,
     categories: props.categories,
     minPriceLimit: props.minPriceLimit,
     maxPriceLimit: props.maxPriceLimit,
   })
 
+  const debouncedPriceEmit = debounce((min: number, max: number) => {
+    emit('filters-change', {
+      ...localFilters,
+      minPrice: min,
+      maxPrice: max,
+    })
+  }, 500)
+
+  const nonPriceFilters = ref({
+    search: '',
+    category: '',
+    sortBy: '',
+    onSale: false,
+    inStock: false,
+  })
+
+  onMounted(() => {
+    const { minPrice, maxPrice, ...other } = localFilters
+    nonPriceFilters.value = other
+  })
+
   watch(
-    localFilters,
-    (newFilters) => {
-      emit('filters-change', newFilters)
+    () => [
+      localFilters.search,
+      localFilters.category,
+      localFilters.sortBy,
+      localFilters.onSale,
+      localFilters.inStock,
+    ],
+    () => {
+      const { minPrice, maxPrice, ...other } = localFilters
+      nonPriceFilters.value = other
+
+      emit('filters-change', { ...localFilters })
     },
     { deep: true },
   )
@@ -44,6 +75,8 @@
     () => props.filters,
     (newFilters) => {
       Object.assign(localFilters, newFilters)
+      const { minPrice, maxPrice, ...other } = newFilters
+      nonPriceFilters.value = other
     },
     { deep: true },
   )
@@ -65,7 +98,10 @@
   })
 
   const handleSliderInput = (event: { minValue: number; maxValue: number }) => {
-    updatePriceRange(event.minValue, event.maxValue)
+    localFilters.minPrice = event.minValue
+    localFilters.maxPrice = event.maxValue
+
+    debouncedPriceEmit(event.minValue, event.maxValue)
   }
 </script>
 
