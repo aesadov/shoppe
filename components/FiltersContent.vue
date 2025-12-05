@@ -1,11 +1,15 @@
 <script setup lang="ts">
   import IconArrowDown from '~/assets/icons/icon-arrow-down.svg'
   import type { FiltersState } from '~/types/filters'
-  import { shallowRef, onMounted, watch } from 'vue'
+  import { onMounted, watch } from 'vue'
   import { generateUniqueId } from '~/utils/generateUniqueId'
   import { defaultSortOptions } from '~/constants/defaultSortOptions'
   import { useProductFilters } from '@/composables/useProductsFilters'
   import { debounce } from '~/utils/debounce'
+  import MultiRangeSlider from 'multi-range-slider-vue'
+  import { MAX_PRICE_LIMIT, MIN_PRICE_LIMIT } from '~/composables/useProductsFilters'
+
+  const DEBOUNCE_DELAY = 500
 
   interface Props {
     filters: FiltersState
@@ -15,10 +19,9 @@
   }
 
   const props = withDefaults(defineProps<Props>(), {
-    minPriceLimit: 0,
-    maxPriceLimit: 500,
+    minPriceLimit: MIN_PRICE_LIMIT,
+    maxPriceLimit: MAX_PRICE_LIMIT,
     categories: () => [],
-    sortOptions: () => [],
   })
 
   const emit = defineEmits<{
@@ -39,7 +42,14 @@
       minPrice: min,
       maxPrice: max,
     })
-  }, 500)
+  }, DEBOUNCE_DELAY)
+
+  const debouncedSearchEmit = debounce((searchValue: string) => {
+    emit('filters-change', {
+      ...localFilters,
+      search: searchValue,
+    })
+  }, DEBOUNCE_DELAY)
 
   const nonPriceFilters = ref({
     search: '',
@@ -55,17 +65,25 @@
   })
 
   watch(
-    () => [
-      localFilters.search,
-      localFilters.category,
-      localFilters.sortBy,
-      localFilters.onSale,
-      localFilters.inStock,
-    ],
+    () => localFilters.search,
+    (newSearch) => {
+      debouncedSearchEmit(newSearch)
+    },
+  )
+
+  watch(
+    () => [localFilters.minPrice, localFilters.maxPrice],
+    () => {
+      debouncedPriceEmit(localFilters.minPrice, localFilters.maxPrice)
+    },
+    { deep: true },
+  )
+
+  watch(
+    () => [localFilters.category, localFilters.sortBy, localFilters.onSale, localFilters.inStock],
     () => {
       const { minPrice, maxPrice, ...other } = localFilters
       nonPriceFilters.value = other
-
       emit('filters-change', { ...localFilters })
     },
     { deep: true },
@@ -86,22 +104,9 @@
   const onSaleId = generateUniqueId('on-sale')
   const inStockId = generateUniqueId('in-stock')
 
-  const multiRangeSlider = shallowRef()
-
-  onMounted(async () => {
-    try {
-      const module = await import('multi-range-slider-vue')
-      multiRangeSlider.value = module.default
-    } catch (error) {
-      console.error('Failed to load multi-range-slider-vue:', error)
-    }
-  })
-
   const handleSliderInput = (event: { minValue: number; maxValue: number }) => {
     localFilters.minPrice = event.minValue
     localFilters.maxPrice = event.maxValue
-
-    debouncedPriceEmit(event.minValue, event.maxValue)
   }
 </script>
 
@@ -149,8 +154,7 @@
     <div class="filters__group">
       <div class="filters__slider">
         <ClientOnly>
-          <component
-            :is="multiRangeSlider"
+          <MultiRangeSlider
             :min="minPriceLimit"
             :max="maxPriceLimit"
             :step="1"

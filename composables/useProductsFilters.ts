@@ -5,9 +5,10 @@ import { useRoute, useRouter } from 'nuxt/app'
 
 const MIN_STOCK_COUNT = 0
 const DISCOUNT = 50
-const MAX_PRICE_LIMIT = 500
+export const MAX_PRICE_LIMIT = 500
+export const MIN_PRICE_LIMIT = 0
 
-const enum SortType {
+export const enum SortType {
   PRICE_ASC = 'price-asc',
   PRICE_DESC = 'price-desc',
   NAME_ASC = 'name-asc',
@@ -24,7 +25,7 @@ export const useProductFilters = (products?: Ref<Product[] | null>) => {
     search: '',
     category: '',
     sortBy: '',
-    minPrice: 0,
+    minPrice: MIN_PRICE_LIMIT,
     maxPrice: MAX_PRICE_LIMIT,
     onSale: false,
     inStock: false,

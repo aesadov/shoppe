@@ -9,6 +9,8 @@
 
   const { showError } = useNotification()
   const START_PAGE = 1
+  const ITEMS_PER_PAGE = 6
+  const UPDATE_QUERY_PARAMS_TIME = 300
 
   const currentCategory = ref('')
 
@@ -51,7 +53,7 @@
       if (currentPage.value !== START_PAGE) {
         handlePageChange(START_PAGE)
       }
-    }, 300),
+    }, UPDATE_QUERY_PARAMS_TIME),
     { deep: true },
   )
 
@@ -67,7 +69,7 @@
     paginatedItems: paginatedProducts,
     goToPage: handlePageChange,
   } = usePagination(filteredProducts, {
-    itemsPerPage: 6,
+    itemsPerPage: ITEMS_PER_PAGE,
   })
 
   const isShowMobFilters = ref(false)
