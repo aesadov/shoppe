@@ -10,7 +10,7 @@
   const { showError } = useNotification()
   const START_PAGE = 1
   const ITEMS_PER_PAGE = 6
-  const UPDATE_QUERY_PARAMS_TIME = 300
+  const UPDATE_QUERY_PARAMS_DELAY = 300
 
   const currentCategory = ref('')
 
@@ -53,7 +53,7 @@
       if (currentPage.value !== START_PAGE) {
         handlePageChange(START_PAGE)
       }
-    }, UPDATE_QUERY_PARAMS_TIME),
+    }, UPDATE_QUERY_PARAMS_DELAY),
     { deep: true },
   )
 

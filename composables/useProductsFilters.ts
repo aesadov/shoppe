@@ -158,7 +158,5 @@ export const useProductFilters = (products?: Ref<Product[] | null>) => {
     applyFilters,
 
     useFiltersLogic,
-
-    MAX_PRICE: MAX_PRICE_LIMIT,
   }
 }

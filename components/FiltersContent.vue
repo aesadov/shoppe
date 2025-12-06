@@ -76,7 +76,6 @@
     () => {
       debouncedPriceEmit(localFilters.minPrice, localFilters.maxPrice)
     },
-    { deep: true },
   )
 
   watch(
@@ -86,7 +85,6 @@
       nonPriceFilters.value = other
       emit('filters-change', { ...localFilters })
     },
-    { deep: true },
   )
 
   watch(
