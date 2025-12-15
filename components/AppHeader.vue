@@ -7,26 +7,29 @@
   import { BREAKPOINTS } from '~/constants/breakpoints'
   import { APP_LINKS } from '~/constants/links'
   import { useRoute } from 'nuxt/app'
+  import { useCartStore } from '~/store/cart'
+  import { navigateTo } from 'nuxt/app'
+  import { useMediaQuery } from '@vueuse/core'
 
-  const { CATALOGUE_LINK, BLOG_LINK, OUR_STORY_LINK, CART_LINK, PROFILE_LINK } = APP_LINKS
+  interface Icon {
+    to?: string
+    icon: string
+    ariaLabel: string
+    click: () => void
+  }
+
+  interface DecktopIcon extends Icon {
+    isActive: () => boolean
+  }
+
+  const { CATALOGUE_LINK, BLOG_LINK, OUR_STORY_LINK, PROFILE_LINK } = APP_LINKS
 
   const isShowMenu = ref(false)
   const isMounted = ref(false)
-  const isMobile = ref(false)
 
-  onMounted(() => {
-    isMounted.value = true
-    const checkMobile = () => {
-      isMobile.value = window.matchMedia(`(max-width: ${BREAKPOINTS.mobile})`).matches
-    }
+  const isMobile = useMediaQuery(`(max-width: ${BREAKPOINTS.mobile})`)
 
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-
-    onUnmounted(() => {
-      window.removeEventListener('resize', checkMobile)
-    })
-  })
+  const cartStore = useCartStore()
 
   const toggleMenu = () => {
     isShowMenu.value = !isShowMenu.value
@@ -42,8 +45,9 @@
   const isShopActive = computed(() => route.path.startsWith(CATALOGUE_LINK))
   const isBlogActive = computed(() => route.path.startsWith(BLOG_LINK))
   const isOurStoryActive = computed(() => route.path.startsWith(OUR_STORY_LINK))
-  const isCartActive = computed(() => route.path.startsWith(CART_LINK))
   const isProfileActive = computed(() => route.path.startsWith(PROFILE_LINK))
+  const isCartActive = ref(false)
+  const isMagnifyingGlassActive = ref(false)
 
   const navLinks = [
     { to: CATALOGUE_LINK, text: 'Shop', isActive: () => isShopActive.value },
@@ -51,18 +55,40 @@
     { to: OUR_STORY_LINK, text: 'Our Story', isActive: () => isOurStoryActive.value },
   ]
 
-  const iconLinks = [
+  const desktopIcons: DecktopIcon[] = [
     {
-      to: CART_LINK,
+      icon: IconMagnifyingGlass,
+      isActive: () => isMagnifyingGlassActive.value,
+      ariaLabel: 'MagnifyingGlass',
+      click: () => {},
+    },
+    {
       icon: IconShoppingCart,
       isActive: () => isCartActive.value,
       ariaLabel: 'Cart',
+      click: () => cartStore.showCartToggle(),
     },
     {
       to: PROFILE_LINK,
       icon: IconPerson,
       isActive: () => isProfileActive.value,
       ariaLabel: 'Profile',
+      click: () => {
+        navigateTo(PROFILE_LINK)
+      },
+    },
+  ]
+
+  const mibileIcons: Icon[] = [
+    {
+      icon: IconShoppingCartMobile,
+      ariaLabel: 'Cart',
+      click: () => cartStore.showCartToggle(),
+    },
+    {
+      icon: IconBurgerMenu,
+      ariaLabel: 'BurgerMenu',
+      click: () => toggleMenu(),
     },
   ]
 </script>
@@ -86,19 +112,16 @@
           </NuxtLink>
         </div>
         <div class="header__icons">
-          <button class="header__icon-button" aria-label="Search">
-            <IconMagnifyingGlass class="header__icon" />
-          </button>
-          <NuxtLink
-            v-for="iconLink in iconLinks"
-            :key="iconLink.to"
-            :to="iconLink.to"
+          <button
+            v-for="icon in desktopIcons"
+            :key="icon.ariaLabel"
             class="header__icon-button"
-            :class="{ 'header__icon-button--active': iconLink.isActive() }"
-            :aria-label="iconLink.ariaLabel"
+            :class="{ 'header__icon-button--active': icon.isActive() }"
+            :aria-label="icon.ariaLabel"
+            @click="icon.click()"
           >
-            <component :is="iconLink.icon" class="header__icon" />
-          </NuxtLink>
+            <component :is="icon.icon" class="header__icon" />
+          </button>
         </div>
       </nav>
 
@@ -107,15 +130,14 @@
         class="header__mobile-controls"
         :class="{ 'header__mobile-controls--hidden': isMounted && !isMobile }"
       >
-        <NuxtLink :to="CART_LINK" class="header__mobile-button">
-          <IconShoppingCartMobile class="header__mobile-icon" />
-        </NuxtLink>
         <button
+          v-for="icon in mibileIcons"
+          :key="icon.ariaLabel"
           class="header__mobile-button"
-          :aria-label="isShowMenu ? 'Close menu' : 'Open menu'"
-          @click="toggleMenu"
+          :aria-label="icon.ariaLabel"
+          @click="icon.click()"
         >
-          <IconBurgerMenu class="header__mobile-icon" />
+          <component :is="icon.icon" class="header__mobile-icon" />
         </button>
       </nav>
     </header>
@@ -123,12 +145,9 @@
 
   <MobileSearch :is-mobile="isMobile" :is-mounted="isMounted" />
 
-  <MobileMenu
-    v-if="isShowMenu && isMounted && isMobile"
-    :is-mobile="isMobile"
-    :is-mounted="isMounted"
-    @close="closeMenu"
-  />
+  <ClientOnly>
+    <MobileMenu v-if="isShowMenu && isMobile" :is-mobile="isMobile" @close="closeMenu" />
+  </ClientOnly>
 </template>
 
 <style lang="scss" scoped>
