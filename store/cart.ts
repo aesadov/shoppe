@@ -3,9 +3,9 @@ import { ref } from 'vue'
 
 export const useCartStore = defineStore('cart', () => {
   const isShowCart = ref<boolean>(false)
-  function showCartToggle() {
+  function toggleSidebar() {
     isShowCart.value = !isShowCart.value
   }
 
-  return { isShowCart, showCartToggle }
+  return { isShowCart, toggleSidebar }
 })

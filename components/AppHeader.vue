@@ -28,8 +28,7 @@
   const isMounted = ref(false)
 
   const isMobile = useMediaQuery(`(max-width: ${BREAKPOINTS.mobile})`)
-
-  const cartStore = useCartStore()
+  const { toggleSidebar } = useCartStore()
 
   const toggleMenu = () => {
     isShowMenu.value = !isShowMenu.value
@@ -66,7 +65,7 @@
       icon: IconShoppingCart,
       isActive: () => isCartActive.value,
       ariaLabel: 'Cart',
-      click: () => cartStore.showCartToggle(),
+      click: () => toggleSidebar(),
     },
     {
       to: PROFILE_LINK,
@@ -83,7 +82,7 @@
     {
       icon: IconShoppingCartMobile,
       ariaLabel: 'Cart',
-      click: () => cartStore.showCartToggle(),
+      click: () => toggleSidebar(),
     },
     {
       icon: IconBurgerMenu,

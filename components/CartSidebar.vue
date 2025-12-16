@@ -6,25 +6,21 @@
   import { BREAKPOINTS } from '~/constants/breakpoints'
   import IconArrowLeft from '~/assets/icons/icon-arrow-left.svg'
 
-  const cartStore = useCartStore()
-  const { isShowCart } = storeToRefs(cartStore)
+  const { isShowCart } = storeToRefs(useCartStore())
   const isMobile = useMediaQuery(`(max-width: ${BREAKPOINTS.mobile})`)
-
-  const close = () => {
-    cartStore.isShowCart = false
-  }
+  const { toggleSidebar } = useCartStore()
 </script>
 
 <template>
   <Transition name="fade">
-    <div v-if="isShowCart" class="overlay" @click="close"></div>
+    <div v-if="isShowCart" class="overlay" @click="toggleSidebar"></div>
   </Transition>
 
   <Transition name="cart-slide">
     <div v-if="isShowCart" class="cart" :class="{ 'cart--mobile': isMobile }">
       <div class="header">
         <div class="header__top" :class="{ 'header__top--mobile': isMobile }">
-          <IconArrowLeft v-if="isMobile" class="header__icon" @click="close" />
+          <IconArrowLeft v-if="isMobile" class="header__icon" @click="toggleSidebar" />
           <h1 class="header__title" :class="{ 'header__title--mobile': isMobile }">Shopping bag</h1>
         </div>
         <div class="header__count">Items count</div>
