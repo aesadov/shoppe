@@ -56,6 +56,10 @@ export function useNotification() {
     notifications.value = notifications.value.filter((n) => n.id !== id)
   }
 
+  const hideNotifications = () => {
+    notifications.value = []
+  }
+
   const clearAll = () => {
     notifications.value = []
   }
@@ -68,6 +72,7 @@ export function useNotification() {
     showWarning,
     showInfo,
     hideNotification,
+    hideNotifications,
     clearAll,
   }
 }

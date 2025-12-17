@@ -22,8 +22,12 @@ export declare interface Cart {
   id: number
   userId: number
   date?: string
-  products: ProductInCart[] | Product[]
+  products: ProductInCart[]
   __v?: number
+}
+
+export declare interface CartItem extends Product {
+  quantity: number
 }
 
 export declare interface Adress {

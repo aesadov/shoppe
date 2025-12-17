@@ -1,28 +1,47 @@
 <script setup lang="ts">
   import IconCross from '~/assets/icons/Iconn-product-in-cart-cross.svg'
+  import type { CartItem } from '~/types/api'
+
   interface Props {
     isMobile: boolean
+    product: CartItem
   }
 
-  const { isMobile } = defineProps<Props>()
+  const emit = defineEmits<{
+    'remove-product': [id: number]
+    'increase-quantity': [id: number]
+    'decrease-quantity': [id: number]
+  }>()
+  const props = defineProps<Props>()
+
+  const remove = () => emit('remove-product', props.product.id)
+  const decreaseQuantity = () => emit('decrease-quantity', props.product.id)
+  const increaseQuantity = () => emit('increase-quantity', props.product.id)
 </script>
 
 <template>
   <div class="product">
-    <div class="img" :class="{ 'img--mobile': isMobile }"></div>
+    <NuxtImg
+      class="img"
+      :alt="props.product.title"
+      :class="{ 'img--mobile': isMobile }"
+      :src="props.product.image"
+    />
     <div class="content">
       <div class="main" :class="{ 'main--mobile': isMobile }">
         <div class="main__description">
-          <h2 class="main__title" :class="{ 'main__title--mobile': isMobile }">Product</h2>
-          <span class="main__description-properties">Properties</span>
-          <span class="main__description-price">$150</span>
+          <h2 class="main__title" :class="{ 'main__title--mobile': isMobile }">
+            {{ props.product.title }}
+          </h2>
+          <span class="main__description-properties">{{ props.product.category }}</span>
+          <span class="main__description-price">${{ props.product.price }}</span>
         </div>
-        <IconCross class="main__close" />
+        <IconCross class="main__close" @click="remove" />
       </div>
       <div class="count">
-        <button class="count__btn-left">–</button>
-        <div class="count__data">3</div>
-        <button class="count__btn-right">+</button>
+        <button class="count__btn-left" @click="decreaseQuantity">–</button>
+        <div class="count__data">{{ props.product.quantity }}</div>
+        <button class="count__btn-right" @click="increaseQuantity">+</button>
       </div>
     </div>
   </div>
@@ -96,8 +115,13 @@
     }
 
     &__title {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
       font-size: 14px;
       font-weight: 400;
+      -webkit-box-orient: vertical;
 
       &--mobile {
         font-size: 12px;
@@ -108,12 +132,14 @@
       display: flex;
       flex-direction: column;
       gap: 5px;
+      min-width: 0;
     }
 
     &__close {
+      flex-shrink: 0;
       width: 9px;
       height: 9px;
-      margin-top: 5px;
+      margin: 5px 0 0 5px;
       cursor: pointer;
     }
 

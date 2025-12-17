@@ -6,9 +6,10 @@
   import { BREAKPOINTS } from '~/constants/breakpoints'
   import IconArrowLeft from '~/assets/icons/icon-arrow-left.svg'
 
-  const { isShowCart } = storeToRefs(useCartStore())
   const isMobile = useMediaQuery(`(max-width: ${BREAKPOINTS.mobile})`)
-  const { toggleSidebar } = useCartStore()
+
+  const { isShowCart, cartItems, totalPrice, totalItems } = storeToRefs(useCartStore())
+  const { toggleSidebar, removeItem, increaseQuantity, decreaseQuantity } = useCartStore()
 </script>
 
 <template>
@@ -23,22 +24,26 @@
           <IconArrowLeft v-if="isMobile" class="header__icon" @click="toggleSidebar" />
           <h1 class="header__title" :class="{ 'header__title--mobile': isMobile }">Shopping bag</h1>
         </div>
-        <div class="header__count">Items count</div>
+        <div class="header__count">{{ totalItems }} items</div>
       </div>
 
       <div class="cart__list">
-        <ProductInCart :is-mobile="isMobile" />
-        <ProductInCart :is-mobile="isMobile" />
-        <ProductInCart :is-mobile="isMobile" />
-        <ProductInCart :is-mobile="isMobile" />
-        <ProductInCart :is-mobile="isMobile" />
+        <ProductInCart
+          v-for="product in cartItems"
+          :key="product.id"
+          :product="product"
+          :is-mobile="isMobile"
+          @remove-product="removeItem"
+          @increase-quantity="increaseQuantity"
+          @decrease-quantity="decreaseQuantity"
+        />
       </div>
 
       <div class="footer">
         <hr class="footer__divider" :class="{ 'footer__divider--mobile': isMobile }" />
         <div class="footer__subtotal" :class="{ 'footer__subtotal--mobile': isMobile }">
-          <div>Subtotal (5 items)</div>
-          <div>$100</div>
+          <div>Subtotal ({{ totalItems }} items)</div>
+          <div>${{ totalPrice }}</div>
         </div>
         <button class="footer__btn" :class="{ 'footer__btn--mobile': isMobile }">CHECKOUT</button>
       </div>

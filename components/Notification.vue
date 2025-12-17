@@ -4,8 +4,10 @@
   import IconError from '~/assets/icons/Icon-error.svg'
   import IconWarning from '~/assets/icons/Icon-warning.svg'
   import IconInfo from '~/assets/icons/Icon-info.svg'
+  import { useCartStore } from '~/store/cart'
 
-  const { notifications, hideNotification } = useNotification()
+  const { notifications, hideNotification, hideNotifications } = useNotification()
+  const { toggleSidebar } = useCartStore()
 
   const iconMap = {
     success: IconDone,
@@ -17,6 +19,13 @@
   const getNotificationClass = (type: string) => {
     if (type === 'success') return ''
     return `notification--${type}`
+  }
+
+  function handleLinkClick(link: string) {
+    if (link === 'VIEW CART') {
+      toggleSidebar()
+      hideNotifications()
+    }
   }
 </script>
 
@@ -33,7 +42,7 @@
             v-if="n.link"
             :to="n.LinkAdress"
             class="notification__link"
-            @click="hideNotification(n.id)"
+            @click="handleLinkClick(n.link)"
           >
             {{ n.link }}
           </NuxtLink>
