@@ -37,6 +37,7 @@ export default [
         useFetch: 'readonly',
         useRuntimeConfig: 'readonly',
         useCookie: 'readonly',
+        defineNuxtPlugin: 'readonly',
 
         // Vue
         defineProps: 'readonly',

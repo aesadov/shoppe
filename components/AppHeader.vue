@@ -7,7 +7,7 @@
   import { BREAKPOINTS } from '~/constants/breakpoints'
   import { APP_LINKS } from '~/constants/links'
   import { useRoute } from 'nuxt/app'
-  import { useCartStore } from '~/store/cart'
+  import { useCartStore } from '@/store/cart'
   import { navigateTo } from 'nuxt/app'
   import { useMediaQuery } from '@vueuse/core'
 

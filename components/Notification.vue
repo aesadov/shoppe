@@ -4,7 +4,7 @@
   import IconError from '~/assets/icons/Icon-error.svg'
   import IconWarning from '~/assets/icons/Icon-warning.svg'
   import IconInfo from '~/assets/icons/Icon-info.svg'
-  import { useCartStore } from '~/store/cart'
+  import { useCartStore } from '@/store/cart'
 
   const { notifications, hideNotification, hideNotifications } = useNotification()
   const { toggleSidebar } = useCartStore()

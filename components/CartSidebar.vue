@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useCartStore } from '~/store/cart'
+  import { useCartStore } from '@/store/cart'
   import { storeToRefs } from 'pinia'
   import ProductInCart from './ProductInCart.vue'
   import { useMediaQuery } from '@vueuse/core'
