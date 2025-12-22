@@ -1,25 +1,24 @@
 import { defineStore, skipHydrate } from 'pinia'
 import { useStorage } from '@vueuse/core'
 import type { Product, Cart, CartItem } from '~/types/api'
+import { useCartSync } from '~/composables/api/carts/useCartSync'
+
+const START_QUANTITY = 1
 
 export const useCartStore = defineStore('cart', () => {
   const isShowCart = useStorage<boolean>('isShowCart', false)
-  const START_QUANTITY = 1
-  const CART_ID = 1
-  const USER_ID = 1
-  const VERSION = 0
-
   const cart = skipHydrate(
     useStorage<Cart>('shopCart', {
-      id: CART_ID,
-      userId: USER_ID,
-      date: 'string',
+      id: 1,
+      userId: 1,
+      date: new Date().toISOString(),
       products: [],
-      __v: VERSION,
+      __v: 0,
     }),
   )
 
   const products = skipHydrate(useStorage<Product[]>('cart-products', []))
+  const { syncCart } = useCartSync()
 
   const totalItems = computed(() =>
     cart.value.products.reduce((sum, item) => sum + item.quantity, 0),
@@ -55,21 +54,29 @@ export const useCartStore = defineStore('cart', () => {
       cart.value.products.unshift({ productId: product.id, quantity: START_QUANTITY })
       products.value.unshift(product)
     }
+
+    syncCart(cart.value)
   }
 
   function removeItem(productId: number) {
     cart.value.products = cart.value.products.filter((p) => p.productId !== productId)
     products.value = products.value.filter((p) => p.id !== productId)
+
+    syncCart(cart.value)
   }
 
   function decreaseQuantity(productId: number) {
     const item = cart.value.products.find((p) => p.productId === productId)
     if (item && item.quantity > 1) item.quantity--
+
+    syncCart(cart.value)
   }
 
   function increaseQuantity(productId: number) {
     const item = cart.value.products.find((p) => p.productId === productId)
     if (item) item.quantity++
+
+    syncCart(cart.value)
   }
 
   return {
