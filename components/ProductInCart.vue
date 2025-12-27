@@ -58,6 +58,7 @@
     width: 138px;
     height: 138px;
     margin-right: 8px;
+    object-fit: contain;
     background-color: $divider-color;
     border-radius: 4px;
 
