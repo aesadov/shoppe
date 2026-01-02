@@ -145,7 +145,7 @@
   <MobileSearch :is-mobile="isMobile" :is-mounted="isMounted" />
 
   <ClientOnly>
-    <MobileMenu v-if="isShowMenu && isMobile" :is-mobile="isMobile" @close="closeMenu" />
+    <MobileMenu :is-show-menu="isShowMenu" :is-mobile="isMobile" @close="closeMenu" />
   </ClientOnly>
 </template>
 

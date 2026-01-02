@@ -134,6 +134,7 @@
       flex-direction: column;
       gap: 5px;
       min-width: 0;
+      margin-right: 10px;
     }
 
     &__close {

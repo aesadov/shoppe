@@ -1,11 +1,12 @@
 <script setup lang="ts">
   import IconFilterMobile from '~/assets/icons/Icon-filter-mobile.svg'
   import type { FiltersState } from '~/types/filters'
+  import IconCross from '~/assets/icons/Icon-cross.svg'
 
   interface Props {
     filters: FiltersState
     categories?: string[]
-    isMobilePanelOpen?: boolean
+    isMobilePanelOpen: boolean
   }
 
   const props = defineProps<Props>()
@@ -38,13 +39,24 @@
     <span>Filters</span>
   </button>
 
-  <MobilePanel v-if="isMobilePanelOpen" title="Filters" @close="handleToggle">
-    <FiltersContent
-      :filters="filters"
-      :categories="categories"
-      @filters-change="handleFiltersChange"
-    />
-  </MobilePanel>
+  <ModalSidebar :is-visible="isMobilePanelOpen" @close="handleToggle">
+    <template #default="{ close }">
+      <div class="filters-mobile-panel">
+        <div class="filters-mobile-panel__header">
+          <h2 class="filters-mobile-panel__title">Filters</h2>
+          <IconCross @click="close" />
+        </div>
+
+        <div class="filters-mobile-panel__content">
+          <FiltersContent
+            :filters="filters"
+            :categories="categories"
+            @filters-change="handleFiltersChange"
+          />
+        </div>
+      </div>
+    </template>
+  </ModalSidebar>
 </template>
 
 <style lang="scss" scoped>
@@ -75,6 +87,21 @@
     &__icon {
       width: 13px;
       margin-right: 5px;
+    }
+  }
+
+  .filters-mobile-panel {
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &__title {
+      margin: 0;
+      font-family: $logoFontFamily;
+      font-size: 25px;
+      font-weight: 400;
     }
   }
 </style>

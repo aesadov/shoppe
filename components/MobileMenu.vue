@@ -3,6 +3,8 @@
   import IconExit from '~/assets/icons/Icon-exit.svg'
   import { APP_LINKS } from '~/constants/links'
   import MobileSearch from '~/components/MobileSearch.vue'
+  import IconCross from '~/assets/icons/Icon-cross.svg'
+  import AppLogo from '~/components/AppLogo.vue'
 
   const {
     CATALOGUE_LINK,
@@ -17,17 +19,10 @@
   interface Props {
     isMounted?: boolean
     isMobile: boolean
+    isShowMenu: boolean
   }
 
-  const { isMounted = false, isMobile } = defineProps<Props>()
-
-  const emit = defineEmits<{
-    close: []
-  }>()
-
-  const closeMenu = () => {
-    emit('close')
-  }
+  const { isMounted = false, isMobile, isShowMenu } = defineProps<Props>()
 
   const mainLinks = [
     { to: CATALOGUE_LINK, text: 'Shop' },
@@ -45,37 +40,50 @@
 </script>
 
 <template>
-  <MobilePanel @close="closeMenu">
-    <MobileSearch :is-mobile="isMobile" :is-mounted="isMounted" />
+  <ModalSidebar :is-visible="isShowMenu">
+    <template #default="{ close }">
+      <div class="menu__header">
+        <AppLogo />
+        <IconCross @click="close" />
+      </div>
 
-    <nav class="menu-links">
-      <NuxtLink
-        v-for="link in mainLinks"
-        :key="link.to"
-        :to="link.to"
-        class="menu-link"
-        @click="closeMenu"
-      >
-        {{ link.text }}
-      </NuxtLink>
+      <MobileSearch :is-mobile="isMobile" :is-mounted="isMounted" />
 
-      <hr class="menu-hr" />
+      <nav class="menu-links">
+        <NuxtLink
+          v-for="link in mainLinks"
+          :key="link.to"
+          :to="link.to"
+          class="menu-link"
+          @click="close"
+        >
+          {{ link.text }}
+        </NuxtLink>
 
-      <NuxtLink
-        v-for="link in profileLinks"
-        :key="link.to"
-        :to="link.to"
-        class="menu-link"
-        @click="closeMenu"
-      >
-        <component :is="link.icon" class="menu-icon" />
-        <div>{{ link.text }}</div>
-      </NuxtLink>
-    </nav>
-  </MobilePanel>
+        <hr class="menu-hr" />
+
+        <NuxtLink
+          v-for="link in profileLinks"
+          :key="link.to"
+          :to="link.to"
+          class="menu-link"
+          @click="close"
+        >
+          <component :is="link.icon" class="menu-icon" />
+          <div>{{ link.text }}</div>
+        </NuxtLink>
+      </nav>
+    </template>
+  </ModalSidebar>
 </template>
 
 <style lang="scss" scoped>
+  .menu__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .menu-links {
     display: flex;
     flex-direction: column;
