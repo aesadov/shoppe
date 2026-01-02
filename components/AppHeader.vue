@@ -55,7 +55,7 @@
       icon: IconShoppingCart,
       isActive: () => isCartActive.value,
       ariaLabel: 'Cart',
-      click: () => toggleSidebar(),
+      click: toggleSidebar,
     },
     {
       to: PROFILE_LINK,
@@ -72,12 +72,12 @@
     {
       icon: IconShoppingCartMobile,
       ariaLabel: 'Cart',
-      click: () => toggleSidebar(),
+      click: toggleSidebar,
     },
     {
       icon: IconBurgerMenu,
       ariaLabel: 'BurgerMenu',
-      click: () => toggleMenu(),
+      click: toggleMenu,
     },
   ]
 </script>
@@ -107,7 +107,7 @@
             class="header__icon-button"
             :class="{ 'header__icon-button--active': icon.isActive() }"
             :aria-label="icon.ariaLabel"
-            @click="icon.click()"
+            @click="icon.click"
           >
             <component :is="icon.icon" class="header__icon" />
           </button>
@@ -124,7 +124,7 @@
           :key="icon.ariaLabel"
           class="header__mobile-button"
           :aria-label="icon.ariaLabel"
-          @click="icon.click()"
+          @click="icon.click"
         >
           <component :is="icon.icon" class="header__mobile-icon" />
         </button>
