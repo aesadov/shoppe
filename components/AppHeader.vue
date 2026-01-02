@@ -7,20 +7,10 @@
   import { BREAKPOINTS } from '~/constants/breakpoints'
   import { APP_LINKS } from '~/constants/links'
   import { useRoute } from 'nuxt/app'
-  import { useCartStore } from '@/store/cart'
+  import { useCartStore } from '~/store/cart'
   import { navigateTo } from 'nuxt/app'
   import { useMediaQuery } from '@vueuse/core'
-
-  interface Icon {
-    to?: string
-    icon: string
-    ariaLabel: string
-    click: () => void
-  }
-
-  interface DecktopIcon extends Icon {
-    isActive: () => boolean
-  }
+  import type { DecktopIcon, Icon } from '@/types/icon'
 
   const { CATALOGUE_LINK, BLOG_LINK, OUR_STORY_LINK, PROFILE_LINK } = APP_LINKS
 
