@@ -7,12 +7,13 @@
     product: CartItem
   }
 
+  const props = defineProps<Props>()
+
   const emit = defineEmits<{
     'remove-product': [id: number]
     'increase-quantity': [id: number]
     'decrease-quantity': [id: number]
   }>()
-  const props = defineProps<Props>()
 
   const remove = () => emit('remove-product', props.product.id)
   const decreaseQuantity = () => emit('decrease-quantity', props.product.id)
