@@ -8,7 +8,7 @@ import { useDebounceFn } from '@vueuse/core'
 const START_QUANTITY = 1
 
 export const useCartStore = defineStore('cart', () => {
-  const isShowCart = useStorage<boolean>('isShowCart', false)
+  const isShowCart = ref(false)
   const cart = skipHydrate(
     useStorage<Cart>('shopCart', {
       id: 1,

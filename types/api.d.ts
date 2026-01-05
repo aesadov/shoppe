@@ -1,9 +1,9 @@
-export declare interface Rating {
+export interface Rating {
   rate: number
   count: number
 }
 
-export declare interface Product {
+export interface Product {
   id: number
   title: string
   price: number
@@ -13,12 +13,12 @@ export declare interface Product {
   rating?: Rating
 }
 
-export declare interface ProductInCart {
+export interface ProductInCart {
   productId: number
   quantity: number
 }
 
-export declare interface Cart {
+export interface Cart {
   id: number
   userId: number
   date?: string
@@ -26,11 +26,11 @@ export declare interface Cart {
   __v?: number
 }
 
-export declare interface CartItem extends Product {
+export interface CartItem extends Product {
   quantity: number
 }
 
-export declare interface Adress {
+export interface Adress {
   geolocation: {
     lat: string
     long: string
@@ -41,7 +41,7 @@ export declare interface Adress {
   zipcode: string
 }
 
-export declare interface User {
+export interface User {
   adress?: Adress
   id: number
   email?: string
