@@ -9,7 +9,7 @@ export const useCartSync = () => {
       method: 'PUT',
       body: {
         userId: cart.userId,
-        date: cart.date || new Date().toISOString(),
+        date: new Date().toISOString(),
         products: cart.products,
       },
     })
