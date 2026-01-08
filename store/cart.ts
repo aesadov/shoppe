@@ -13,14 +13,17 @@ export const useCartStore = defineStore('cart', () => {
     useStorage<Cart>('shopCart', {
       id: 1,
       userId: 1,
-      date: new Date().toISOString(),
       products: [],
-      __v: 0,
     }),
   )
 
   const syncCartDebounced = useDebounceFn((cart: Cart) => {
-    syncCart(cart)
+    const productsToServer = cart.products.map((p) => ({
+      productId: p.id,
+      quantity: p.quantity,
+    }))
+    const cartToServer = { ...cart, products: productsToServer }
+    syncCart(cartToServer)
   }, 300)
 
   watch(
@@ -31,27 +34,17 @@ export const useCartStore = defineStore('cart', () => {
     { deep: true },
   )
 
-  const products = skipHydrate(useStorage<Product[]>('cart-products', []))
   const { syncCart } = useCartSync()
 
   const totalItems = computed(() =>
     cart.value.products.reduce((sum, item) => sum + item.quantity, 0),
   )
 
-  const cartItems = computed<CartItem[]>(() =>
-    cart.value.products
-      .map((cartItem) => {
-        const product = products.value.find((p) => p.id === cartItem.productId)
-        if (!product) return null
-        return { ...product, quantity: cartItem.quantity }
-      })
-      .filter((item): item is CartItem => item !== null),
-  )
+  const cartItems = computed<CartItem[]>(() => cart.value.products)
 
   const totalPrice = computed(() => {
     const total = cart.value.products.reduce((sum, cartItem) => {
-      const product = products.value.find((p) => p.id === cartItem.productId)
-      return product ? sum + product.price * cartItem.quantity : sum
+      return cartItem.price * cartItem.quantity + sum
     }, 0)
     return Math.round(total * 100) / 100
   })
@@ -61,34 +54,31 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   function addItem(product: Product) {
-    const cartItem = cart.value.products.find((p) => p.productId === product.id)
+    const cartItem = cart.value.products.find((p) => p.id === product.id)
     if (cartItem) {
       cartItem.quantity++
     } else {
-      cart.value.products.unshift({ productId: product.id, quantity: START_QUANTITY })
-      products.value.unshift(product)
+      cart.value.products.unshift({ ...product, quantity: START_QUANTITY })
     }
   }
 
   function removeItem(productId: number) {
-    cart.value.products = cart.value.products.filter((p) => p.productId !== productId)
-    products.value = products.value.filter((p) => p.id !== productId)
+    cart.value.products = cart.value.products.filter((p) => p.id !== productId)
   }
 
   function decreaseQuantity(productId: number) {
-    const item = cart.value.products.find((p) => p.productId === productId)
+    const item = cart.value.products.find((p) => p.id === productId)
     if (item && item.quantity > 1) item.quantity--
   }
 
   function increaseQuantity(productId: number) {
-    const item = cart.value.products.find((p) => p.productId === productId)
+    const item = cart.value.products.find((p) => p.id === productId)
     if (item) item.quantity++
   }
 
   return {
     isShowCart,
     cart,
-    products,
     totalItems,
     cartItems,
     totalPrice,

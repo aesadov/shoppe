@@ -21,9 +21,13 @@ export interface ProductInCart {
 export interface Cart {
   id: number
   userId: number
-  date?: string
+  products: CartItem[]
+}
+
+export interface CartToServer {
+  id: number
+  userId: number
   products: ProductInCart[]
-  __v?: number
 }
 
 export interface CartItem extends Product {
