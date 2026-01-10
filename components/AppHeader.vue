@@ -49,7 +49,6 @@
       icon: IconMagnifyingGlass,
       isActive: () => isMagnifyingGlassActive.value,
       ariaLabel: 'MagnifyingGlass',
-      click: () => {},
     },
     {
       icon: IconShoppingCart,
