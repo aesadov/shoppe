@@ -10,7 +10,7 @@
   import { useCartStore } from '~/store/cart'
   import { navigateTo } from 'nuxt/app'
   import { useMediaQuery } from '@vueuse/core'
-  import type { DecktopIcon, Icon } from '@/types/icon'
+  import type { Icon } from '@/types/icon'
 
   const { CATALOGUE_LINK, BLOG_LINK, OUR_STORY_LINK, PROFILE_LINK } = APP_LINKS
 
@@ -31,35 +31,25 @@
   const route = useRoute()
   const isHomePage = computed(() => route.path === '/')
 
-  const isShopActive = computed(() => route.path.startsWith(CATALOGUE_LINK))
-  const isBlogActive = computed(() => route.path.startsWith(BLOG_LINK))
-  const isOurStoryActive = computed(() => route.path.startsWith(OUR_STORY_LINK))
-  const isProfileActive = computed(() => route.path.startsWith(PROFILE_LINK))
-  const isCartActive = ref(false)
-  const isMagnifyingGlassActive = ref(false)
-
   const navLinks = [
-    { to: CATALOGUE_LINK, text: 'Shop', isActive: () => isShopActive.value },
-    { to: BLOG_LINK, text: 'Blog', isActive: () => isBlogActive.value },
-    { to: OUR_STORY_LINK, text: 'Our Story', isActive: () => isOurStoryActive.value },
+    { to: CATALOGUE_LINK, text: 'Shop' },
+    { to: BLOG_LINK, text: 'Blog' },
+    { to: OUR_STORY_LINK, text: 'Our Story' },
   ]
 
-  const desktopIcons: DecktopIcon[] = [
+  const desktopIcons: Icon[] = [
     {
       icon: IconMagnifyingGlass,
-      isActive: () => isMagnifyingGlassActive.value,
       ariaLabel: 'MagnifyingGlass',
     },
     {
       icon: IconShoppingCart,
-      isActive: () => isCartActive.value,
       ariaLabel: 'Cart',
       click: toggleSidebar,
     },
     {
       to: PROFILE_LINK,
       icon: IconPerson,
-      isActive: () => isProfileActive.value,
       ariaLabel: 'Profile',
       click: () => {
         navigateTo(PROFILE_LINK)
@@ -94,7 +84,7 @@
             :key="link.to"
             :to="link.to"
             class="header__menu-link"
-            :class="{ 'header__menu-link--active': link.isActive() }"
+            :class="{ 'header__menu-link--active': route.path.startsWith(link.to) }"
           >
             {{ link.text }}
           </NuxtLink>
@@ -104,7 +94,7 @@
             v-for="icon in desktopIcons"
             :key="icon.ariaLabel"
             class="header__icon-button"
-            :class="{ 'header__icon-button--active': icon.isActive() }"
+            :class="{ 'header__icon-button--active': icon.to && route.path.startsWith(icon.to) }"
             :aria-label="icon.ariaLabel"
             @click="icon.click"
           >

@@ -4,7 +4,3 @@ export interface Icon {
   ariaLabel: string
   click?: () => void
 }
-
-export interface DecktopIcon extends Icon {
-  isActive: () => boolean
-}
