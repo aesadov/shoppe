@@ -4,7 +4,7 @@
   import SkeletonImg from '~/components/skeletons/SkeletonImg.vue'
   import SkeletoneDescription from '~/components/skeletons/SkeletoneDescription.vue'
   import type { Product } from '~/types/api'
-  import { useCartStore } from '@/store/cart'
+  import { useCartStore } from '~/store/cart'
 
   interface Props {
     product?: Product
