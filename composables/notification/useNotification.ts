@@ -1,9 +1,11 @@
-import type { NotificationType, NotificationOptions } from '~/types/notification'
+import { NotificationType, type NotificationOptions } from '~/types/notification'
 import { useNotificationStore } from '~/store/notification'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '~/store/cart'
 
 let nextId = 0
+const ERROR_DURATION = 8000
+const USUAL_DURATION = 5000
 
 export function useNotification() {
   const store = useNotificationStore()
@@ -15,14 +17,13 @@ export function useNotification() {
 
   const showNotification = (
     message: string,
-    type: NotificationType = 'info',
+    type: NotificationType = NotificationType.INFO,
     options: NotificationOptions = {},
   ) => {
     const id = options.id ?? generateId()
 
-    const ERROR_DURATION = 8000
-    const USUAL_DURATION = 5000
-    const duration = options.duration ?? (type === 'error' ? ERROR_DURATION : USUAL_DURATION)
+    const duration =
+      options.duration ?? (type === NotificationType.ERROR ? ERROR_DURATION : USUAL_DURATION)
 
     store.show({
       id,
@@ -47,16 +48,16 @@ export function useNotification() {
   }
 
   const showError = (message: string, options?: NotificationOptions) =>
-    showNotification(message, 'error', options)
+    showNotification(message, NotificationType.ERROR, options)
 
   const showSuccess = (message: string, options?: NotificationOptions) =>
-    showNotification(message, 'success', options)
+    showNotification(message, NotificationType.SUCCESS, options)
 
   const showWarning = (message: string, options?: NotificationOptions) =>
-    showNotification(message, 'warning', options)
+    showNotification(message, NotificationType.WARNING, options)
 
   const showInfo = (message: string, options?: NotificationOptions) =>
-    showNotification(message, 'info', options)
+    showNotification(message, NotificationType.INFO, options)
 
   const handleLinkClick = (link: string) => {
     if (link === 'VIEW CART') {
