@@ -1,22 +1,17 @@
 import { defineStore } from 'pinia'
-import type { Notification, NotificationType } from '~/types/notification'
+import type { Notification } from '~/types/notification'
 
-interface ShowPayload {
-  id: number
-  message: string
-  type: NotificationType
-  link?: string
-  LinkAdress?: string
-  icon?: string
+interface NotificationStateType {
+  notifications: Notification[]
 }
 
 export const useNotificationStore = defineStore('notification', {
-  state: () => ({
-    notifications: [] as Notification[],
+  state: (): NotificationStateType => ({
+    notifications: [],
   }),
 
   actions: {
-    show(payload: ShowPayload) {
+    show(payload: Notification) {
       this.notifications.push(payload)
     },
 
