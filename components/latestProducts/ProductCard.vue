@@ -4,9 +4,7 @@
   import SkeletonImg from '~/components/skeletons/SkeletonImg.vue'
   import SkeletoneDescription from '~/components/skeletons/SkeletoneDescription.vue'
   import type { Product } from '~/types/api'
-  import { APP_LINKS } from '~/constants/links'
-
-  const { CART_LINK } = APP_LINKS
+  import { useCartStore } from '~/store/cart'
 
   interface Props {
     product?: Product
@@ -14,15 +12,15 @@
   }
 
   const { loading = false, product } = defineProps<Props>()
-
+  const { addItem } = useCartStore()
   const { showSuccess } = useNotification()
   const isHovered = ref(false)
 
   function addToCart() {
     if (!product) return
+    addItem(product)
     showSuccess('The item was added to your Shopping bag', {
       link: 'VIEW CART',
-      LinkAdress: CART_LINK,
     })
   }
 

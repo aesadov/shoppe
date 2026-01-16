@@ -2,7 +2,16 @@ import svgLoader from 'vite-svg-loader'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-23',
-  modules: ['@vueuse/nuxt', '@nuxt/image'],
+  modules: ['@vueuse/nuxt', '@nuxt/image', '@pinia/nuxt'],
+  imports: {
+    autoImport: true,
+    presets: [
+      {
+        from: 'pinia',
+        imports: ['defineStore', 'acceptHMRUpdate'],
+      },
+    ],
+  },
   vite: {
     css: {
       preprocessorOptions: {

@@ -10,7 +10,7 @@
   import { useGetAllCarts } from '@/composables/api/carts/getAllCarts'
   import { useAddNewCart } from '@/composables/api/carts/addNewCart'
   import { useGetASingleCart } from '@/composables/api/carts/getSingleCart'
-  import { useUpdateACart } from '@/composables/api/carts/updateCart'
+  import { useUpdateACart } from '@/composables/api/carts/useCartSync'
   import { useDeleteACart } from '@/composables/api/carts/deleteCart'
   import { useDeleteAProduct } from '@/composables/api/products/deleteProduct'
   import { useGetAllUsers } from '@/composables/api/users/getAllUsers'

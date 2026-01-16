@@ -1,66 +1,73 @@
-import { ref } from 'vue'
-import type { Notification, NotificationType, NotificationOptions } from '~/types/notification'
+import { NotificationType, type NotificationOptions } from '~/types/notification'
+import { useNotificationStore } from '~/store/notification'
+import { storeToRefs } from 'pinia'
+import { useCartStore } from '~/store/cart'
 
-const notifications = ref<Notification[]>([])
 let nextId = 0
+const ERROR_DURATION = 8000
+const USUAL_DURATION = 5000
 
 export function useNotification() {
+  const store = useNotificationStore()
+  const { notifications } = storeToRefs(store)
+
   const generateId = () => ++nextId
+
+  const { toggleSidebar } = useCartStore()
 
   const showNotification = (
     message: string,
-    type: NotificationType = 'info',
+    type: NotificationType = NotificationType.INFO,
     options: NotificationOptions = {},
   ) => {
     const id = options.id ?? generateId()
-    const ERROR_DURATION = 8000
-    const USUAL_DURATION = 5000
-    const duration = options.duration ?? (type === 'error' ? ERROR_DURATION : USUAL_DURATION)
 
-    notifications.value.push({
+    const duration =
+      options.duration ?? (type === NotificationType.ERROR ? ERROR_DURATION : USUAL_DURATION)
+
+    store.show({
       id,
       message,
       type,
       link: options.link,
       LinkAdress: options.LinkAdress,
-      duration,
       icon: options.icon,
     })
 
     if (duration > 0) {
       setTimeout(() => {
-        hideNotification(id)
+        store.hide(id)
       }, duration)
     }
 
     return id
   }
 
-  const showError = (message: string, options?: NotificationOptions) => {
-    return showNotification(message, 'error', options)
-  }
-
-  const showSuccess = (message: string, options?: NotificationOptions) => {
-    return showNotification(message, 'success', options)
-  }
-
-  const showWarning = (message: string, options?: NotificationOptions) => {
-    return showNotification(message, 'warning', options)
-  }
-
-  const showInfo = (message: string, options?: NotificationOptions) => {
-    return showNotification(message, 'info', options)
-  }
-
   const hideNotification = (id: number) => {
-    notifications.value = notifications.value.filter((n) => n.id !== id)
+    store.hide(id)
   }
 
-  const clearAll = () => {
-    notifications.value = []
+  const showError = (message: string, options?: NotificationOptions) =>
+    showNotification(message, NotificationType.ERROR, options)
+
+  const showSuccess = (message: string, options?: NotificationOptions) =>
+    showNotification(message, NotificationType.SUCCESS, options)
+
+  const showWarning = (message: string, options?: NotificationOptions) =>
+    showNotification(message, NotificationType.WARNING, options)
+
+  const showInfo = (message: string, options?: NotificationOptions) =>
+    showNotification(message, NotificationType.INFO, options)
+
+  const handleLinkClick = (link: string) => {
+    if (link === 'VIEW CART') {
+      toggleSidebar()
+      store.hideAll()
+    }
   }
 
   return {
+    handleLinkClick,
     notifications,
     showNotification,
     showError,
@@ -68,6 +75,5 @@ export function useNotification() {
     showWarning,
     showInfo,
     hideNotification,
-    clearAll,
   }
 }

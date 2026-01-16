@@ -1,11 +1,18 @@
 <script setup lang="ts">
-  import { useNotification } from '~/composables/notification/useNotification'
   import IconDone from '~/assets/icons/Icon-done.svg'
   import IconError from '~/assets/icons/Icon-error.svg'
   import IconWarning from '~/assets/icons/Icon-warning.svg'
   import IconInfo from '~/assets/icons/Icon-info.svg'
+  import type { Notification } from '~/types/notification'
 
-  const { notifications, hideNotification } = useNotification()
+  defineProps<{
+    notifications: Notification[]
+  }>()
+
+  const emit = defineEmits<{
+    (e: 'close', id: number): void
+    (e: 'link-click', link: string): void
+  }>()
 
   const iconMap = {
     success: IconDone,
@@ -29,15 +36,17 @@
             <component :is="iconMap[n.type]" class="notification__message-icon" />
             <p class="notification__message-text">{{ n.message }}</p>
           </div>
+
           <NuxtLink
             v-if="n.link"
             :to="n.LinkAdress"
             class="notification__link"
-            @click="hideNotification(n.id)"
+            @click.prevent="emit('link-click', n.link)"
           >
             {{ n.link }}
           </NuxtLink>
-          <button v-else class="notification__close" @click="hideNotification(n.id)">×</button>
+
+          <button v-else class="notification__close" @click="emit('close', n.id)">×</button>
         </div>
       </div>
     </transition-group>

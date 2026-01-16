@@ -115,7 +115,6 @@
 
 <style lang="scss" scoped>
   .catalogue {
-    max-width: 1200px;
     margin: 0 auto;
 
     &__title {
