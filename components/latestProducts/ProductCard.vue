@@ -98,7 +98,7 @@
       font-size: 16px;
       font-weight: 700;
       cursor: pointer;
-      background-color: #ffffff80;
+      background-color: $product-card-background;
       border-bottom-right-radius: 8px;
       border-bottom-left-radius: 8px;
       transition: height 0.3s ease;
