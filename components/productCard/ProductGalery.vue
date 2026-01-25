@@ -14,7 +14,7 @@
     images: string[]
   }
 
-  defineProps<Props>()
+  const props = defineProps<Props>()
 
   const thumbsSwiper = ref<SwiperType | null>(null)
   const mainSwiper = ref<SwiperType | null>(null)
@@ -34,6 +34,18 @@
   const onSlideChange = (swiper: SwiperType) => {
     progress.value = (swiper.activeIndex + 1) / swiper.slides.length
   }
+
+  watch(
+    () => props.images,
+    (newImages) => {
+      if (newImages.length > 0) {
+        progress.value = 1 / newImages.length
+      } else {
+        progress.value = 0
+      }
+    },
+    { immediate: true },
+  )
 </script>
 
 <template>
