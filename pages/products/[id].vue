@@ -34,10 +34,10 @@
   })
 </script>
 <template>
-  <div class="product">
+  <div v-if="product" class="product">
     <div class="product__top">
       <ProductGalery :images="productImages" />
-      <ProductInfo />
+      <ProductInfo :product="product" />
     </div>
     <div v-if="error">Error!</div>
     <div v-if="loading">Loding...</div>

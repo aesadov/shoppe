@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useCartStore } from '@/store/cart'
   import { storeToRefs } from 'pinia'
-  import ProductInCart from '~/components/ProductInCart.vue'
+  import ProductInCart from '~/components/cart/ProductInCart.vue'
   import { useMediaQuery } from '@vueuse/core'
   import { BREAKPOINTS } from '~/constants/breakpoints'
   import ModalSidebar from '~/components/ModalSidebar.vue'
