@@ -3,6 +3,10 @@
   import StarsRating from './StarsRating.vue'
   import { useCartStore } from '~/store/cart'
   import { useNotification } from '~/composables/notification/useNotification'
+  import IconTwitter from '~/assets/icons/Icon-twitter.svg'
+  import IconInstagram from '~/assets/icons/Icon-Instagram.svg'
+  import IconFaceBook from '~/assets/icons/Icon-FB.svg'
+  import IconMail from '~/assets/icons/Icon-mail.svg'
 
   interface Props {
     product: Product
@@ -48,6 +52,12 @@
         @increase="increaseQuantity"
       />
       <button class="info__adding-btn" @click="addToCart">ADD TO CART</button>
+    </div>
+    <div class="info__social">
+      <IconMail class="info__social-icon" />
+      <IconInstagram class="info__social-icon" />
+      <IconFaceBook class="info__social-icon" />
+      <IconTwitter class="info__social-icon" />
     </div>
   </div>
 </template>
@@ -97,6 +107,16 @@
       background-color: $white;
       border: 1px solid $primary-color;
       border-radius: 4px;
+    }
+
+    &__social {
+      margin-top: 81px;
+    }
+
+    &__social-icon {
+      height: 17px;
+      margin-right: 24px;
+      color: $main-text-color;
     }
   }
 </style>
