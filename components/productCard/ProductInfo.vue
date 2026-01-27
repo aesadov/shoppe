@@ -7,13 +7,14 @@
   import IconInstagram from '~/assets/icons/Icon-Instagram.svg'
   import IconFaceBook from '~/assets/icons/Icon-FB.svg'
   import IconMail from '~/assets/icons/Icon-mail.svg'
+  import IconShare from '~/assets/icons/Icon-share.svg'
 
   interface Props {
     product: Product
   }
 
   const { product } = defineProps<Props>()
-  const { title, price, description, rating } = product
+  const { title, price, description, rating, category, id } = product
   const { addItem } = useCartStore()
   const { showSuccess } = useNotification()
 
@@ -38,26 +39,41 @@
 <template>
   <div class="info">
     <h1>{{ title }}</h1>
-    <p class="info__price">$ {{ price }}</p>
+    <div class="info__price-share">
+      <p class="info__price">$ {{ price }}</p>
+      <IconShare class="info__share" />
+    </div>
     <div class="info__raiting">
       <StarsRating :black-stars="blackStarsCount" :white-stars="whiteStarsCount" />
       <span class="info__raiting-count">{{ rating?.count }} customer review</span>
     </div>
-    <p class="info__description">{{ description }}</p>
-    <div class="info__adding">
-      <QuantityCounter
-        :type="'productInfo'"
-        :quantity="quantity"
-        @decrease="decreaseQuantity"
-        @increase="increaseQuantity"
-      />
-      <button class="info__adding-btn" @click="addToCart">ADD TO CART</button>
+    <div class="info__description-adding">
+      <p class="info__description">{{ description }}</p>
+      <div class="info__adding">
+        <QuantityCounter
+          :type="'productInfo'"
+          :quantity="quantity"
+          @decrease="decreaseQuantity"
+          @increase="increaseQuantity"
+        />
+        <button class="info__adding-btn" @click="addToCart">ADD TO CART</button>
+      </div>
     </div>
     <div class="info__social">
       <IconMail class="info__social-icon" />
       <IconInstagram class="info__social-icon" />
       <IconFaceBook class="info__social-icon" />
       <IconTwitter class="info__social-icon" />
+    </div>
+    <div class="info__meta">
+      <div>
+        <span class="info__meta-name">SKU:</span>
+        <span class="info__meta-meaning">{{ id }}</span>
+      </div>
+      <div>
+        <span class="info__meta-name">Categories:</span>
+        <span class="info__meta-meaning">{{ category }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -67,56 +83,154 @@
     h1 {
       font-size: 26px;
       font-weight: 400;
+
+      @media (max-width: $breakpoints-mobile) {
+        display: -moz-box;
+        display: block;
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 2;
+        -moz-line-clamp: 2;
+        font-size: 20px;
+        -webkit-box-orient: vertical;
+        -moz-box-orient: vertical;
+      }
+    }
+
+    &__price-share {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      @media (max-width: $breakpoints-mobile) {
+        margin-top: 15px;
+      }
     }
 
     &__price {
       font-size: 20px;
       font-weight: 500;
       color: $accent-color;
+
+      @media (max-width: $breakpoints-mobile) {
+        margin: 0;
+        font-size: 16px;
+      }
+    }
+
+    &__share {
+      width: 14px;
+      height: 14px;
+      fill: $primary-color;
+
+      @media (min-width: $breakpoints-mobile) {
+        display: none;
+      }
     }
 
     &__raiting {
       display: flex;
       margin-top: 70px;
+
+      @media (max-width: $breakpoints-mobile) {
+        display: none;
+      }
+
+      &-count {
+        margin-left: 14px;
+        font-size: 16px;
+        color: $main-text-color;
+      }
     }
 
-    &__raiting-count {
-      margin-left: 14px;
-      font-size: 16px;
-      color: $main-text-color;
+    &__description-adding {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+      margin-top: 19px;
+
+      @media (max-width: $breakpoints-mobile) {
+        flex-direction: column-reverse;
+        gap: 16px;
+        margin-top: 24px;
+      }
     }
 
     &__description {
-      margin-top: 19px;
+      margin: 0;
       font-size: 16px;
       line-height: 27px;
       color: $main-text-color;
+
+      @media (max-width: $breakpoints-mobile) {
+        display: -moz-box;
+        display: block;
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 2;
+        -moz-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        -moz-box-orient: vertical;
+      }
     }
 
     &__adding {
       display: flex;
       gap: 23px;
-      margin-top: 48px;
-    }
 
-    &__adding-btn {
-      width: 100%;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      background-color: $white;
-      border: 1px solid $primary-color;
-      border-radius: 4px;
+      &-btn {
+        width: 100%;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        background-color: $white;
+        border: 1px solid $primary-color;
+        border-radius: 4px;
+
+        @media (max-width: $breakpoints-mobile) {
+          height: 32px;
+          font-size: 12px;
+          font-weight: 400;
+        }
+      }
     }
 
     &__social {
       margin-top: 81px;
+
+      @media (max-width: $breakpoints-mobile) {
+        display: none;
+      }
+
+      &-icon {
+        height: 17px;
+        margin-right: 24px;
+        color: $main-text-color;
+      }
     }
 
-    &__social-icon {
-      height: 17px;
-      margin-right: 24px;
-      color: $main-text-color;
+    &__meta {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 40px;
+      font-size: 16px;
+
+      @media (max-width: $breakpoints-mobile) {
+        display: none;
+      }
+
+      &-meaning {
+        display: inline-block;
+        margin-left: 16px;
+        color: $main-text-color;
+
+        &::first-letter {
+          text-transform: uppercase;
+        }
+      }
     }
   }
 </style>

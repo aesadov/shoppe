@@ -133,6 +133,10 @@
       position: relative;
       flex: 1;
       height: 600px;
+
+      @media (max-width: $breakpoints-mobile) {
+        height: 374px;
+      }
     }
 
     &__main-image {

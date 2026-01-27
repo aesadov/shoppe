@@ -16,7 +16,7 @@
 </script>
 
 <template>
-  <div class="counter">
+  <div class="counter" :class="{ 'counter__product-info--mobile': type === 'productInfo' }">
     <button
       class="counter__btn-left"
       :class="{ 'button--product-info': type === 'productInfo' }"
@@ -41,6 +41,12 @@
   .counter {
     display: flex;
     align-self: flex-end;
+
+    &__product-info--mobile {
+      @media (max-width: $breakpoints-mobile) {
+        display: none;
+      }
+    }
 
     button {
       width: 28px;

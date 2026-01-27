@@ -39,8 +39,8 @@
       <ProductGalery :images="productImages" />
       <ProductInfo :product="product" />
     </div>
-    <div v-if="error">Error!</div>
-    <div v-if="loading">Loding...</div>
+    <!-- <div v-if="error">Error!</div>
+    <div v-if="loading">Loding...</div> -->
   </div>
 </template>
 
