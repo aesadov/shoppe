@@ -2,6 +2,7 @@
   import { ref } from 'vue'
   import { Swiper, SwiperSlide } from 'swiper/vue'
   import type { Swiper as SwiperType } from 'swiper'
+  import SkeletonImg from '~/components/skeletons/SkeletonImg.vue'
 
   import 'swiper/css'
   import 'swiper/css/free-mode'
@@ -12,6 +13,7 @@
 
   interface Props {
     images: string[]
+    loading: boolean
   }
 
   const props = defineProps<Props>()
@@ -61,6 +63,7 @@
         class="galery__thumbs"
         @swiper="onThumbsSwiper"
       >
+        <SkeletonImg v-if="loading" />
         <SwiperSlide v-for="(img, i) in images" :key="i">
           <div class="galery__thumb-wrapper">
             <img :src="img" :alt="`Thumb ${i + 1}`" class="galery__thumb-img" />
@@ -75,6 +78,7 @@
         @swiper="onMainSwiper"
         @slideChange="onSlideChange"
       >
+        <SkeletonImg v-if="loading" />
         <SwiperSlide v-for="(img, i) in images" :key="i">
           <div class="galery__main-image">
             <img :src="img" :alt="`Image ${i + 1}`" class="galery__main-img" />

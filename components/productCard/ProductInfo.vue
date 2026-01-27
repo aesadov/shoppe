@@ -8,9 +8,11 @@
   import IconFaceBook from '~/assets/icons/Icon-FB.svg'
   import IconMail from '~/assets/icons/Icon-mail.svg'
   import IconShare from '~/assets/icons/Icon-share.svg'
+  import SkeletoneDescription from '~/components/skeletons/SkeletoneDescription.vue'
 
   interface Props {
     product: Product
+    loading: boolean
   }
 
   const { product } = defineProps<Props>()
@@ -38,6 +40,7 @@
 </script>
 <template>
   <div class="info">
+    <SkeletoneDescription v-if="loading" />
     <h1>{{ title }}</h1>
     <div class="info__price-share">
       <p class="info__price">$ {{ price }}</p>
@@ -48,6 +51,7 @@
       <span class="info__raiting-count">{{ rating?.count }} customer review</span>
     </div>
     <div class="info__description-adding">
+      <SkeletoneDescription v-if="loading" />
       <p class="info__description">{{ description }}</p>
       <div class="info__adding">
         <QuantityCounter

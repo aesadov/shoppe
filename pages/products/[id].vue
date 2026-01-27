@@ -36,11 +36,9 @@
 <template>
   <div v-if="product" class="product">
     <div class="product__top">
-      <ProductGalery :images="productImages" />
-      <ProductInfo :product="product" />
+      <ProductGalery :images="productImages" :loading="loading" />
+      <ProductInfo :product="product" :loading="loading" />
     </div>
-    <!-- <div v-if="error">Error!</div>
-    <div v-if="loading">Loding...</div> -->
   </div>
 </template>
 
