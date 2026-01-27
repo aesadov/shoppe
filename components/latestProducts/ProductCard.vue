@@ -5,6 +5,7 @@
   import SkeletoneDescription from '~/components/skeletons/SkeletoneDescription.vue'
   import type { Product } from '~/types/api'
   import { useCartStore } from '~/store/cart'
+  import { navigateTo } from 'nuxt/app'
 
   interface Props {
     product?: Product
@@ -22,6 +23,11 @@
     showSuccess('The item was added to your Shopping bag', {
       link: 'VIEW CART',
     })
+  }
+
+  function goToItem() {
+    if (!product?.id) return
+    navigateTo(`/products/${product.id}`)
   }
 
   function handleHover(state: boolean) {
@@ -43,6 +49,7 @@
           :src="product.image"
           alt="product image"
           loading="lazy"
+          @click="goToItem"
         />
 
         <div
