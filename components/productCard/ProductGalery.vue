@@ -51,7 +51,10 @@
 </script>
 
 <template>
-  <div v-if="images.length > 0" class="galery">
+  <div v-if="loading" class="galery-sceleton">
+    <SkeletonImg />
+  </div>
+  <div v-if="images.length > 0 && loading === false" class="galery">
     <div class="galery__container">
       <Swiper
         :modules="modules"
@@ -63,7 +66,6 @@
         class="galery__thumbs"
         @swiper="onThumbsSwiper"
       >
-        <SkeletonImg v-if="loading" />
         <SwiperSlide v-for="(img, i) in images" :key="i">
           <div class="galery__thumb-wrapper">
             <img :src="img" :alt="`Thumb ${i + 1}`" class="galery__thumb-img" />
@@ -78,7 +80,6 @@
         @swiper="onMainSwiper"
         @slideChange="onSlideChange"
       >
-        <SkeletonImg v-if="loading" />
         <SwiperSlide v-for="(img, i) in images" :key="i">
           <div class="galery__main-image">
             <img :src="img" :alt="`Image ${i + 1}`" class="galery__main-img" />
@@ -90,11 +91,19 @@
       <div class="galery__progress-fill" :style="{ width: `${progress * 100}%` }" />
     </div>
   </div>
-
-  <div v-else class="galery galery_no-images">No images available</div>
 </template>
 
 <style lang="scss" scoped>
+  .galery-sceleton {
+    width: 700px;
+    height: 600px;
+
+    @media (max-width: $breakpoints-mobile) {
+      max-width: 100%;
+      height: 374px;
+    }
+  }
+
   .galery {
     max-width: 700px;
 

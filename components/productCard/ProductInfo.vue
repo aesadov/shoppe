@@ -40,20 +40,19 @@
 </script>
 <template>
   <div class="info">
-    <SkeletoneDescription v-if="loading" />
     <h1>{{ title }}</h1>
-    <div class="info__price-share">
+    <div v-if="!loading" class="info__price-share">
       <p class="info__price">$ {{ price }}</p>
       <IconShare class="info__share" />
     </div>
-    <div class="info__raiting">
+    <div v-if="!loading" class="info__raiting">
       <StarsRating :black-stars="blackStarsCount" :white-stars="whiteStarsCount" />
       <span class="info__raiting-count">{{ rating?.count }} customer review</span>
     </div>
     <div class="info__description-adding">
       <SkeletoneDescription v-if="loading" />
-      <p class="info__description">{{ description }}</p>
-      <div class="info__adding">
+      <p v-if="!loading" class="info__description">{{ description }}</p>
+      <div v-if="!loading" class="info__adding">
         <QuantityCounter
           :type="'productInfo'"
           :quantity="quantity"
@@ -63,7 +62,7 @@
         <button class="info__adding-btn" @click="addToCart">ADD TO CART</button>
       </div>
     </div>
-    <div class="info__social">
+    <div v-if="!loading" class="info__social">
       <IconMail class="info__social-icon" />
       <IconInstagram class="info__social-icon" />
       <IconFaceBook class="info__social-icon" />
