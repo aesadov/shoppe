@@ -24,11 +24,11 @@
 
   const modules = [FreeMode, Navigation, Thumbs]
 
-  const onThumbsSwiper = (swiper: SwiperType) => {
+  const onThumbsSwiperInit = (swiper: SwiperType) => {
     thumbsSwiper.value = swiper
   }
 
-  const onMainSwiper = (swiper: SwiperType) => {
+  const onMainSwiperInit = (swiper: SwiperType) => {
     mainSwiper.value = swiper
     progress.value = (swiper.activeIndex + 1) / swiper.slides.length
   }
@@ -64,7 +64,7 @@
         :freeMode="true"
         :watchSlidesProgress="true"
         class="galery__thumbs"
-        @swiper="onThumbsSwiper"
+        @swiper="onThumbsSwiperInit"
       >
         <SwiperSlide v-for="(img, i) in images" :key="i">
           <div class="galery__thumb-wrapper">
@@ -77,7 +77,7 @@
         :modules="modules"
         :thumbs="{ swiper: thumbsSwiper }"
         class="galery__main"
-        @swiper="onMainSwiper"
+        @swiper="onMainSwiperInit"
         @slideChange="onSlideChange"
       >
         <SwiperSlide v-for="(img, i) in images" :key="i">
