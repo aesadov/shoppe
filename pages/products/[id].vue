@@ -5,11 +5,13 @@
   import { useGetProduct } from '~/composables/api/products/useGetProduct'
   import ProductGalery from '@/components/productCard/ProductGalery.vue'
   import ProductInfo from '@/components/productCard/ProductInfo.vue'
+  import { useNotification } from '~/composables/notification/useNotification'
 
   const route = useRoute()
   const { getProduct } = useGetProduct()
   const loading = ref(false)
   const error = ref<string | null>(null)
+  const { showError } = useNotification()
 
   const product = ref<Product | null>(null)
 
@@ -26,8 +28,9 @@
       const id = parseInt(productId)
       product.value = await getProduct(id)
     } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Unknown error'
-      console.error('Failed to fetch product:', err)
+      const errorMessage = err instanceof Error ? err.message : 'Не удалось загрузить товар'
+      error.value = errorMessage
+      showError(errorMessage)
     } finally {
       loading.value = false
     }
