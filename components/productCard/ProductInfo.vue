@@ -83,6 +83,14 @@
 
 <style lang="scss" scoped>
   .info {
+    flex: 1;
+    min-width: 300px;
+
+    @media (width <= $breakpoints-tablet) {
+      flex: 0 1 100%;
+      min-width: 100%;
+    }
+
     h1 {
       font-size: 26px;
       font-weight: 400;

@@ -105,9 +105,11 @@
   }
 
   .galery {
-    max-width: 700px;
+    flex: 0 1 700px;
+    min-width: 0;
 
-    @media (max-width: $breakpoints-mobile) {
+    @media (width <= $breakpoints-tablet) {
+      flex: 1 1 100%;
       max-width: 100%;
     }
 
@@ -169,15 +171,17 @@
     }
 
     &__progress {
-      max-width: 540px;
+      width: calc(100% - 159px);
       height: 2px;
       margin-top: 24px;
-      margin-left: auto;
+      margin-left: 159px;
       background-color: $divider-color;
       border-radius: 2px;
 
       @media (max-width: $breakpoints-mobile) {
+        width: 100%;
         margin-top: 16px;
+        margin-left: 0;
       }
     }
 

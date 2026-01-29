@@ -44,9 +44,18 @@
 
 <style lang="scss" scoped>
   .product {
+    width: 100%;
+    overflow: hidden;
+
     &__top {
       display: flex;
       gap: 62px;
+      width: 100%;
+
+      @media (width <= $breakpoints-tablet) {
+        flex-wrap: wrap;
+        gap: 40px;
+      }
 
       @media (max-width: $breakpoints-mobile) {
         flex-direction: column;
