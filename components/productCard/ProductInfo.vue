@@ -38,46 +38,54 @@
   }
   const increaseQuantity = () => ++quantity.value
 </script>
+
 <template>
   <div class="info">
-    <h1>{{ title }}</h1>
-    <div v-if="!loading" class="info__price-share">
-      <p class="info__price">$ {{ price }}</p>
-      <IconShare class="info__share" />
-    </div>
-    <div v-if="!loading" class="info__raiting">
-      <StarsRating :black-stars="blackStarsCount" :white-stars="whiteStarsCount" />
-      <span class="info__raiting-count">{{ rating?.count }} customer review</span>
-    </div>
-    <div class="info__description-adding">
-      <SkeletoneDescription v-if="loading" />
-      <p v-if="!loading" class="info__description">{{ description }}</p>
-      <div v-if="!loading" class="info__adding">
-        <QuantityCounter
-          :type="'productInfo'"
-          :quantity="quantity"
-          @decrease="decreaseQuantity"
-          @increase="increaseQuantity"
-        />
-        <button class="info__adding-btn" @click="addToCart">ADD TO CART</button>
+    <SkeletoneDescription v-if="loading" class="info__description-adding" />
+
+    <template v-else>
+      <h1>{{ title }}</h1>
+      <div class="info__price-share">
+        <p class="info__price">$ {{ price }}</p>
+        <IconShare class="info__share" />
       </div>
-    </div>
-    <div v-if="!loading" class="info__social">
-      <IconMail class="info__social-icon" />
-      <IconInstagram class="info__social-icon" />
-      <IconFaceBook class="info__social-icon" />
-      <IconTwitter class="info__social-icon" />
-    </div>
-    <div class="info__meta">
-      <div>
-        <span class="info__meta-name">SKU:</span>
-        <span class="info__meta-meaning">{{ id }}</span>
+
+      <div class="info__raiting">
+        <StarsRating :black-stars="blackStarsCount" :white-stars="whiteStarsCount" />
+        <span class="info__raiting-count">{{ rating?.count }} customer review</span>
       </div>
-      <div>
-        <span class="info__meta-name">Categories:</span>
-        <span class="info__meta-meaning">{{ category }}</span>
+
+      <div class="info__description-adding">
+        <p class="info__description">{{ description }}</p>
+        <div class="info__adding">
+          <QuantityCounter
+            :type="'productInfo'"
+            :quantity="quantity"
+            @decrease="decreaseQuantity"
+            @increase="increaseQuantity"
+          />
+          <button class="info__adding-btn" @click="addToCart">ADD TO CART</button>
+        </div>
       </div>
-    </div>
+
+      <div class="info__social">
+        <IconMail class="info__social-icon" />
+        <IconInstagram class="info__social-icon" />
+        <IconFaceBook class="info__social-icon" />
+        <IconTwitter class="info__social-icon" />
+      </div>
+
+      <div class="info__meta">
+        <div>
+          <span class="info__meta-name">SKU:</span>
+          <span class="info__meta-meaning">{{ id }}</span>
+        </div>
+        <div>
+          <span class="info__meta-name">Categories:</span>
+          <span class="info__meta-meaning">{{ category }}</span>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
