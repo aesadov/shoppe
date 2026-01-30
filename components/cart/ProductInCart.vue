@@ -39,11 +39,12 @@
         </div>
         <IconCross class="main__close" @click="remove" />
       </div>
-      <div class="count">
-        <button class="count__btn-left" @click="decreaseQuantity">–</button>
-        <div class="count__data">{{ props.product.quantity }}</div>
-        <button class="count__btn-right" @click="increaseQuantity">+</button>
-      </div>
+      <QuantityCounter
+        :type="'cart'"
+        :quantity="props.product.quantity"
+        @decrease="decreaseQuantity"
+        @increase="increaseQuantity"
+      />
     </div>
   </div>
 </template>
@@ -74,36 +75,6 @@
     flex: 1;
     flex-direction: column;
     justify-content: space-between;
-
-    .count {
-      display: flex;
-      align-self: flex-end;
-
-      button {
-        width: 28px;
-        height: 33px;
-        cursor: pointer;
-        background-color: $btn-grey;
-        border: none;
-      }
-
-      &__btn-left {
-        border-radius: 4px 0 0 4px;
-      }
-
-      &__btn-right {
-        border-radius: 0 4px 4px 0;
-      }
-
-      &__data {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 28px;
-        height: 33px;
-        background-color: $btn-grey;
-      }
-    }
   }
 
   .main {

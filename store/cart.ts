@@ -54,12 +54,15 @@ export const useCartStore = defineStore('cart', () => {
     isShowCart.value = !isShowCart.value
   }
 
-  function addItem(product: Product) {
+  function addItem(product: Product, quantity?: number) {
     const cartItem = cart.value.products.find((p) => p.id === product.id)
     if (cartItem) {
-      cartItem.quantity++
+      cartItem.quantity += quantity ?? 1
     } else {
-      cart.value.products.unshift({ ...product, quantity: START_QUANTITY })
+      cart.value.products.unshift({
+        ...product,
+        quantity: quantity ?? START_QUANTITY,
+      })
     }
   }
 
