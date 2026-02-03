@@ -8,6 +8,8 @@
   import IconFaceBook from '~/assets/icons/Icon-FB.svg'
   import IconMail from '~/assets/icons/Icon-mail.svg'
   import IconShare from '~/assets/icons/Icon-share.svg'
+  import IconArrowLeft from '~/assets/icons/icon-arrow-left_1.svg'
+  import IconArrowRight from '~/assets/icons/icon-arrow-right.svg'
   import SkeletoneDescription from '~/components/skeletons/SkeletoneDescription.vue'
 
   interface Props {
@@ -37,6 +39,8 @@
     }
   }
   const increaseQuantity = () => ++quantity.value
+  const viewMore = ref(false)
+  const viewHandler = () => (viewMore.value = !viewMore.value)
 </script>
 
 <template>
@@ -56,7 +60,17 @@
       </div>
 
       <div class="info__description-adding">
-        <p class="info__description">{{ description }}</p>
+        <hr class="info__hr" />
+        <div v-if="!viewMore" @click="viewHandler">
+          <span class="info__view">View more</span><IconArrowRight class="info__arrow" />
+        </div>
+        <div v-if="viewMore" @click="viewHandler">
+          <span class="info__view">View less</span><IconArrowLeft class="info__arrow" />
+        </div>
+        <p class="info__description" :class="{ 'info__description--expanded': viewMore }">
+          {{ description }}
+        </p>
+
         <div class="info__adding">
           <QuantityCounter
             :type="'productInfo'"
@@ -176,6 +190,17 @@
       }
     }
 
+    &__view {
+      color: $accent-color;
+    }
+
+    &__arrow {
+      height: 12px;
+      margin-bottom: 1px;
+      margin-left: 7px;
+      vertical-align: middle;
+    }
+
     &__description {
       margin: 0;
       font-size: 16px;
@@ -192,6 +217,23 @@
         -moz-line-clamp: 2;
         -webkit-box-orient: vertical;
         -moz-box-orient: vertical;
+
+        &--expanded {
+          display: block;
+          overflow: visible;
+        }
+      }
+    }
+
+    &__hr {
+      display: none;
+
+      @media (max-width: $breakpoints-mobile) {
+        display: block;
+        width: 100%;
+        margin: 0;
+        border: none;
+        border-top: 1px solid $divider-color;
       }
     }
 
