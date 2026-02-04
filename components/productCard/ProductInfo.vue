@@ -49,23 +49,23 @@
 
     <template v-else>
       <h1>{{ title }}</h1>
-      <div class="info__price-share">
-        <p class="info__price">$ {{ price }}</p>
-        <IconShare class="info__share" />
+      <div class="info__price">
+        <p>$ {{ price }}</p>
+        <IconShare class="info__price-share" />
       </div>
 
       <div class="info__raiting">
         <StarsRating :black-stars="blackStarsCount" :white-stars="whiteStarsCount" />
-        <span class="info__raiting-count">{{ rating?.count }} customer review</span>
+        <span>{{ rating?.count }} customer review</span>
       </div>
 
       <div class="info__description-adding">
-        <hr class="info__hr" />
-        <div v-if="!viewMore" @click="viewHandler">
-          <span class="info__view">View more</span><IconArrowRight class="info__arrow" />
+        <hr />
+        <div v-if="!viewMore" class="info__view" @click="viewHandler">
+          <span>View more</span><IconArrowRight class="info__view-arrow" />
         </div>
-        <div v-if="viewMore" @click="viewHandler">
-          <span class="info__view">View less</span><IconArrowLeft class="info__arrow" />
+        <div v-if="viewMore" class="info__view" @click="viewHandler">
+          <span>View less</span><IconArrowLeft class="info__view-arrow" />
         </div>
         <p class="info__description" :class="{ 'info__description--expanded': viewMore }">
           {{ description }}
@@ -78,7 +78,7 @@
             @decrease="decreaseQuantity"
             @increase="increaseQuantity"
           />
-          <button class="info__adding-btn" @click="addToCart">ADD TO CART</button>
+          <button @click="addToCart">ADD TO CART</button>
         </div>
       </div>
 
@@ -91,11 +91,11 @@
 
       <div class="info__meta">
         <div>
-          <span class="info__meta-name">SKU:</span>
+          <span>SKU:</span>
           <span class="info__meta-meaning">{{ id }}</span>
         </div>
         <div>
-          <span class="info__meta-name">Categories:</span>
+          <span>Categories:</span>
           <span class="info__meta-meaning">{{ category }}</span>
         </div>
       </div>
@@ -131,7 +131,7 @@
       }
     }
 
-    &__price-share {
+    &__price {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -139,26 +139,26 @@
       @media (max-width: $breakpoints-mobile) {
         margin-top: 15px;
       }
-    }
 
-    &__price {
-      font-size: 20px;
-      font-weight: 500;
-      color: $accent-color;
+      p {
+        font-size: 20px;
+        font-weight: 500;
+        color: $accent-color;
 
-      @media (max-width: $breakpoints-mobile) {
-        margin: 0;
-        font-size: 16px;
+        @media (max-width: $breakpoints-mobile) {
+          margin: 0;
+          font-size: 16px;
+        }
       }
-    }
 
-    &__share {
-      width: 14px;
-      height: 14px;
-      fill: $primary-color;
+      &-share {
+        width: 14px;
+        height: 14px;
+        fill: $primary-color;
 
-      @media (min-width: $breakpoints-mobile) {
-        display: none;
+        @media (min-width: $breakpoints-mobile) {
+          display: none;
+        }
       }
     }
 
@@ -170,7 +170,7 @@
         display: none;
       }
 
-      &-count {
+      span {
         margin-left: 14px;
         font-size: 16px;
         color: $main-text-color;
@@ -188,17 +188,37 @@
         gap: 16px;
         margin-top: 24px;
       }
+
+      hr {
+        display: none;
+
+        @media (max-width: $breakpoints-mobile) {
+          display: block;
+          width: 100%;
+          margin: 0;
+          border: none;
+          border-top: 1px solid $divider-color;
+        }
+      }
     }
 
     &__view {
-      color: $accent-color;
-    }
+      display: none;
 
-    &__arrow {
-      height: 12px;
-      margin-bottom: 1px;
-      margin-left: 7px;
-      vertical-align: middle;
+      span {
+        color: $accent-color;
+      }
+
+      @media (max-width: $breakpoints-mobile) {
+        display: block;
+      }
+
+      &-arrow {
+        height: 12px;
+        margin-bottom: 1px;
+        margin-left: 7px;
+        vertical-align: middle;
+      }
     }
 
     &__description {
@@ -225,23 +245,11 @@
       }
     }
 
-    &__hr {
-      display: none;
-
-      @media (max-width: $breakpoints-mobile) {
-        display: block;
-        width: 100%;
-        margin: 0;
-        border: none;
-        border-top: 1px solid $divider-color;
-      }
-    }
-
     &__adding {
       display: flex;
       gap: 23px;
 
-      &-btn {
+      button {
         width: 100%;
         font-size: 16px;
         font-weight: 700;
