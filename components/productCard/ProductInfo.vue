@@ -209,6 +209,7 @@
     }
 
     &__description {
+      max-height: 54px;
       margin: 0;
       font-size: 16px;
       line-height: 27px;
@@ -218,15 +219,14 @@
         display: -moz-box;
         display: block;
         display: -webkit-box;
+        max-height: 54px;
         overflow: hidden;
         text-overflow: ellipsis;
-        -webkit-line-clamp: 2;
-        -moz-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        -moz-box-orient: vertical;
+        transition: max-height 0.3s ease-in-out;
 
         &--expanded {
           display: block;
+          max-height: 500px;
           overflow: visible;
         }
       }
