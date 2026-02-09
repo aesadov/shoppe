@@ -60,7 +60,6 @@
       </div>
 
       <div class="info__description-adding">
-        <hr />
         <div v-if="!viewMore" class="info__view" @click="viewHandler">
           <span>View more</span><IconArrowRight class="info__view-arrow" />
         </div>
@@ -187,18 +186,6 @@
         flex-direction: column-reverse;
         gap: 16px;
         margin-top: 24px;
-      }
-
-      hr {
-        display: none;
-
-        @media (max-width: $breakpoints-mobile) {
-          display: block;
-          width: 100%;
-          margin: 0;
-          border: none;
-          border-top: 1px solid $divider-color;
-        }
       }
     }
 

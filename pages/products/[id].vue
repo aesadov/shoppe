@@ -1,73 +1,3 @@
-<!-- <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
-  import { useRoute } from 'nuxt/app'
-  import type { Product } from '~/types/api'
-  import { useGetProduct } from '~/composables/api/products/useGetProduct'
-  import ProductGalery from '@/components/productCard/ProductGalery.vue'
-  import ProductInfo from '@/components/productCard/ProductInfo.vue'
-  import { useNotification } from '~/composables/notification/useNotification'
-
-  const route = useRoute()
-  const { getProduct } = useGetProduct()
-  const loading = ref(false)
-  const error = ref<string | null>(null)
-  const { showError } = useNotification()
-
-  const product = ref<Product | null>(null)
-
-  const productImages = computed(() => {
-    if (!product.value?.image) return []
-
-    return Array(4).fill(product.value.image)
-  })
-
-  onMounted(async () => {
-    loading.value = true
-    try {
-      const productId = route.params.id as string
-      const id = parseInt(productId)
-      product.value = await getProduct(id)
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Не удалось загрузить товар'
-      error.value = errorMessage
-      showError(errorMessage)
-    } finally {
-      loading.value = false
-    }
-  })
-</script>
-<template>
-  <div v-if="product" class="product">
-    <div class="product__top">
-      <ProductGalery :images="productImages" :loading="loading" />
-      <ProductInfo :product="product" :loading="loading" />
-    </div>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-  .product {
-    width: 100%;
-    overflow: hidden;
-
-    &__top {
-      display: flex;
-      gap: 62px;
-      width: 100%;
-
-      @media (width <= $breakpoints-tablet) {
-        flex-wrap: wrap;
-        gap: 40px;
-      }
-
-      @media (max-width: $breakpoints-mobile) {
-        flex-direction: column;
-        gap: 24px;
-      }
-    }
-  }
-</style> -->
-
 <script setup lang="ts">
   import { ref, onMounted, computed } from 'vue'
   import { useRoute } from 'nuxt/app'
@@ -142,6 +72,30 @@
         <div v-else>Нет отзывов</div>
       </template>
     </BaseTabs>
+
+    <hr />
+
+    <BaseAccordeon :items="tabs" mode="single" class="product__accordeon">
+      <template #description>
+        <ProductDescription :description="product.description" />
+      </template>
+
+      <template #additional>
+        <AdditionalInformation
+          :id="product.id"
+          :title="product.title"
+          :price="product.price"
+          :category="product.category"
+        />
+      </template>
+
+      <template #reviews>
+        <Reviews v-if="product.rating" :rate="product.rating.rate" :count="product.rating.count" />
+        <div v-else>Нет отзывов</div>
+      </template>
+    </BaseAccordeon>
+
+    <hr />
   </div>
 </template>
 
@@ -149,6 +103,18 @@
   .product {
     width: 100%;
     overflow: hidden;
+
+    hr {
+      display: none;
+
+      @media (max-width: $breakpoints-mobile) {
+        display: block;
+        width: 100%;
+        margin-top: 18px;
+        border: none;
+        border-top: 1px solid $divider-color;
+      }
+    }
 
     &__top {
       display: flex;
@@ -174,7 +140,16 @@
       }
 
       @media (max-width: $breakpoints-mobile) {
-        margin-top: 24px;
+        display: none;
+      }
+    }
+
+    &__accordeon {
+      display: none;
+
+      @media (max-width: $breakpoints-mobile) {
+        display: block;
+        margin-top: 16px;
       }
     }
   }
