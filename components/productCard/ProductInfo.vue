@@ -209,16 +209,13 @@
     }
 
     &__description {
-      max-height: 54px;
       margin: 0;
       font-size: 16px;
       line-height: 27px;
       color: $main-text-color;
 
       @media (max-width: $breakpoints-mobile) {
-        display: -moz-box;
         display: block;
-        display: -webkit-box;
         max-height: 54px;
         overflow: hidden;
         text-overflow: ellipsis;
