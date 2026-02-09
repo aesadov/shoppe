@@ -14,5 +14,9 @@
   .description {
     font-size: 16px;
     color: $main-text-color;
+
+    @media (max-width: $breakpoints-mobile) {
+      font-size: 14px;
+    }
   }
 </style>

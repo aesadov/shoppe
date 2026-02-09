@@ -10,8 +10,32 @@
 </script>
 
 <template>
-  <div>id: {{ id }}</div>
-  <div>title: {{ title }}</div>
-  <div>price: {{ price }}</div>
-  <div>category: {{ category }}</div>
+  <div class="info">
+    <div>
+      id: <span>{{ id }}</span>
+    </div>
+    <div>
+      title: <span>{{ title }}</span>
+    </div>
+    <div>
+      price: <span>{{ price }}</span>
+    </div>
+    <div>
+      category: <span>{{ category }}</span>
+    </div>
+  </div>
 </template>
+
+<style lang="scss" scoped>
+  .info {
+    font-size: 16px;
+
+    span {
+      color: $main-text-color;
+    }
+
+    @media (max-width: $breakpoints-mobile) {
+      font-size: 14px;
+    }
+  }
+</style>
