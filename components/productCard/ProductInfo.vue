@@ -11,6 +11,7 @@
   import IconArrowLeft from '~/assets/icons/icon-arrow-left_1.svg'
   import IconArrowRight from '~/assets/icons/icon-arrow-right.svg'
   import SkeletoneDescription from '~/components/skeletons/SkeletoneDescription.vue'
+  import { MAX_RATING } from '~/constants/rating'
 
   interface Props {
     product: Product
@@ -29,7 +30,6 @@
     })
   }
 
-  const MAX_RATING = 5
   const blackStarsCount = Math.round(rating?.rate || 0)
   const whiteStarsCount = MAX_RATING - blackStarsCount
   const quantity = ref(1)

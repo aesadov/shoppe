@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, onMounted, computed } from 'vue'
   import { useRoute } from 'nuxt/app'
-  import type { Product } from '~/types/api'
+  import type { Product, Review } from '~/types/api'
   import { useGetProduct } from '~/composables/api/products/useGetProduct'
   import ProductGalery from '~/components/productCard/ProductGalery.vue'
   import ProductInfo from '~/components/productCard/ProductInfo.vue'
@@ -29,6 +29,23 @@
     { name: 'additional', label: 'Additional information' },
     { name: 'reviews', label: 'Reviews' },
   ])
+
+  const mockedReviews = [
+    {
+      date: '6 may, 2020',
+      name: 'Scarlett whithch',
+      review:
+        'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet.',
+      rate: 3,
+    },
+    {
+      date: '7 jul, 2025',
+      name: 'Dmitry chel',
+      review:
+        'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam placerat',
+      rate: 4,
+    },
+  ] as Review[]
 
   onMounted(async () => {
     loading.value = true
@@ -68,7 +85,7 @@
       </template>
 
       <template #reviews>
-        <Reviews v-if="product.rating" :rate="product.rating.rate" :count="product.rating.count" />
+        <Reviews v-if="product.rating" :reviews="mockedReviews" :product="product" />
         <div v-else>Нет отзывов</div>
       </template>
     </BaseTabs>
@@ -90,7 +107,7 @@
       </template>
 
       <template #reviews>
-        <Reviews v-if="product.rating" :rate="product.rating.rate" :count="product.rating.count" />
+        <Reviews v-if="product.rating" :reviews="mockedReviews" :product="product" />
         <div v-else>Нет отзывов</div>
       </template>
     </BaseAccordeon>

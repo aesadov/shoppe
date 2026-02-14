@@ -58,3 +58,10 @@ export interface User {
   phone?: string
   __v?: number
 }
+
+export interface Review {
+  date: string
+  name: string
+  review: string
+  rate: number
+}
