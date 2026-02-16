@@ -14,6 +14,7 @@
       items: AccordeonItem[]
       mode?: AccordeonMode
       defaultOpen?: string[]
+      reviewsCount: number
     }>(),
     {
       mode: 'single',
@@ -51,7 +52,7 @@
       <button class="accordeon__header" @click="toggleItem(item.name)">
         <div class="accordeon__header-content">
           <slot :name="`${item.name}-label`" :item="item">
-            {{ item.label }}
+            {{ item.label }} <span v-if="item.name === 'reviews'">({{ reviewsCount }})</span>
           </slot>
         </div>
         <span v-if="mode !== 'none'" class="accordeon__arrow">

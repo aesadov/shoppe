@@ -3,7 +3,7 @@
   import IconMagnifyingGlass from '~/assets/icons/Icon-magnifyingGlass.svg'
 
   interface Props {
-    type: 'search' | 'e-mail'
+    type: 'search' | 'e-mail' | 'form'
     error?: boolean
     placeholder?: string
     errorMessage?: string
@@ -46,7 +46,10 @@
     <div class="input-wrapper">
       <input
         class="input"
-        :class="{ 'input--error': error }"
+        :class="{
+          'input--error': error,
+          'input--form': type === 'form',
+        }"
         :placeholder="placeholder"
         :value="modelValue"
         @input="handleInput"
@@ -108,6 +111,11 @@
 
     &--error {
       border-bottom-color: red;
+    }
+
+    &--form {
+      margin-bottom: 20px;
+      border-bottom: 1px solid $divider-color;
     }
   }
 

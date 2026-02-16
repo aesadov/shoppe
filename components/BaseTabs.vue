@@ -9,6 +9,7 @@
   const props = defineProps<{
     tabs: Tab[]
     initialTab?: string
+    reviewsCount: number
   }>()
 
   const slots = useSlots()
@@ -30,8 +31,8 @@
         @click="activeTab = tab.name"
       >
         <slot :name="`${tab.name}-label`" :tab="tab">
-          {{ tab.label }}
-        </slot>
+          {{ tab.label }} <span v-if="tab.name === 'reviews'">({{ reviewsCount }})</span></slot
+        >
       </button>
     </div>
 

@@ -47,6 +47,8 @@
     },
   ] as Review[]
 
+  const reviewsCount = computed(() => mockedReviews.length)
+
   onMounted(async () => {
     loading.value = true
     try {
@@ -70,7 +72,7 @@
       <ProductInfo :product="product" :loading="loading" />
     </div>
 
-    <BaseTabs :tabs="tabs" class="product__tabs">
+    <BaseTabs :tabs="tabs" :reviews-count="reviewsCount" class="product__tabs">
       <template #description>
         <ProductDescription :description="product.description" />
       </template>
@@ -92,7 +94,12 @@
 
     <hr />
 
-    <BaseAccordeon :items="tabs" mode="single" class="product__accordeon">
+    <BaseAccordeon
+      :items="tabs"
+      :reviews-count="reviewsCount"
+      mode="single"
+      class="product__accordeon"
+    >
       <template #description>
         <ProductDescription :description="product.description" />
       </template>
