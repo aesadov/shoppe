@@ -12,7 +12,7 @@
 <template>
   <div class="reviews">
     <ReviewsExamples class="component" :title="product.title" :reviews="reviews" />
-    <AddReview class="component" />
+    <AddReview :product-id="product.id" class="component" />
   </div>
 </template>
 

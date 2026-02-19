@@ -1,46 +1,62 @@
-<!-- <template>
-  <div class="review">
-    <h2>Add а Review</h2>
-    <span>Your email address will not be published. Required fields are marked *</span>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-  .review {
-    h2 {
-      margin-bottom: 11px;
-      font-size: 20px;
-      font-weight: 400;
-    }
-
-    span {
-      font-size: 13px;
-      color: $main-text-color;
-    }
-  }
-</style> -->
-
 <script setup lang="ts">
   import { ref, watch } from 'vue'
   import BaseInput from '~/components/BaseInput.vue'
+  import { useInput } from '~/composables/useInput'
+  import { useStorage } from '~/composables/useStorage'
+  import { emailRegex } from '~/constants/regex'
+  import { useNotification } from '~/composables/notification/useNotification'
+  import { MAX_RATING } from '~/constants/rating'
 
-  const review = ref('')
-  const name = ref('')
-  const email = ref('')
+  const props = defineProps<{
+    productId: number
+  }>()
+
+  const { showSuccess } = useNotification()
+  const { saveToStorage, getFromStorage, clearStorage } = useStorage()
+
+  const {
+    value: email,
+    error: emailError,
+    hasError: emailHasError,
+    resetForm: resetEmail,
+    validate: validateEmail,
+  } = useInput({
+    validation: (email) => {
+      return emailRegex.test(email) || 'Please enter a valid email address'
+    },
+    required: true,
+  })
+
+  const {
+    value: name,
+    error: nameError,
+    hasError: nameHasError,
+    validate: validateName,
+    resetForm: resetName,
+  } = useInput({
+    required: true,
+  })
+
+  const {
+    value: review,
+    error: reviewError,
+    hasError: reviewHasError,
+    validate: validateReview,
+    resetForm: resetReview,
+  } = useInput({
+    required: true,
+  })
+
   const rating = ref(0)
-  const saveInfo = ref(false)
+  const ratingErr = ref('')
+  const saveUserInfo = ref(false)
 
-  // Errors
-  const reviewError = ref('')
-  const nameError = ref('')
-  const emailError = ref('')
-
-  // Load saved data
   const loadSavedData = () => {
-    const saved = localStorage.getItem('userInfo')
-    if (saved) {
+    const savedItems = getFromStorage('userInfo')
+    if (savedItems.length > 0) {
+      const lastSaved = savedItems[savedItems.length - 1]
       try {
-        const { name: savedName, email: savedEmail } = JSON.parse(saved)
+        const { name: savedName, email: savedEmail } = JSON.parse(lastSaved.value)
         name.value = savedName || ''
         email.value = savedEmail || ''
       } catch (e) {
@@ -51,50 +67,25 @@
 
   loadSavedData()
 
-  // Validation
   const validateForm = () => {
-    let isValid = true
-
-    if (!review.value.trim()) {
-      reviewError.value = 'Review is required'
-      isValid = false
-    } else {
-      reviewError.value = ''
-    }
-
-    if (!name.value.trim()) {
-      nameError.value = 'Name is required'
-      isValid = false
-    } else {
-      nameError.value = ''
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!email.value.trim()) {
-      emailError.value = 'Email is required'
-      isValid = false
-    } else if (!emailRegex.test(email.value)) {
-      emailError.value = 'Invalid email format'
-      isValid = false
-    } else {
-      emailError.value = ''
-    }
+    const isReviewValid = validateReview()
+    const isNameValid = validateName()
+    const isEmailValid = validateEmail()
 
     if (rating.value === 0) {
-      alert('Please select a rating')
-      isValid = false
+      ratingErr.value = 'Please select a rating'
+      return false
     }
 
-    return isValid
+    return isReviewValid && isNameValid && isEmailValid
   }
 
-  // Save review
   const saveReview = () => {
-    const existingReviews = localStorage.getItem('reviews')
-    const reviews = existingReviews ? JSON.parse(existingReviews) : []
+    const existingReviews = getFromStorage('reviews')
+    const reviews = existingReviews.map((item) => JSON.parse(item.value))
 
     reviews.push({
-      id: Date.now(),
+      id: props.productId,
       review: review.value,
       name: name.value,
       email: email.value,
@@ -102,10 +93,10 @@
       date: new Date().toISOString(),
     })
 
-    localStorage.setItem('reviews', JSON.stringify(reviews))
+    saveToStorage('reviews', JSON.stringify(reviews))
 
-    if (saveInfo.value) {
-      localStorage.setItem(
+    if (saveUserInfo.value) {
+      saveToStorage(
         'userInfo',
         JSON.stringify({
           name: name.value,
@@ -113,51 +104,40 @@
         }),
       )
     } else {
-      localStorage.removeItem('userInfo')
+      clearStorage('userInfo')
     }
   }
 
-  // Handle submit
   const handleSubmit = () => {
     if (validateForm()) {
       saveReview()
 
-      // Clear form
-      review.value = ''
-      name.value = ''
-      email.value = ''
-      rating.value = 0
-      saveInfo.value = false
+      resetEmail()
+      resetName()
+      resetReview()
 
-      alert('Review submitted successfully!')
+      rating.value = 0
+      ratingErr.value = ''
+      saveUserInfo.value = false
+
+      showSuccess('Review submitted successfully!')
     }
   }
-
-  // Clear errors on input
-  watch(review, () => {
-    if (reviewError.value) reviewError.value = ''
-  })
-
-  watch(name, () => {
-    if (nameError.value) nameError.value = ''
-  })
-
-  watch(email, () => {
-    if (emailError.value) emailError.value = ''
-  })
 </script>
 
 <template>
   <div class="review">
     <h2>Add a Review</h2>
-    <span>Your email address will not be published. Required fields are marked *</span>
+    <span class="review__instruction"
+      >Your email address will not be published. Required fields are marked *</span
+    >
 
-    <form>
+    <form @submit.prevent="handleSubmit">
       <BaseInput
         v-model="review"
         type="form"
         :placeholder="'Your Review *'"
-        :error="!!reviewError"
+        :error="reviewHasError"
         :error-message="reviewError"
       />
 
@@ -165,7 +145,7 @@
         v-model="name"
         type="form"
         :placeholder="'Enter Your Name *'"
-        :error="!!nameError"
+        :error="nameHasError"
         :error-message="nameError"
       />
 
@@ -173,40 +153,43 @@
         v-model="email"
         type="form"
         :placeholder="'Enter your Email *'"
-        :error="!!emailError"
+        :error="emailHasError"
         :error-message="emailError"
       />
 
       <div class="review__checkbox">
-        <input :is-checked="saveInfo" type="checkbox" />
+        <input v-model="saveUserInfo" type="checkbox" :checked="saveUserInfo" />
         <span>Save my name, email, and website in this browser for the next time I comment</span>
       </div>
 
       <div class="rating">
-        <span>Your rating *</span>
+        <span v-if="ratingErr" class="rating__error">{{ ratingErr }}</span
+        ><span v-else class="rating__label">Your rating *</span>
         <div class="stars">
-          <button v-for="star in 5" :key="star" type="button" @click="rating = star">
+          <button v-for="star in MAX_RATING" :key="star" type="button" @click="rating = star">
             <span :class="{ active: star <= rating }">★</span>
           </button>
         </div>
       </div>
 
-      <button class="submit-btn" @click="handleSubmit">Submit</button>
+      <button class="submit-btn" type="submit">Submit</button>
     </form>
   </div>
 </template>
 
 <style lang="scss" scoped>
   .review {
+    color: $main-text-color;
+
     h2 {
       margin-bottom: 11px;
       font-size: 20px;
       font-weight: 400;
+      color: $primary-color;
     }
 
-    span {
+    &__instruction {
       font-size: 13px;
-      color: $main-text-color;
     }
 
     form {
@@ -224,6 +207,10 @@
       input {
         margin: 0 5px 0 0;
       }
+
+      span {
+        font-size: 12px;
+      }
     }
   }
 
@@ -234,6 +221,13 @@
       display: block;
       margin-bottom: 8px;
       font-size: 14px;
+    }
+
+    &__error {
+      color: red;
+    }
+
+    &__label {
       color: $main-text-color;
     }
   }

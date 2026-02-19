@@ -15,7 +15,6 @@
   const slots = useSlots()
   const activeTab = ref<string>(props.initialTab || props.tabs[0]?.name || '')
 
-  // Определяем, какие слоты табов действительно существуют
   const tabSlots = computed(() => {
     return props.tabs.filter((tab) => slots[tab.name])
   })

@@ -6,6 +6,7 @@
   import { APP_LINKS } from '~/constants/links'
   import { useInput } from '~/composables/useInput'
   import { useNotification } from '~/composables/notification/useNotification'
+  import { emailRegex } from '~/constants/regex'
 
   const {
     CONTACT_LINK,
@@ -29,7 +30,6 @@
     saveToStorage,
   } = useInput({
     validation: (email) => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       return emailRegex.test(email) || 'Please enter a valid email address'
     },
     required: true,
@@ -59,7 +59,7 @@
       <BaseInput
         v-model="email"
         v-model:is-checked="isChecked"
-        type="e-mail"
+        type="footer"
         :placeholder="PLACEHOLDER"
         :error="hasError"
         :error-message="emailError"
