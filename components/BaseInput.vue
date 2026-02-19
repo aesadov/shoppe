@@ -36,12 +36,15 @@
   const handleSubmit = () => {
     emit('submit')
   }
+
+  const isShowErr = ref(() => error && (type === 'form' || type === 'footer'))
 </script>
 
 <template>
   <div class="input-container">
     <div class="error-msg">
-      <span v-if="`${error && (type === 'form' || type === 'footer')}`">{{ errorMessage }}</span>
+      <!-- <span v-if="`${error && (type === 'form' || type === 'footer')}`">{{ errorMessage }}</span> -->
+      <span v-if="error">{{ errorMessage }}</span>
     </div>
     <div class="input-wrapper">
       <input

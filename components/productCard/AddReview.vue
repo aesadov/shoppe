@@ -19,39 +19,22 @@
     error: emailError,
     hasError: emailHasError,
     resetForm: resetEmail,
-    validate: validateEmail,
-  } = useInput({
-    validation: (email) => {
-      return emailRegex.test(email) || 'Please enter a valid email address'
-    },
-    required: true,
-  })
+  } = useInput()
 
-  const {
-    value: name,
-    error: nameError,
-    hasError: nameHasError,
-    validate: validateName,
-    resetForm: resetName,
-  } = useInput({
-    required: true,
-  })
+  const { value: name, error: nameError, hasError: nameHasError, resetForm: resetName } = useInput()
 
   const {
     value: review,
     error: reviewError,
     hasError: reviewHasError,
-    validate: validateReview,
     resetForm: resetReview,
-  } = useInput({
-    required: true,
-  })
+  } = useInput()
 
   const rating = ref(0)
   const ratingErr = ref('')
   const saveUserInfo = ref(false)
 
-  const loadSavedData = () => {
+  const loadSavedReviews = () => {
     const savedItems = getFromStorage('userInfo')
     if (savedItems.length > 0) {
       const lastSaved = savedItems[savedItems.length - 1]
@@ -65,19 +48,39 @@
     }
   }
 
-  loadSavedData()
+  loadSavedReviews()
 
   const validateForm = () => {
-    const isReviewValid = validateReview()
-    const isNameValid = validateName()
-    const isEmailValid = validateEmail()
+    if (review.value === '') {
+      reviewError.value = 'Please enter your review'
+      reviewHasError.value = true
+      return false
+    }
+
+    if (name.value === '') {
+      nameError.value = 'Please enter your name'
+      nameHasError.value = true
+      return false
+    }
+
+    if (email.value === '') {
+      emailError.value = 'Please enter your e-mail'
+      emailHasError.value = true
+      return false
+    }
+
+    if (!emailRegex.test(email.value)) {
+      emailError.value = 'Please enter a valid email address'
+      emailHasError.value = true
+      return false
+    }
 
     if (rating.value === 0) {
       ratingErr.value = 'Please select a rating'
       return false
     }
 
-    return isReviewValid && isNameValid && isEmailValid
+    return true
   }
 
   const saveReview = () => {
