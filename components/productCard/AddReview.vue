@@ -34,7 +34,7 @@
   const ratingErr = ref('')
   const saveUserInfo = ref(false)
 
-  const loadSavedReviews = () => {
+  const loadSavedUserInfo = () => {
     const savedItems = getFromStorage('userInfo')
     if (savedItems.length > 0) {
       const lastSaved = savedItems[savedItems.length - 1]
@@ -48,7 +48,7 @@
     }
   }
 
-  loadSavedReviews()
+  loadSavedUserInfo()
 
   const validateForm = () => {
     if (review.value === '') {
