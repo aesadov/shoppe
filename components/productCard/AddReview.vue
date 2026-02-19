@@ -157,10 +157,10 @@
         :error-message="emailError"
       />
 
-      <div class="review__checkbox">
+      <label class="review__checkbox">
         <input v-model="saveUserInfo" type="checkbox" :checked="saveUserInfo" />
         <span>Save my name, email, and website in this browser for the next time I comment</span>
-      </div>
+      </label>
 
       <div class="rating">
         <span v-if="ratingErr" class="rating__error">{{ ratingErr }}</span
