@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import type { Product } from '~/types/api'
-  import ProductCard from '~/components/latestProducts/ProductCard.vue'
+  import ProductCard from '~/components/productsList/ProductCard.vue'
 
   interface Props {
     products?: Product[] | null

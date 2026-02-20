@@ -1,31 +1,37 @@
 <script setup lang="ts">
-  import ProductCard from '~/components/latestProducts/ProductCard.vue'
-  import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
-  import { useNotification } from '~/composables/notification/useNotification'
+  import ProductCard from '~/components/productsList/ProductCard.vue'
+  import type { Product } from '~/types/api'
 
-  const { showError } = useNotification()
-
-  const PRODUCTS_LIMIT = 6
-
-  const { data: products, pending, error, refresh } = useGetAllProducts({ limit: PRODUCTS_LIMIT })
-
-  watch(error, (newError) => {
-    if (newError) {
-      console.error('Error loading products:', newError)
-      showError('Error loading products')
-    }
-  })
+  const props = defineProps<{
+    type: 'latest' | 'similar'
+    products: Product[] | null
+    pending: boolean
+  }>()
 </script>
 
 <template>
   <div class="latest">
     <div class="latest__header">
-      <h2 class="latest__title">Shop The Latest</h2>
-      <NuxtLink to="" class="latest__link">View All</NuxtLink>
+      <h2 v-if="type === 'latest'" class="latest__title">Shop The Latest</h2>
+      <h2 v-if="type === 'similar'" class="latest__title-similar">Similar items</h2>
+      <NuxtLink v-if="type === 'latest'" to="/catalogue" class="latest__link">View All</NuxtLink>
     </div>
     <div class="latest__products">
       <!-- Скелетоны -->
-      <ProductCard v-for="n of 6" v-show="pending" :key="'skeleton-' + n" :loading="true" />
+      <ProductCard
+        v-for="n of 6"
+        v-if="type === 'latest'"
+        v-show="pending"
+        :key="'skeleton-' + n"
+        :loading="true"
+      />
+      <ProductCard
+        v-for="n of products?.values.length"
+        v-if="type === 'similar'"
+        v-show="pending"
+        :key="'skeleton-' + n"
+        :loading="true"
+      />
 
       <!-- Реальные продукты -->
       <ProductCard
@@ -62,6 +68,16 @@
       @media (max-width: $breakpoints-mobile) {
         font-size: 16px;
         font-weight: 400;
+      }
+
+      &-similar {
+        font-size: 26px;
+        font-weight: 400;
+
+        @media (max-width: $breakpoints-mobile) {
+          margin: 20px 0 15px;
+          font-size: 16px;
+        }
       }
     }
 

@@ -5,19 +5,25 @@
   import { useGetProduct } from '~/composables/api/products/useGetProduct'
   import ProductGalery from '~/components/productCard/ProductGalery.vue'
   import ProductInfo from '~/components/productCard/ProductInfo.vue'
-  import { useNotification } from '~/composables/notification/useNotification'
   import BaseTabs from '~/components/BaseTabs.vue'
   import ProductDescription from '~/components/productCard/ProductDescription.vue'
   import AdditionalInformation from '~/components/productCard/AdditionalInformation.vue'
   import Reviews from '~/components/productCard/Reviews.vue'
+  import ProductsList from '~/components/productsList/ProductsList.vue'
+  import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
+  import { useNotification } from '~/composables/notification/useNotification'
 
   const route = useRoute()
   const { getProduct } = useGetProduct()
   const loading = ref(false)
-  const error = ref<string | null>(null)
+  const errorLoadingItem = ref<string | null>(null)
   const { showError } = useNotification()
 
   const product = ref<Product | null>(null)
+
+  const similarProducts = ref<Product[]>([])
+  const pendingSimilar = ref(false)
+  const errorSimilar = ref<Error | null>(null)
 
   const productImages = computed(() => {
     if (!product.value?.image) return []
@@ -49,15 +55,37 @@
 
   const reviewsCount = computed(() => mockedReviews.length)
 
+  const loadSimilarProducts = async (category: string) => {
+    if (!category) return
+
+    pendingSimilar.value = true
+    try {
+      const { data, error } = await useGetAllProducts({ category })
+      if (error.value) {
+        throw error.value
+      }
+      similarProducts.value = data.value?.filter((p) => p.id !== product.value?.id) || []
+    } catch (err) {
+      errorSimilar.value = err as Error
+      showError('Error loading similar products')
+    } finally {
+      pendingSimilar.value = false
+    }
+  }
+
   onMounted(async () => {
     loading.value = true
     try {
       const productId = route.params.id as string
       const id = parseInt(productId)
       product.value = await getProduct(id)
+
+      if (product.value?.category) {
+        await loadSimilarProducts(product.value.category)
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Не удалось загрузить товар'
-      error.value = errorMessage
+      errorLoadingItem.value = errorMessage
       showError(errorMessage)
     } finally {
       loading.value = false
@@ -120,6 +148,8 @@
     </BaseAccordeon>
 
     <hr />
+
+    <ProductsList :type="'similar'" :products="similarProducts" :pending="pendingSimilar" />
   </div>
 </template>
 
@@ -157,7 +187,7 @@
     }
 
     &__tabs {
-      margin-top: 100px;
+      margin: 100px 0 70px;
 
       @media (width <= $breakpoints-tablet) {
         margin-top: 32px;
