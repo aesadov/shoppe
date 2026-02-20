@@ -16,7 +16,10 @@
       <h2 v-if="type === 'similar'" class="latest__title-similar">Similar items</h2>
       <NuxtLink v-if="type === 'latest'" to="/catalogue" class="latest__link">View All</NuxtLink>
     </div>
-    <div class="latest__products">
+    <div
+      class="latest__products"
+      :class="{ 'latest__products--horizontal-scroll': type === 'similar' }"
+    >
       <!-- Скелетоны -->
       <ProductCard
         v-for="n of 6"
@@ -69,15 +72,15 @@
         font-size: 16px;
         font-weight: 400;
       }
+    }
 
-      &-similar {
-        font-size: 26px;
-        font-weight: 400;
+    &__title-similar {
+      font-size: 26px;
+      font-weight: 400;
 
-        @media (max-width: $breakpoints-mobile) {
-          margin: 20px 0 15px;
-          font-size: 16px;
-        }
+      @media (max-width: $breakpoints-mobile) {
+        margin: 20px 0 15px;
+        font-size: 16px;
       }
     }
 
@@ -101,6 +104,29 @@
       @media (max-width: $breakpoints-mobile) {
         grid-template-columns: repeat(2, 1fr);
         gap: 16px;
+      }
+    }
+  }
+
+  .latest__products--horizontal-scroll {
+    @media (max-width: $breakpoints-mobile) {
+      display: flex;
+      gap: 16px;
+      padding-left: 16px;
+      margin-left: -16px;
+      overflow: auto hidden;
+      scrollbar-width: none;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      -ms-overflow-style: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      > * {
+        flex: 0 0 auto;
+        width: 136px;
       }
     }
   }
