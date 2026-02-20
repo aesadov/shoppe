@@ -12,6 +12,7 @@
   import ProductsList from '~/components/productsList/ProductsList.vue'
   import { useGetAllProducts } from '@/composables/api/products/useGetAllProducts'
   import { useNotification } from '~/composables/notification/useNotification'
+  import IconArrowRight from '~/assets/icons/icon-arrow-right.svg'
 
   const route = useRoute()
   const { getProduct } = useGetProduct()
@@ -150,6 +151,12 @@
     <hr />
 
     <ProductsList :type="'similar'" :products="similarProducts" :pending="pendingSimilar" />
+    <NuxtLink to="/catalogue">
+      <div class="product__continue">
+        <span>Continue shopping</span>
+        <IconArrowRight class="product__continue-arrow" />
+      </div>
+    </NuxtLink>
   </div>
 </template>
 
@@ -204,6 +211,27 @@
       @media (max-width: $breakpoints-mobile) {
         display: block;
         margin-top: 16px;
+      }
+    }
+
+    &__continue {
+      display: none;
+
+      @media (max-width: $breakpoints-mobile) {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 30px;
+      }
+
+      span {
+        font-size: 12px;
+        color: $accent-color;
+      }
+
+      &-arrow {
+        height: 10px;
+        color: $primary-color;
       }
     }
   }
