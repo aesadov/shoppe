@@ -143,6 +143,7 @@
 
       @media (max-width: $breakpoints-mobile) {
         margin-top: 6px;
+        -webkit-line-clamp: 1;
         font-size: 14px;
       }
     }
