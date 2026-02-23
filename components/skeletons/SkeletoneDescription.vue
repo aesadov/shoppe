@@ -1,4 +1,4 @@
-<template v-if="loading">
+<template>
   <div class="skeleton-text skeleton-name"></div>
   <div class="skeleton-text skeleton-price"></div>
 </template>

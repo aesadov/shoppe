@@ -19,6 +19,7 @@
   })
 
   const products = computed(() => productsResult.value.data?.value)
+
   const productsPending = computed(() => productsResult.value.pending.value)
   const productsError = computed(() => productsResult.value.error.value)
 

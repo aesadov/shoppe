@@ -45,7 +45,7 @@
 
 <template>
   <div class="info">
-    <SkeletoneDescription v-if="loading" class="info__description-adding" />
+    <SkeletoneDescription v-if="loading" />
 
     <template v-else>
       <h1>{{ title }}</h1>
