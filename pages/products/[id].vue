@@ -37,7 +37,7 @@
     { name: 'reviews', label: 'Reviews' },
   ])
 
-  const mockedReviews = [
+  const mockedReviews: Review[] = [
     {
       date: '6 may, 2020',
       name: 'Scarlett whithch',
@@ -52,7 +52,7 @@
         'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam placerat',
       rate: 4,
     },
-  ] as Review[]
+  ]
 
   const reviewsCount = computed(() => mockedReviews.length)
 
