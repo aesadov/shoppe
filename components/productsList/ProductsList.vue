@@ -109,7 +109,7 @@
   }
 
   .latest__products--horizontal-scroll {
-    @media (max-width: $breakpoints-mobile) {
+    @media (max-width: $breakpoints-tablet-vertical) {
       display: flex;
       gap: 16px;
       padding-left: 16px;
