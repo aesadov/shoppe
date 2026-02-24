@@ -7,30 +7,30 @@
     products: Product[] | null
     pending: boolean
   }>()
+
+  const isLatest = computed(() => props.type === 'latest')
+  const isSimilar = computed(() => props.type === 'similar')
 </script>
 
 <template>
   <div class="latest">
     <div class="latest__header">
-      <h2 v-if="type === 'latest'" class="latest__title">Shop The Latest</h2>
-      <h2 v-if="type === 'similar'" class="latest__title-similar">Similar items</h2>
+      <h2 v-if="isLatest" class="latest__title">Shop The Latest</h2>
+      <h2 v-if="isSimilar" class="latest__title-similar">Similar items</h2>
       <NuxtLink v-if="type === 'latest'" to="/catalogue" class="latest__link">View All</NuxtLink>
     </div>
-    <div
-      class="latest__products"
-      :class="{ 'latest__products--horizontal-scroll': type === 'similar' }"
-    >
+    <div class="latest__products" :class="{ 'latest__products--horizontal-scroll': isSimilar }">
       <!-- Скелетоны -->
       <ProductCard
         v-for="n of 6"
-        v-if="type === 'latest'"
+        v-if="isLatest"
         v-show="pending"
         :key="'skeleton-' + n"
         :loading="true"
       />
       <ProductCard
         v-for="n of products?.values.length"
-        v-if="type === 'similar'"
+        v-if="isSimilar"
         v-show="pending"
         :key="'skeleton-' + n"
         :loading="true"
