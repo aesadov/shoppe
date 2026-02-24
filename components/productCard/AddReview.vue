@@ -51,36 +51,40 @@
   loadSavedUserInfo()
 
   const validateForm = () => {
+    reviewHasError.value = false
+    nameHasError.value = false
+    emailHasError.value = false
+
+    let isValid = true
+
     if (review.value === '') {
       reviewError.value = 'Please enter your review'
       reviewHasError.value = true
-      return false
+      isValid = false
     }
 
     if (name.value === '') {
       nameError.value = 'Please enter your name'
       nameHasError.value = true
-      return false
+      isValid = false
     }
 
     if (email.value === '') {
       emailError.value = 'Please enter your e-mail'
       emailHasError.value = true
-      return false
-    }
-
-    if (!emailRegex.test(email.value)) {
+      isValid = false
+    } else if (!emailRegex.test(email.value)) {
       emailError.value = 'Please enter a valid email address'
       emailHasError.value = true
-      return false
+      isValid = false
     }
 
     if (rating.value === 0) {
       ratingErr.value = 'Please select a rating'
-      return false
+      isValid = false
     }
 
-    return true
+    return isValid
   }
 
   const saveReview = () => {
