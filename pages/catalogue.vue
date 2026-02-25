@@ -19,6 +19,7 @@
   })
 
   const products = computed(() => productsResult.value.data?.value)
+
   const productsPending = computed(() => productsResult.value.pending.value)
   const productsError = computed(() => productsResult.value.error.value)
 
@@ -98,7 +99,7 @@
 
       <main class="catalogue__content">
         <div class="catalogue__products">
-          <ProductList :products="paginatedProducts" :loading="productsPending" />
+          <CatalogueProductList :products="paginatedProducts" :loading="productsPending" />
         </div>
 
         <div v-if="totalPages > START_PAGE" class="catalogue__pagination">

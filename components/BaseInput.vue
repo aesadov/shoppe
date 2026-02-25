@@ -3,7 +3,7 @@
   import IconMagnifyingGlass from '~/assets/icons/Icon-magnifyingGlass.svg'
 
   interface Props {
-    type: 'search' | 'e-mail'
+    type: 'search' | 'footer' | 'form'
     error?: boolean
     placeholder?: string
     errorMessage?: string
@@ -41,19 +41,22 @@
 <template>
   <div class="input-container">
     <div class="error-msg">
-      <span v-if="error && type === 'e-mail'">{{ errorMessage }}</span>
+      <span v-if="error">{{ errorMessage }}</span>
     </div>
     <div class="input-wrapper">
       <input
         class="input"
-        :class="{ 'input--error': error }"
+        :class="{
+          'input--error': error,
+          'input--form': type === 'form',
+        }"
         :placeholder="placeholder"
         :value="modelValue"
         @input="handleInput"
         @keypress.enter="handleSubmit"
       />
       <div
-        v-if="type === 'e-mail'"
+        v-if="type === 'footer'"
         class="input__icon-wrapper"
         :class="{ 'input__icon-wrapper--disabled': !isChecked }"
         @click="handleSubmit"
@@ -64,7 +67,7 @@
         <IconMagnifyingGlass class="input__icon-search" />
       </div>
     </div>
-    <div v-if="type === 'e-mail'" class="info">
+    <div v-if="type === 'footer'" class="info">
       <label class="info__label">
         <input
           :checked="isChecked"
@@ -104,6 +107,11 @@
     &::placeholder {
       color: $main-text-color;
       transition: color 0.2s ease;
+    }
+
+    &--form {
+      margin-bottom: 20px;
+      border-bottom: 1px solid $divider-color;
     }
 
     &--error {

@@ -16,6 +16,14 @@
 
 <style lang="scss" scoped>
   .stars {
+    width: 18px;
+    height: 18px;
     margin-right: 10px;
+
+    @media (max-width: $breakpoints-mobile) {
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+    }
   }
 </style>

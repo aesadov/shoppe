@@ -26,6 +26,7 @@ export const useInput = (options: UseInputOptions = {}) => {
 
   const validateValue = (inputValue: string) => {
     error.value = ''
+    hasError.value = false
 
     if (required && !inputValue.trim()) {
       error.value = 'This field is required'

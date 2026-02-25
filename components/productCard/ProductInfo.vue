@@ -8,7 +8,10 @@
   import IconFaceBook from '~/assets/icons/Icon-FB.svg'
   import IconMail from '~/assets/icons/Icon-mail.svg'
   import IconShare from '~/assets/icons/Icon-share.svg'
+  import IconArrowLeft from '~/assets/icons/icon-arrow-left_1.svg'
+  import IconArrowRight from '~/assets/icons/icon-arrow-right.svg'
   import SkeletoneDescription from '~/components/skeletons/SkeletoneDescription.vue'
+  import { MAX_RATING } from '~/constants/rating'
 
   interface Props {
     product: Product
@@ -27,7 +30,6 @@
     })
   }
 
-  const MAX_RATING = 5
   const blackStarsCount = Math.round(rating?.rate || 0)
   const whiteStarsCount = MAX_RATING - blackStarsCount
   const quantity = ref(1)
@@ -37,26 +39,37 @@
     }
   }
   const increaseQuantity = () => ++quantity.value
+  const viewMore = ref(false)
+  const viewHandler = () => (viewMore.value = !viewMore.value)
 </script>
 
 <template>
   <div class="info">
-    <SkeletoneDescription v-if="loading" class="info__description-adding" />
+    <SkeletoneDescription v-if="loading" />
 
     <template v-else>
       <h1>{{ title }}</h1>
-      <div class="info__price-share">
-        <p class="info__price">$ {{ price }}</p>
-        <IconShare class="info__share" />
+      <div class="info__price">
+        <p>$ {{ price }}</p>
+        <IconShare class="info__price-share" />
       </div>
 
       <div class="info__raiting">
         <StarsRating :black-stars="blackStarsCount" :white-stars="whiteStarsCount" />
-        <span class="info__raiting-count">{{ rating?.count }} customer review</span>
+        <span>{{ rating?.count }} customer review</span>
       </div>
 
       <div class="info__description-adding">
-        <p class="info__description">{{ description }}</p>
+        <div v-if="!viewMore" class="info__view" @click="viewHandler">
+          <span>View more</span><IconArrowRight class="info__view-arrow" />
+        </div>
+        <div v-if="viewMore" class="info__view" @click="viewHandler">
+          <span>View less</span><IconArrowLeft class="info__view-arrow" />
+        </div>
+        <p class="info__description" :class="{ 'info__description--expanded': viewMore }">
+          {{ description }}
+        </p>
+
         <div class="info__adding">
           <QuantityCounter
             :type="'productInfo'"
@@ -64,7 +77,7 @@
             @decrease="decreaseQuantity"
             @increase="increaseQuantity"
           />
-          <button class="info__adding-btn" @click="addToCart">ADD TO CART</button>
+          <button @click="addToCart">ADD TO CART</button>
         </div>
       </div>
 
@@ -77,11 +90,11 @@
 
       <div class="info__meta">
         <div>
-          <span class="info__meta-name">SKU:</span>
+          <span>SKU:</span>
           <span class="info__meta-meaning">{{ id }}</span>
         </div>
         <div>
-          <span class="info__meta-name">Categories:</span>
+          <span>Categories:</span>
           <span class="info__meta-meaning">{{ category }}</span>
         </div>
       </div>
@@ -117,7 +130,7 @@
       }
     }
 
-    &__price-share {
+    &__price {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -125,26 +138,26 @@
       @media (max-width: $breakpoints-mobile) {
         margin-top: 15px;
       }
-    }
 
-    &__price {
-      font-size: 20px;
-      font-weight: 500;
-      color: $accent-color;
+      p {
+        font-size: 20px;
+        font-weight: 500;
+        color: $accent-color;
 
-      @media (max-width: $breakpoints-mobile) {
-        margin: 0;
-        font-size: 16px;
+        @media (max-width: $breakpoints-mobile) {
+          margin: 0;
+          font-size: 16px;
+        }
       }
-    }
 
-    &__share {
-      width: 14px;
-      height: 14px;
-      fill: $primary-color;
+      &-share {
+        width: 14px;
+        height: 14px;
+        fill: $primary-color;
 
-      @media (min-width: $breakpoints-mobile) {
-        display: none;
+        @media (min-width: $breakpoints-mobile) {
+          display: none;
+        }
       }
     }
 
@@ -156,7 +169,7 @@
         display: none;
       }
 
-      &-count {
+      span {
         margin-left: 14px;
         font-size: 16px;
         color: $main-text-color;
@@ -176,6 +189,25 @@
       }
     }
 
+    &__view {
+      display: none;
+
+      span {
+        color: $accent-color;
+      }
+
+      @media (max-width: $breakpoints-mobile) {
+        display: block;
+      }
+
+      &-arrow {
+        height: 12px;
+        margin-bottom: 1px;
+        margin-left: 7px;
+        vertical-align: middle;
+      }
+    }
+
     &__description {
       margin: 0;
       font-size: 16px;
@@ -183,15 +215,17 @@
       color: $main-text-color;
 
       @media (max-width: $breakpoints-mobile) {
-        display: -moz-box;
         display: block;
-        display: -webkit-box;
+        max-height: 54px;
         overflow: hidden;
         text-overflow: ellipsis;
-        -webkit-line-clamp: 2;
-        -moz-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        -moz-box-orient: vertical;
+        transition: max-height 0.3s ease-in-out;
+
+        &--expanded {
+          display: block;
+          max-height: 500px;
+          overflow: visible;
+        }
       }
     }
 
@@ -199,7 +233,7 @@
       display: flex;
       gap: 23px;
 
-      &-btn {
+      button {
         width: 100%;
         font-size: 16px;
         font-weight: 700;

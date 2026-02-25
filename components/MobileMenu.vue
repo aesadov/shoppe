@@ -104,7 +104,7 @@
     width: 100%;
     margin: 0;
     border: none;
-    border-top: 1px solid #d8d8d8;
+    border-top: 1px solid $divider-color;
   }
 
   .menu-icon {
