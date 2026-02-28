@@ -1,31 +1,62 @@
 <script lang="ts" setup>
   import { clearError, navigateTo } from 'nuxt/app'
+  import CartSidebar from '~/components/cart/CartSidebar.vue'
+  import { useNotification } from '~/composables/notification/useNotification'
+
+  const { notifications, hideNotification, handleLinkClick } = useNotification()
 
   const handleClearError = () => {
     clearError()
-
     navigateTo('/')
   }
 </script>
 
 <template>
-  <div class="error">
-    <h1>404 ERROR</h1>
-    <div>
-      <p>This page not found;</p>
-      <p>back to home and start again</p>
+  <div class="app-container">
+    <CartSidebar />
+    <AppHeader />
+
+    <div class="error-wrapper">
+      <div class="error">
+        <h1>404 ERROR</h1>
+        <div>
+          <p>This page not found;</p>
+          <p>back to home and start again</p>
+        </div>
+        <button @click="handleClearError">HOMEPAGE</button>
+      </div>
     </div>
-    <button @click="handleClearError">HOMEPAGE</button>
+
+    <AppFooter class="footer" />
+    <Notification
+      :notifications="notifications"
+      @close="hideNotification"
+      @link-click="handleLinkClick"
+    />
   </div>
 </template>
 
 <style lang="scss" scoped>
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .error-wrapper {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+  }
+
   .error {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    width: 100%;
+    max-width: 500px;
     text-align: center;
 
     h1 {
@@ -74,6 +105,12 @@
         color: $white;
         background-color: $primary-color;
       }
+    }
+  }
+
+  .footer {
+    @media (max-width: $breakpoints-mobile) {
+      display: none;
     }
   }
 </style>
