@@ -9,7 +9,7 @@
   <div class="app-container">
     <CartSidebar />
     <AppHeader />
-    <NuxtPage />
+    <slot />
     <AppFooter />
     <Notification
       :notifications="notifications"
