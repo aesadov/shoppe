@@ -12,7 +12,7 @@
   import { useMediaQuery } from '@vueuse/core'
   import type { Icon } from '@/types/icon'
 
-  const { CATALOGUE_LINK, BLOG_LINK, OUR_STORY_LINK, PROFILE_LINK } = APP_LINKS
+  const { CATALOGUE_LINK, BLOG_LINK, OUR_STORY_LINK, ACCOUNT_LINK } = APP_LINKS
 
   const isShowMenu = ref(false)
   const isMounted = ref(false)
@@ -48,11 +48,11 @@
       click: toggleSidebar,
     },
     {
-      to: PROFILE_LINK,
+      to: ACCOUNT_LINK,
       icon: IconPerson,
       ariaLabel: 'Profile',
       click: () => {
-        navigateTo(PROFILE_LINK)
+        navigateTo(ACCOUNT_LINK)
       },
     },
   ]
