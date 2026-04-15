@@ -1,6 +1,8 @@
 <script setup lang="ts">
+  import { ref } from 'vue'
   import BaseInput from '~/components/BaseInput.vue'
   import { useInput } from '~/composables/useInput'
+  import { fieldValidators } from '~/utils/validation'
 
   const {
     value: userName,
@@ -18,8 +20,37 @@
 
   const saveUserInfo = ref(false)
 
-  const handleSubmit = () => {}
+  const validateForm = () => {
+    userNameHasError.value = false
+    passHasError.value = false
+
+    let isValid = true
+
+    const usernameValidation = fieldValidators.username(userName.value)
+    if (!usernameValidation.isValid) {
+      userNameError.value = usernameValidation.error
+      userNameHasError.value = true
+      isValid = false
+    }
+
+    const passwordValidation = fieldValidators.password(password.value)
+    if (!passwordValidation.isValid) {
+      passError.value = passwordValidation.error
+      passHasError.value = true
+      isValid = false
+    }
+
+    return isValid
+  }
+
+  const handleSubmit = () => {
+    if (validateForm()) {
+      // Логика входа
+      console.log('Login attempt', { userName: userName.value, password: password.value })
+    }
+  }
 </script>
+
 <template>
   <div class="account">
     <h1>My account</h1>
