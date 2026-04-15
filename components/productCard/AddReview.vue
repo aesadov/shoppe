@@ -1,11 +1,11 @@
 <script setup lang="ts">
-  import { ref, watch } from 'vue'
+  import { ref } from 'vue'
   import BaseInput from '~/components/BaseInput.vue'
   import { useInput } from '~/composables/useInput'
   import { useStorage } from '~/composables/useStorage'
-  import { emailRegex } from '~/constants/regex'
   import { useNotification } from '~/composables/notification/useNotification'
   import { MAX_RATING } from '~/constants/rating'
+  import { fieldValidators, validators } from '~/utils/validation'
 
   const props = defineProps<{
     productId: number
@@ -54,33 +54,34 @@
     reviewHasError.value = false
     nameHasError.value = false
     emailHasError.value = false
+    ratingErr.value = ''
 
     let isValid = true
 
-    if (review.value === '') {
-      reviewError.value = 'Please enter your review'
+    const reviewValidation = fieldValidators.review(review.value)
+    if (!reviewValidation.isValid) {
+      reviewError.value = reviewValidation.error
       reviewHasError.value = true
       isValid = false
     }
 
-    if (name.value === '') {
-      nameError.value = 'Please enter your name'
+    const nameValidation = fieldValidators.name(name.value)
+    if (!nameValidation.isValid) {
+      nameError.value = nameValidation.error
       nameHasError.value = true
       isValid = false
     }
 
-    if (email.value === '') {
-      emailError.value = 'Please enter your e-mail'
-      emailHasError.value = true
-      isValid = false
-    } else if (!emailRegex.test(email.value)) {
-      emailError.value = 'Please enter a valid email address'
+    const emailValidation = fieldValidators.email(email.value)
+    if (!emailValidation.isValid) {
+      emailError.value = emailValidation.error
       emailHasError.value = true
       isValid = false
     }
 
-    if (rating.value === 0) {
-      ratingErr.value = 'Please select a rating'
+    const ratingValidation = validators.rating(rating.value)
+    if (!ratingValidation.isValid) {
+      ratingErr.value = ratingValidation.error
       isValid = false
     }
 
@@ -124,7 +125,6 @@
       resetReview()
 
       rating.value = 0
-      ratingErr.value = ''
       saveUserInfo.value = false
 
       showSuccess('Review submitted successfully!')
