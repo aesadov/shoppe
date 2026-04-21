@@ -45,15 +45,31 @@
       max-width: 500px;
       text-align: center;
 
+      @media (max-width: $breakpoints-mobile) {
+        margin-top: 16px;
+      }
+
       h1 {
         margin-bottom: 39px;
         font-size: 33px;
         font-weight: 500;
+
+        @media (max-width: $breakpoints-mobile) {
+          margin-bottom: 16px;
+          font-size: 20px;
+          font-weight: 400;
+        }
       }
 
       p {
         margin: 0 0 76px;
         font-size: 20px;
+
+        @media (max-width: $breakpoints-mobile) {
+          margin: 0 0 54px;
+          font-size: 12px;
+          font-weight: 400;
+        }
       }
 
       button {
@@ -65,6 +81,13 @@
         cursor: pointer;
         background-color: $primary-color;
         border-radius: 4px;
+
+        @media (max-width: $breakpoints-mobile) {
+          height: 32px;
+          margin-top: 27px;
+          font-size: 12px;
+          font-weight: 400;
+        }
       }
     }
   }
