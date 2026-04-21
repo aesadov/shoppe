@@ -40,6 +40,12 @@
       margin-bottom: 60px;
       font-size: 33px;
       font-weight: 500;
+
+      @media (max-width: $breakpoints-mobile) {
+        margin: 16px 0 24px;
+        font-size: 20px;
+        font-weight: 400;
+      }
     }
 
     &__buttons {
@@ -51,6 +57,11 @@
       margin-bottom: 126px;
       background-color: #e9e9ed;
       border-radius: 8px;
+
+      @media (max-width: $breakpoints-mobile) {
+        padding: 3px;
+        margin-bottom: 87px;
+      }
     }
 
     &__btn {
@@ -64,6 +75,12 @@
       border: none;
       border-radius: 6px;
       transition: all 0.25s ease;
+
+      @media (max-width: $breakpoints-mobile) {
+        height: 32px;
+        font-size: 12px;
+        font-weight: 400;
+      }
 
       &:hover:not(.account__btn--active) {
         color: #000;
