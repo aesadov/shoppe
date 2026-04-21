@@ -46,6 +46,8 @@
   const handleSubmit = () => {
     if (validateForm()) {
       console.log('Login attempt', { userName: userName.value, password: password.value })
+      resetUserName()
+      resetPass()
     }
   }
 </script>
@@ -96,12 +98,32 @@
         cursor: pointer;
         background-color: $primary-color;
         border-radius: 4px;
+
+        @media (max-width: $breakpoints-mobile) {
+          height: 32px;
+          margin-top: 12px;
+          font-size: 12px;
+          font-weight: 400;
+        }
+      }
+
+      label {
+        @media (max-width: $breakpoints-mobile) {
+          font-size: 12px;
+          font-weight: 400;
+        }
       }
 
       a {
         margin-top: 20px;
         color: $primary-color;
+        text-align: center;
         cursor: pointer;
+
+        @media (max-width: $breakpoints-mobile) {
+          font-size: 12px;
+          font-weight: 400;
+        }
       }
     }
   }
