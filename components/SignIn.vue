@@ -101,7 +101,6 @@
       a {
         margin-top: 20px;
         color: $primary-color;
-        text-align: center;
         cursor: pointer;
       }
     }

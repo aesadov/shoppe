@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
   import BaseInput from '~/components/BaseInput.vue'
   import { useInput } from '~/composables/useInput'
   import { fieldValidators } from '~/utils/validation'
@@ -10,11 +9,33 @@
     hasError: emailHasError,
     resetForm: resetEmail,
   } = useInput()
+
+  const validateForm = () => {
+    emailHasError.value = false
+
+    let isValid = true
+
+    const emailValidation = fieldValidators.email(email.value)
+    if (!emailValidation.isValid) {
+      emailError.value = emailValidation.error
+      emailHasError.value = true
+      isValid = false
+    }
+
+    return isValid
+  }
+
+  const handleSubmit = () => {
+    if (validateForm()) {
+      console.log('Reset password attempt', { email: email.value })
+      resetEmail()
+    }
+  }
 </script>
 
 <template>
   <div class="password">
-    <form>
+    <form @submit.prevent="handleSubmit">
       <h1>Have you Forgotten Your Password ?</h1>
       <p>
         If you've forgotten your password, enter your e-mail address and we'll send you an e-mail
