@@ -73,7 +73,7 @@
       </label>
 
       <button type="submit">SIGN IN</button>
-      <NuxtLink>Have you forgot your password?</NuxtLink>
+      <NuxtLink to="resetPassword">Have you forgot your password?</NuxtLink>
     </form>
   </div>
 </template>
@@ -100,6 +100,7 @@
 
       a {
         margin-top: 20px;
+        color: $primary-color;
         text-align: center;
         cursor: pointer;
       }
