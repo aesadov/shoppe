@@ -2,6 +2,7 @@
   import BaseInput from '~/components/BaseInput.vue'
   import { useInput } from '~/composables/useInput'
   import { fieldValidators } from '~/utils/validation'
+  import { useNotification } from '~/composables/notification/useNotification'
 
   const {
     value: email,
@@ -9,6 +10,8 @@
     hasError: emailHasError,
     resetForm: resetEmail,
   } = useInput()
+
+  const { showSuccess } = useNotification()
 
   const validateForm = () => {
     emailHasError.value = false
@@ -27,7 +30,7 @@
 
   const handleSubmit = () => {
     if (validateForm()) {
-      console.log('Reset password attempt', { email: email.value })
+      showSuccess('The password has been sent to your email')
       resetEmail()
     }
   }

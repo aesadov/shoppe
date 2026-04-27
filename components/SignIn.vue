@@ -1,8 +1,15 @@
 <script setup lang="ts">
   import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
   import BaseInput from '~/components/BaseInput.vue'
   import { useInput } from '~/composables/useInput'
   import { fieldValidators } from '~/utils/validation'
+  import { useAuth } from '~/store/auth'
+  import { useNotification } from '~/composables/notification/useNotification'
+
+  const router = useRouter()
+  const authStore = useAuth()
+  const { showError, showSuccess } = useNotification()
 
   const {
     value: userName,
@@ -19,6 +26,7 @@
   } = useInput()
 
   const saveUserInfo = ref(false)
+  const isLoading = ref(false)
 
   const validateForm = () => {
     userNameHasError.value = false
@@ -43,11 +51,30 @@
     return isValid
   }
 
-  const handleSubmit = () => {
-    if (validateForm()) {
-      console.log('Login attempt', { userName: userName.value, password: password.value })
-      resetUserName()
-      resetPass()
+  const handleSubmit = async () => {
+    if (!validateForm()) return
+
+    isLoading.value = true
+
+    try {
+      const result = await authStore.login({
+        username: userName.value,
+        password: password.value,
+      })
+
+      if (result.success) {
+        showSuccess('Вы успешно авторизовались')
+        resetUserName()
+        resetPass()
+        router.push('/')
+      } else {
+        showError(result.error || 'Ошибка авторизации')
+      }
+    } catch (error) {
+      showError('Произошла непредвиденная ошибка')
+      console.error('Login error:', error)
+    } finally {
+      isLoading.value = false
     }
   }
 </script>
@@ -61,6 +88,7 @@
         type="form"
         :error="userNameHasError"
         :error-message="userNameError"
+        :disabled="isLoading"
       />
       <BaseInput
         v-model="password"
@@ -68,13 +96,21 @@
         type="form"
         :error="passHasError"
         :error-message="passError"
+        :disabled="isLoading"
       />
       <label>
-        <input v-model="saveUserInfo" type="checkbox" :checked="saveUserInfo" />
+        <input
+          v-model="saveUserInfo"
+          type="checkbox"
+          :checked="saveUserInfo"
+          :disabled="isLoading"
+        />
         <span>Remember me</span>
       </label>
 
-      <button type="submit">SIGN IN</button>
+      <button type="submit" :disabled="isLoading">
+        {{ isLoading ? 'LOADING...' : 'SIGN IN' }}
+      </button>
       <NuxtLink to="resetPassword">Have you forgot your password?</NuxtLink>
     </form>
   </div>

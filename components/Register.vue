@@ -53,7 +53,7 @@
   const handleSubmit = () => {
     if (validateForm()) {
       // Логика входа
-      console.log('Registr attempt', {
+      console.log('Register attempt', {
         userName: userName.value,
         password: password.value,
         confirmPassword: confirmPassword.value,
