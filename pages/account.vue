@@ -1,4 +1,7 @@
 <script setup lang="ts">
+  import RefisterForm from '@/components/RefisterForm.vue'
+  import SignInForm from '@/components/SignInForm.vue'
+
   const isSignInShow = ref(true)
 
   const signInShowHandler = () => (isSignInShow.value = !isSignInShow.value)
@@ -25,8 +28,8 @@
       </button>
     </div>
 
-    <SignIn v-if="isSignInShow" />
-    <Register v-else />
+    <SignInForm v-if="isSignInShow" />
+    <RefisterForm v-else />
   </div>
 </template>
 
