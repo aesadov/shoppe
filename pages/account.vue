@@ -15,14 +15,14 @@
       <button
         class="account__btn"
         :class="{ 'account__btn--active': isSignInShow }"
-        @click="isSignInShow = true"
+        @click="signInShowHandler"
       >
         Sign in
       </button>
       <button
         class="account__btn"
         :class="{ 'account__btn--active': !isSignInShow }"
-        @click="isSignInShow = false"
+        @click="signInShowHandler"
       >
         Register
       </button>
