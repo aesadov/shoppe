@@ -5,7 +5,7 @@ export const APP_LINKS = {
   PRIVACY_POLICY: '/privacy',
   BLOG_LINK: '/blog',
   OUR_STORY_LINK: '/ourStory',
-  PROFILE_LINK: '/profile',
+  ACCOUNT_LINK: '/account',
   TWITTER_LINK: 'https://twitter.com',
   INSTAGRAM_LINK: 'https://instagram.com',
   FACEBOOK_LINK: 'https://facebook.com',

@@ -10,7 +10,7 @@
     CATALOGUE_LINK,
     BLOG_LINK,
     OUR_STORY_LINK,
-    PROFILE_LINK,
+    ACCOUNT_LINK,
     CONTACT_LINK,
     TERMS_LINK,
     SHIPPING_LINK,
@@ -34,7 +34,7 @@
   ]
 
   const profileLinks = [
-    { to: PROFILE_LINK, text: 'My account', icon: IconPerson },
+    { to: ACCOUNT_LINK, text: 'My account', icon: IconPerson },
     { to: '', text: 'Logout', icon: IconExit },
   ]
 </script>

@@ -11,14 +11,18 @@
   import { navigateTo } from 'nuxt/app'
   import { useMediaQuery } from '@vueuse/core'
   import type { Icon } from '@/types/icon'
+  import { useAuth } from '~/store/auth'
+  import { useNotification } from '~/composables/notification/useNotification'
 
-  const { CATALOGUE_LINK, BLOG_LINK, OUR_STORY_LINK, PROFILE_LINK } = APP_LINKS
+  const { CATALOGUE_LINK, BLOG_LINK, OUR_STORY_LINK, ACCOUNT_LINK } = APP_LINKS
 
   const isShowMenu = ref(false)
   const isMounted = ref(false)
 
   const isMobile = useMediaQuery(`(max-width: ${BREAKPOINTS.mobile})`)
   const { toggleSidebar } = useCartStore()
+  const authStore = useAuth()
+  const { showSuccess } = useNotification()
 
   const toggleMenu = () => {
     isShowMenu.value = !isShowMenu.value
@@ -30,6 +34,17 @@
 
   const route = useRoute()
   const isHomePage = computed(() => route.path === '/')
+
+  const handleProfileClick = () => {
+    if (authStore.isAuthenticated) {
+      authStore.logout()
+      showSuccess('You have been logged out', {
+        duration: 5000,
+      })
+    } else {
+      navigateTo(ACCOUNT_LINK)
+    }
+  }
 
   const navLinks = [
     { to: CATALOGUE_LINK, text: 'Shop' },
@@ -48,12 +63,10 @@
       click: toggleSidebar,
     },
     {
-      to: PROFILE_LINK,
+      to: ACCOUNT_LINK,
       icon: IconPerson,
       ariaLabel: 'Profile',
-      click: () => {
-        navigateTo(PROFILE_LINK)
-      },
+      click: handleProfileClick,
     },
   ]
 
@@ -69,6 +82,11 @@
       click: toggleMenu,
     },
   ]
+
+  onMounted(() => {
+    authStore.initAuth()
+    isMounted.value = true
+  })
 </script>
 
 <template>
@@ -94,11 +112,20 @@
             v-for="icon in desktopIcons"
             :key="icon.ariaLabel"
             class="header__icon-button"
-            :class="{ 'header__icon-button--active': icon.to && route.path.startsWith(icon.to) }"
+            :class="{
+              'header__icon-button--active': icon.to && route.path.startsWith(icon.to),
+              'header__icon-button--authenticated':
+                icon.ariaLabel === 'Profile' && authStore.isAuthenticated,
+            }"
             :aria-label="icon.ariaLabel"
             @click="icon.click"
           >
             <component :is="icon.icon" class="header__icon" />
+
+            <span
+              v-if="icon.ariaLabel === 'Profile' && authStore.isAuthenticated"
+              class="header__auth-indicator"
+            />
           </button>
         </div>
       </nav>
@@ -260,6 +287,16 @@
       &:hover {
         color: $accent-color;
       }
+    }
+
+    &__auth-indicator {
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      width: 8px;
+      height: 8px;
+      background-color: #22c55e;
+      border-radius: 50%;
     }
 
     &__mobile-controls {
