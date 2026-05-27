@@ -50,7 +50,7 @@ jobs:
       - name: Run TypeScript type check
         run: |
           npx nuxt prepare
-          npx vue-tsc --noEmit
+          npx tsc --noEmit --project .nuxt/tsconfig.json
 
   test:
     name: Run tests
