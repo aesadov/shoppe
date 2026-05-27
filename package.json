@@ -72,7 +72,8 @@
   "lint-staged": {
     "*.{js,ts,vue}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write",
+      "npx vitest related --run"
     ],
     "*.{vue,css,scss}": [
       "stylelint --fix",
