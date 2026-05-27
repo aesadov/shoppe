@@ -49,11 +49,8 @@ jobs:
           npx stylelint ${{ steps.changed_css.outputs.all_changed_files }}
       - name: Run TypeScript type check
         run: |
-          if [ -f "tsconfig.json" ]; then
-            npx tsc --noEmit
-          else
-            echo "TypeScript config not found, skipping type check"
-          fi
+          npx nuxt prepare
+          npx vue-tsc --noEmit
 
   test:
     name: Run tests
