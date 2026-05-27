@@ -115,8 +115,8 @@
       padding-left: 16px;
       margin-left: -16px;
       overflow: auto hidden;
-      scrollbar-width: none;
       scroll-behavior: smooth;
+      scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
       -ms-overflow-style: none;
 
