@@ -29,7 +29,7 @@
         :loading="true"
       />
       <ProductCard
-        v-for="n of products?.values.length"
+        v-for="n of products?.length"
         v-if="isSimilar"
         v-show="pending"
         :key="'skeleton-' + n"
