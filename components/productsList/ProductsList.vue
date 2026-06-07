@@ -29,7 +29,7 @@
         :loading="true"
       />
       <ProductCard
-        v-for="n of products?.values.length"
+        v-for="n of products?.length"
         v-if="isSimilar"
         v-show="pending"
         :key="'skeleton-' + n"
@@ -115,8 +115,8 @@
       padding-left: 16px;
       margin-left: -16px;
       overflow: auto hidden;
-      scrollbar-width: none;
       scroll-behavior: smooth;
+      scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
       -ms-overflow-style: none;
 

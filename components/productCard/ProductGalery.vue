@@ -68,7 +68,7 @@
       >
         <SwiperSlide v-for="(img, i) in images" :key="i">
           <div class="galery__thumb-wrapper">
-            <img :src="img" :alt="`Thumb ${i + 1}`" class="galery__thumb-img" />
+            <img :src="img" :alt="`Thumb ${Number(i) + 1}`" class="galery__thumb-img" />
           </div>
         </SwiperSlide>
       </Swiper>
@@ -82,7 +82,7 @@
       >
         <SwiperSlide v-for="(img, i) in images" :key="i">
           <div class="galery__main-image">
-            <img :src="img" :alt="`Image ${i + 1}`" class="galery__main-img" />
+            <img :src="img" :alt="`Image ${Number(i) + 1}`" class="galery__main-img" />
           </div>
         </SwiperSlide>
       </Swiper>

@@ -15,7 +15,8 @@
     "format": "prettier --write .",
     "lint:fix": "npm run format && npm run lint:styles -- --fix && npm run lint -- --fix",
     "create-hook": "husky add .husky/pre-commit \"npm test\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "vitest"
   },
   "dependencies": {
     "@nuxt/image": "^1.11.0",
@@ -25,23 +26,27 @@
     "axios": "^1.9.0",
     "multi-range-slider-vue": "^1.1.4",
     "nuxt": "^3.17.3",
-    "swiper": "^11.2.10",
+    "pinia": "^3.0.4",
+    "swiper": "^12.1.4",
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.5.13",
-    "vue-carousel": "^0.18.0",
+    "vue-carousel": "^0.11.0",
     "vue-content-loader": "^2.0.1",
     "vue-router": "^4.5.1",
     "vue3-carousel": "^0.16.0"
   },
   "devDependencies": {
+    "@nuxt/test-utils": "^4.0.3",
     "@nuxtjs/style-resources": "^1.2.2",
     "@types/lodash": "^4.17.21",
-    "@typescript-eslint/eslint-plugin": "^8.34.1",
-    "@typescript-eslint/parser": "^8.34.1",
+    "@typescript-eslint/eslint-plugin": "^8.60.0",
+    "@typescript-eslint/parser": "^8.60.0",
+    "@vue/test-utils": "^2.4.10",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-vue": "^10.2.0",
     "globals": "^16.2.0",
+    "happy-dom": "^20.9.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
     "postcss-html": "^1.8.0",
@@ -54,7 +59,10 @@
     "stylelint-config-standard-scss": "^15.0.1",
     "stylelint-config-standard-vue": "^1.0.0",
     "stylelint-order": "^7.0.0",
-    "vue-eslint-parser": "^10.2.0"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.6",
+    "vue-eslint-parser": "^10.2.0",
+    "vue-tsc": "^3.3.2"
   },
   "overrides": {
     "postcss-selector-parser": "^7.1.0",
@@ -65,7 +73,8 @@
   "lint-staged": {
     "*.{js,ts,vue}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write",
+      "npx vitest related --run"
     ],
     "*.{vue,css,scss}": [
       "stylelint --fix",
