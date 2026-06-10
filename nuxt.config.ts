@@ -3,6 +3,18 @@ import svgLoader from 'vite-svg-loader'
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-23',
   modules: ['@vueuse/nuxt', '@nuxt/image', '@pinia/nuxt'],
+  app: {
+    baseURL: process.env.NUXT_APP_BASE_URL || '/',
+    head: {
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: `${process.env.NUXT_APP_BASE_URL || '/'}favicon.ico`,
+        },
+      ],
+    },
+  },
   imports: {
     autoImport: true,
     presets: [
