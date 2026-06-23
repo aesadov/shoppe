@@ -7,12 +7,22 @@
   const modules = [Pagination, Autoplay]
 
   const images = [
-    'https://via.assets.so/watch.png?id=1&q=95&w=1248&h=648&fit=contain',
-    'https://via.assets.so/watch.png?id=2&q=95&w=1248&h=648&fit=contain',
-    'https://via.assets.so/watch.png?id=3&q=95&w=1248&h=648&fit=contain',
-    'https://via.assets.so/watch.png?id=4&q=95&w=1248&h=648&fit=contain',
-    'https://via.assets.so/watch.png?id=5&q=95&w=1248&h=648&fit=contain',
+    { id: 1, src: generateSrc(1) },
+    { id: 2, src: generateSrc(2) },
+    { id: 3, src: generateSrc(3) },
+    { id: 4, src: generateSrc(4) },
+    { id: 5, src: generateSrc(5) },
   ]
+
+  function generateSrc(id: number) {
+    const base = 'https://via.assets.so/watch.webp'
+    const params = (w: number, h: number) => `?id=${id}&q=80&w=${w}&h=${h}&fit=contain`
+
+    return {
+      desktop: `${base}${params(1240, 620)}`,
+      mobile: `${base}${params(1362, 708)}`,
+    }
+  }
 </script>
 
 <template>
@@ -25,7 +35,10 @@
   >
     <SwiperSlide v-for="(image, index) in images" :key="index">
       <div class="image-container">
-        <img :src="image" alt="Slide" class="slide-image" />
+        <picture>
+          <source media="(max-width: 856px)" :srcset="image.src.mobile" type="image/webp" />
+          <img :src="image.src.desktop" alt="Slide" class="slide-image" loading="lazy" />
+        </picture>
       </div>
       <article class="product-card">
         <h2 class="product-card__title">Gold big hoops</h2>

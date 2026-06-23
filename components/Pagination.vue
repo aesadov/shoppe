@@ -94,14 +94,15 @@
       border-radius: 4px;
       transition: all 0.3s ease;
 
-      &:hover:not(&--disabled) {
-        background-color: #f5f5f5;
-      }
-
       &--active {
         color: #fff;
         background-color: #000;
         border-color: #000;
+      }
+
+      &:hover {
+        color: #000;
+        background-color: #f5f5f5;
       }
 
       &--disabled {
