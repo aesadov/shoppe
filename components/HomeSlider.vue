@@ -3,26 +3,28 @@
   import 'swiper/css'
   import 'swiper/css/pagination'
   import { Pagination, Autoplay } from 'swiper/modules'
+  import { BREAKPOINTS } from '~/constants/breakpoints'
+  import { IMAGE_QUALITY } from '~/constants/imageQuality'
+  import { IMAGE_FIT } from '~/constants/imageFit'
 
   const modules = [Pagination, Autoplay]
 
-  const images = [
-    { id: 1, src: generateSrc(1) },
-    { id: 2, src: generateSrc(2) },
-    { id: 3, src: generateSrc(3) },
-    { id: 4, src: generateSrc(4) },
-    { id: 5, src: generateSrc(5) },
-  ]
+  const IMAGE_SIZES = {
+    desktop: { width: 1240, height: 620 },
+    mobile: { width: 1362, height: 708 },
+  } as const
 
-  function generateSrc(id: number) {
-    const base = 'https://via.assets.so/watch.webp'
-    const params = (w: number, h: number) => `?id=${id}&q=80&w=${w}&h=${h}&fit=contain`
+  const CDN_BASE = 'https://via.assets.so/watch.webp'
 
-    return {
-      desktop: `${base}${params(1240, 620)}`,
-      mobile: `${base}${params(1362, 708)}`,
-    }
-  }
+  const imageIds = [1, 2, 3, 4, 5]
+
+  const getSrc = (id: number, w: number, h: number) =>
+    `${CDN_BASE}?id=${id}&q=${IMAGE_QUALITY}&w=${w}&h=${h}&fit=${IMAGE_FIT}`
+
+  const desktopSrc = (id: number) =>
+    getSrc(id, IMAGE_SIZES.desktop.width, IMAGE_SIZES.desktop.height)
+
+  const mobileSrc = (id: number) => getSrc(id, IMAGE_SIZES.mobile.width, IMAGE_SIZES.mobile.height)
 </script>
 
 <template>
@@ -33,11 +35,22 @@
     :modules="modules"
     class="my-swiper"
   >
-    <SwiperSlide v-for="(image, index) in images" :key="index">
+    <SwiperSlide v-for="id in imageIds" :key="id">
       <div class="image-container">
         <picture>
-          <source media="(max-width: 856px)" :srcset="image.src.mobile" type="image/webp" />
-          <img :src="image.src.desktop" alt="Slide" class="slide-image" loading="lazy" />
+          <source
+            :media="`(max-width: ${BREAKPOINTS.mobile})`"
+            :srcset="mobileSrc(id)"
+            type="image/webp"
+          />
+          <img
+            :src="desktopSrc(id)"
+            alt="Slide"
+            class="slide-image"
+            loading="lazy"
+            :width="IMAGE_SIZES.desktop.width"
+            :height="IMAGE_SIZES.desktop.height"
+          />
         </picture>
       </div>
       <article class="product-card">
