@@ -35,7 +35,7 @@
     :modules="modules"
     class="my-swiper"
   >
-    <SwiperSlide v-for="id in imageIds" :key="id">
+    <SwiperSlide v-for="(id, index) in imageIds" :key="id">
       <div class="image-container">
         <picture>
           <source
@@ -47,7 +47,8 @@
             :src="desktopSrc(id)"
             alt="Slide"
             class="slide-image"
-            loading="lazy"
+            :loading="index === 0 ? undefined : 'lazy'"
+            :fetchpriority="index === 0 ? 'high' : undefined"
             :width="IMAGE_SIZES.desktop.width"
             :height="IMAGE_SIZES.desktop.height"
           />
