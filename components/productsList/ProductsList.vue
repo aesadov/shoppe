@@ -87,7 +87,7 @@
     &__link {
       font-size: 20px;
       font-weight: 500;
-      color: $accent-color;
+      color: $accent-contrast-color;
       cursor: pointer;
 
       @media (max-width: $breakpoints-mobile) {
