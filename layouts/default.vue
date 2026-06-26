@@ -9,7 +9,9 @@
   <div class="app-container">
     <CartSidebar />
     <AppHeader />
-    <slot />
+    <main>
+      <slot />
+    </main>
     <AppFooter />
     <Notification
       :notifications="notifications"
