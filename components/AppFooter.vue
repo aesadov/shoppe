@@ -73,9 +73,15 @@
         <NuxtLink class="bottom__terms-link" :to="PRIVACY_POLICY">privacy policy.</NuxtLink>
       </div>
       <div class="bottom__social">
-        <a :href="TWITTER_LINK" target="_blank"><IconTwitter class="bottom__icon" /></a>
-        <a :href="INSTAGRAM_LINK" target="_blank"><IconInstagram class="bottom__icon" /></a>
-        <a :href="FACEBOOK_LINK" target="_blank"><IconFaceBook class="bottom__icon" /></a>
+        <a :href="TWITTER_LINK" target="_blank" aria-label="Twitter"
+          ><IconTwitter class="bottom__icon"
+        /></a>
+        <a :href="INSTAGRAM_LINK" target="_blank" aria-label="Instagram"
+          ><IconInstagram class="bottom__icon"
+        /></a>
+        <a :href="FACEBOOK_LINK" target="_blank" aria-label="Facebook"
+          ><IconFaceBook class="bottom__icon"
+        /></a>
       </div>
     </div>
   </footer>
