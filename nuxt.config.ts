@@ -43,6 +43,13 @@ export default defineNuxtConfig({
         lang: 'en',
       },
       title: 'Shoppe',
+      meta: [
+        {
+          name: 'description',
+          content:
+            'Shoppe — your destination for modern fashion and accessories. Shop the latest trends.',
+        },
+      ],
       link: [
         {
           rel: 'icon',
