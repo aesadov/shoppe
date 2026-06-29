@@ -3,6 +3,7 @@
   font-weight: 100 900;
   src: url('../fonts/DMSans.ttf') format('truetype');
   font-display: swap;
+  size-adjust: 100%;
 }
 
 @font-face {
@@ -10,4 +11,5 @@
   font-weight: 400;
   src: url('../fonts/AllertaStencil.woff2') format('woff2');
   font-display: swap;
+  size-adjust: 100%;
 }
