@@ -3,16 +3,28 @@
   import 'swiper/css'
   import 'swiper/css/pagination'
   import { Pagination, Autoplay } from 'swiper/modules'
+  import { BREAKPOINTS } from '~/constants/breakpoints'
+  import { IMAGE_QUALITY } from '~/constants/imageQuality'
+  import { IMAGE_FIT } from '~/constants/imageFit'
 
   const modules = [Pagination, Autoplay]
 
-  const images = [
-    'https://via.assets.so/watch.png?id=1&q=95&w=1248&h=648&fit=contain',
-    'https://via.assets.so/watch.png?id=2&q=95&w=1248&h=648&fit=contain',
-    'https://via.assets.so/watch.png?id=3&q=95&w=1248&h=648&fit=contain',
-    'https://via.assets.so/watch.png?id=4&q=95&w=1248&h=648&fit=contain',
-    'https://via.assets.so/watch.png?id=5&q=95&w=1248&h=648&fit=contain',
-  ]
+  const IMAGE_SIZES = {
+    desktop: { width: 1240, height: 620 },
+    mobile: { width: 1362, height: 708 },
+  } as const
+
+  const CDN_BASE = 'https://via.assets.so/watch.webp'
+
+  const imageIds = [1, 2, 3, 4, 5]
+
+  const getSrc = (id: number, w: number, h: number) =>
+    `${CDN_BASE}?id=${id}&q=${IMAGE_QUALITY}&w=${w}&h=${h}&fit=${IMAGE_FIT}`
+
+  const desktopSrc = (id: number) =>
+    getSrc(id, IMAGE_SIZES.desktop.width, IMAGE_SIZES.desktop.height)
+
+  const mobileSrc = (id: number) => getSrc(id, IMAGE_SIZES.mobile.width, IMAGE_SIZES.mobile.height)
 </script>
 
 <template>
@@ -23,9 +35,24 @@
     :modules="modules"
     class="my-swiper"
   >
-    <SwiperSlide v-for="(image, index) in images" :key="index">
+    <SwiperSlide v-for="(id, index) in imageIds" :key="id">
       <div class="image-container">
-        <img :src="image" alt="Slide" class="slide-image" />
+        <picture>
+          <source
+            :media="`(max-width: ${BREAKPOINTS.mobile})`"
+            :srcset="mobileSrc(id)"
+            type="image/webp"
+          />
+          <img
+            :src="desktopSrc(id)"
+            alt="Slide"
+            class="slide-image"
+            :loading="index === 0 ? undefined : 'lazy'"
+            :fetchpriority="index === 0 ? 'high' : undefined"
+            :width="IMAGE_SIZES.desktop.width"
+            :height="IMAGE_SIZES.desktop.height"
+          />
+        </picture>
       </div>
       <article class="product-card">
         <h2 class="product-card__title">Gold big hoops</h2>

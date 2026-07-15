@@ -18,7 +18,7 @@
 
 <template>
   <div>
-    <HomeSlider />
+    <LazyHomeSlider />
     <ProductsList :type="'latest'" :products="products" :pending="pending" />
   </div>
 </template>

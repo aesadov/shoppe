@@ -26,7 +26,7 @@
     padding-left: 10px;
     margin: 8px 0 16px;
     font-size: 14px;
-    color: $main-text-color;
+    color: $main-text-contrast-color;
     background: #efefef;
     border-radius: 4px;
 
